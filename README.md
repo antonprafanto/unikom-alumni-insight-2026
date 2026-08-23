@@ -9,6 +9,9 @@
 
 ## 🌐 Akses Langsung (Live GitHub Pages)
 
+* 🏠 **Portal Hub & Landing Page Utama:**  
+  👉 [https://antonprafanto.github.io/unikom-alumni-insight-2026/](https://antonprafanto.github.io/unikom-alumni-insight-2026/)
+
 * 📽️ **Slide Presentasi Interaktif (Keynote Deck):**  
   👉 [https://antonprafanto.github.io/unikom-alumni-insight-2026/slides_alumni_insight_2026.html](https://antonprafanto.github.io/unikom-alumni-insight-2026/slides_alumni_insight_2026.html)
 
@@ -33,8 +36,11 @@ Materi ini dirancang khusus untuk membedah arah transformasi keilmuan **Teknik/S
 
 ```text
 unikom-alumni-insight-2026/
+├── index.html                        # Portal Hub & Landing Page interaktif utama
 ├── slides_alumni_insight_2026.html   # Slide presentasi interaktif HTML5/CSS/JS (13 slide)
 ├── handout_mahasiswa_edge_ai.html    # Modul handout mahasiswa (dilengkapi tombol Cetak PDF)
+├── materi_alumni_insight_unikom_2026.md # Naskah presentasi & modul referensi materi
+├── profil_anton_prafanto.md          # Biografi akademik & riset narasumber
 ├── qr_github.svg                     # Aset QR code portofolio GitHub pembicara
 └── README.md                         # Dokumentasi repositori
 ```
