@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alumni Insight Series 2026 — Anton Prafanto, S.Kom., M.T.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #FDFBF7;
+      --dot: #E5E0D8;
+      --ink: #2D2D2D;
+      --muted: rgba(45, 45, 45, 0.65);
+      --card: #FFFFFF;
+      --note: #FFF9C4;
+      --note-blue: #D6EFFF;
+      --note-pink: #FFD6D6;
+      --note-mint: #D8F3DC;
+      --red: #E63946;
+      --ok: #2A9D8F;
+      --shadow-sm: 4px 4px 0 #2D2D2D;
+      --shadow-md: 6px 6px 0 #2D2D2D;
+      --font-display: "Kalam", cursive;
+      --font-hand: "Patrick Hand", cursive;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: var(--font-hand);
+      background-color: var(--paper);
+      background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+      background-size: 24px 24px;
+      color: var(--ink);
+      overflow: hidden;
+      user-select: none;
+    }
+    button, a { font-family: inherit; }
+    code, pre, .mono { font-family: var(--font-mono); }
+
+    .blob { border-radius: 255px 15px 225px / 15px 225px 15px 255px; }
+    .blob-card { border-radius: 36px 18px 46px 26px / 26px 46px 18px 36px; }
+    .blob-alt { border-radius: 26px 56px 18px 46px / 46px 18px 56px 26px; }
+    .blob-note { border-radius: 18px 210px / 210px 18px; }
+    .wobble { border: 2.2px solid var(--ink); background: var(--card); box-shadow: var(--shadow-sm); }
+    .wobble-thick { border: 3.2px solid var(--ink); background: var(--card); box-shadow: var(--shadow-md); }
+
+    header.bar, footer.bar {
+      position: fixed; left: 0; right: 0; z-index: 40;
+      height: 54px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 22px; background: rgba(253, 251, 247, 0.94);
+      border-color: var(--ink);
+    }
+    header.bar { top: 0; border-bottom: 2px dashed var(--ink); }
+    footer.bar { bottom: 0; border-top: 2px dashed var(--ink); }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 4px 12px; border: 2px solid var(--ink);
+      border-radius: 255px 15px 225px / 15px 225px 15px 255px;
+      background: var(--card); font-size: 15px; font-weight: 600;
+    }
+    .pill.red { background: var(--red); color: #fff; border-color: var(--ink); }
+
+    .icon-btn, .nav-btn {
+      border: 2.2px solid var(--ink); background: #fff; color: var(--ink);
+      border-radius: 255px 15px 225px / 15px 225px 15px 255px;
+      box-shadow: var(--shadow-sm); cursor: pointer; font-weight: 700;
+    }
+    .icon-btn { width: 36px; height: 32px; font-size: 15px; }
+    .nav-btn { padding: 6px 16px; font-size: 16px; }
+    .nav-btn.primary { background: var(--ink); color: #fff; }
+    .icon-btn:hover, .nav-btn:hover { transform: translate(-1px, -1px); }
+    .icon-btn:active, .nav-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+    .nav-btn:disabled, .icon-btn:disabled {
+      opacity: .4; cursor: not-allowed; transform: none; box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    kbd {
+      font-family: var(--font-mono); font-size: 11px;
+      border: 1.5px solid var(--ink); border-radius: 6px; padding: 1px 6px; background: #fff;
+    }
+
+    main { height: 100%; padding: 54px 0; min-height: 0; overflow: hidden; }
+    .slide {
+      display: none; height: 100%; width: 100%;
+      padding: 24px 52px 18px; opacity: 0;
+      overflow-x: hidden; overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
+    }
+    .slide.active { display: flex; flex-direction: column; opacity: 1; animation: inkIn 0.35s ease; }
+    @keyframes inkIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    .kicker { font-size: 15px; color: var(--muted); letter-spacing: 0.04em; }
+    h1, h2, h3 { font-family: var(--font-display); margin: 0; line-height: 1.15; color: var(--ink); }
+    h1 { font-size: clamp(34px, 4.4vw, 56px); font-weight: 700; }
+    h2 { font-size: clamp(24px, 3.0vw, 38px); font-weight: 700; }
+    h3 { font-size: 21px; }
+    p { margin: 0; }
+
+    .cite {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 18px; height: 18px; margin: 0 2px; border-radius: 50%;
+      background: var(--red); color: #fff; font-size: 11px; font-family: var(--font-mono);
+      cursor: pointer; vertical-align: super; line-height: 1; border: 1.5px solid var(--ink);
+    }
+    .cite:hover { transform: scale(1.15); }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+    .grow {
+      flex: 1 0 auto;
+      display: flex; flex-direction: column; justify-content: center;
+      max-width: 1180px; margin: 0 auto; width: 100%;
+      min-height: 100%;
+      gap: 10px;
+    }
+
+    .card { padding: 16px 18px; cursor: pointer; transition: transform 0.15s ease; }
+    .card:hover { transform: rotate(-0.4deg) translate(-2px, -2px); }
+    .card.active, .card[aria-pressed="true"] { background: var(--note); }
+
+    .fragment { opacity: 0; transform: translateY(10px); pointer-events: none; }
+    .fragment.visible { opacity: 1; transform: none; pointer-events: auto; transition: 0.28s ease; }
+
+    .progress {
+      position: absolute; left: 18px; right: 180px; height: 6px;
+      border: 1.5px solid var(--ink); border-radius: 99px; overflow: hidden; background: #fff;
+    }
+    .progress > span { display: block; height: 100%; background: var(--red); width: 0; transition: width 0.25s ease; }
+
+    /* overlays */
+    .overlay {
+      display: none; position: fixed; inset: 0; z-index: 60;
+      background: rgba(45, 45, 45, 0.35); padding: 48px;
+    }
+    .overlay.open { display: flex; }
+    .overlay .panel {
+      background: var(--paper);
+      background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+      background-size: 24px 24px;
+      border: 3px solid var(--ink); box-shadow: var(--shadow-md);
+      margin: auto; max-width: 960px; width: 100%; max-height: 86vh; overflow: auto;
+      padding: 24px; border-radius: 36px 18px 46px 26px / 26px 46px 18px 36px;
+    }
+
+    .overview-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .thumb {
+      border: 2px solid var(--ink); background: #fff; min-height: 84px; padding: 10px;
+      text-align: left; cursor: pointer; box-shadow: 3px 3px 0 var(--ink);
+      font-family: var(--font-hand); color: var(--ink); font-size: 15px;
+    }
+    .thumb.current { background: var(--note); }
+
+    .notes {
+      display: none; position: fixed; left: 18px; right: 18px; bottom: 62px; z-index: 50;
+      background: var(--note); border: 2.2px solid var(--ink); box-shadow: var(--shadow-sm);
+      padding: 12px 16px; font-size: 16px; border-radius: 12px 36px 12px 36px / 36px 12px 36px 12px;
+    }
+    .notes.open { display: block; }
+
+    .help-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; font-size: 17px; }
+    .ref-item { border-bottom: 1px dashed var(--ink); padding: 8px 0; font-size: 15px; }
+    .ref-item a { color: var(--ink); }
+
+    .track { position: relative; height: 38px; border: 2px dashed var(--ink); border-radius: 99px; background: #fff; margin: 6px 0 12px; }
+    .packet {
+      position: absolute; top: 4px; left: 6px; width: 26px; height: 26px; border-radius: 50%;
+      border: 2px solid var(--ink); background: var(--red);
+    }
+    .packet.edge { background: var(--ok); }
+    .packet.run-cloud { animation: raceCloud 2.4s ease-in-out forwards; }
+    .packet.run-edge { animation: raceEdge 0.35s ease-out forwards; }
+    @keyframes raceCloud { to { left: calc(100% - 34px); } }
+    @keyframes raceEdge { to { left: calc(100% - 34px); } }
+
+    .bitrow { display: flex; gap: 3px; flex-wrap: wrap; align-items: center; }
+    .bit { width: 11px; height: 16px; border: 1.8px solid var(--ink); background: var(--note-blue); transition: opacity .18s ease, transform .18s ease, background .18s ease; }
+    .bit.sign { background: var(--note-pink); }
+    .bit.exp { background: var(--note); }
+    .bit.mant { background: var(--note-blue); }
+    .bit.int8 { background: var(--note-mint); }
+    .qsim.p2 .bit.gone, .qsim.p3 .bit.gone, .qsim.p4 .bit.gone { opacity: 0.12; transform: scaleY(0.35); background: #fff; }
+    .qsim { display: flex; flex-direction: column; gap: 8px; }
+    .q-story { font-size: 16px; line-height: 1.35; color: var(--ink); }
+    .q-formula {
+      font-family: var(--font-mono); font-size: 12px; line-height: 1.45;
+      background: var(--paper); border: 2px dashed var(--ink); padding: 8px 10px;
+      opacity: .4;
+    }
+    .qsim.p1 .q-formula, .qsim.p2 .q-formula, .qsim.p3 .q-formula, .qsim.p4 .q-formula { opacity: 1; }
+    .q-formula b { font-family: var(--font-display); font-size: 15px; }
+    .q-formula .q-plain { font-family: var(--font-hand); font-size: 14px; margin-bottom: 4px; }
+    .q-meters { display: grid; gap: 6px; }
+    .q-meter { display: grid; grid-template-columns: 100px 1fr 64px; gap: 8px; align-items: center; font-size: 13px; }
+    .q-track { height: 14px; border: 2px solid var(--ink); background: #fff; border-radius: 99px; overflow: hidden; }
+    .q-track > span { display: block; height: 100%; width: 100%; background: var(--red); transition: width .85s cubic-bezier(.2,.8,.2,1); }
+    .qsim.p2 .q-mem > span, .qsim.p3 .q-mem > span, .qsim.p4 .q-mem > span { width: 25%; background: var(--ok); }
+    .qsim.p3 .q-cpu > span, .qsim.p4 .q-cpu > span { width: 33%; background: var(--ok); }
+    .q-bench { display: none; font-size: 13px; line-height: 1.35; padding: 8px 10px; background: var(--note); }
+    .qsim.p4 .q-bench { display: block; animation: inkIn .35s ease; }
+    .q-steps { display: flex; gap: 4px; flex-wrap: wrap; }
+    .q-steps button {
+      font-size: 11px; font-family: var(--font-mono); border: 1.6px solid var(--ink);
+      padding: 2px 6px; background: #fff; opacity: .4; cursor: pointer; color: inherit;
+      border-radius: 255px 15px 225px / 15px 225px 15px 255px;
+    }
+    .qsim.p1 .q-steps .s1, .qsim.p2 .q-steps .s2, .qsim.p3 .q-steps .s3, .qsim.p4 .q-steps .s4 { opacity: 1; background: var(--note); }
+    .q-nav { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .q-nav .nav-btn { padding: 4px 10px; font-size: 13px; }
+
+    .qa { border: 2.2px solid var(--ink); background: #fff; margin-bottom: 8px; }
+    .qa summary { cursor: pointer; padding: 9px 14px; font-family: var(--font-display); font-size: 17px; }
+    .qa p { padding: 0 14px 10px; font-size: 15px; line-height: 1.4; }
+
+    .red-dot {
+      position: absolute; width: 86px; height: 86px; border-radius: 50%;
+      background: var(--red); opacity: 0.85; z-index: 0;
+    }
+
+    table.sketch { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 15px; }
+    table.sketch th, table.sketch td { border: 2px solid var(--ink); padding: 8px 10px; background: #fff; }
+    table.sketch th { background: var(--note); font-family: var(--font-display); font-size: 16px; }
+
+    .hw-detail { min-height: 104px; }
+
+    @media (max-width: 900px) {
+      .slide { padding: 16px; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .overview-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="pill red">UNIKOM Alumni Insight 2026</span>
+      <span class="kicker" style="display:inline;">Prodi Sistem Komputer</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="kicker">Anton Prafanto, S.Kom., M.T.</span>
+      <span class="pill mono" id="slide-number">1 / 13</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1 COVER -->
+    <section class="slide active" id="slide-1" data-notes="Salam pembuka. Tekankan: ini adalah sharing alumni untuk membuka wawasan strategis, bukan sekadar kuliah teori IoT. Kita menatap arah komputasi masa depan dari keunggulan Sistem Komputer.">
+      <div class="grow" style="position:relative;">
+        <div class="red-dot" style="top:8px;left:320px;width:72px;height:72px;opacity:0.55;z-index:0;"></div>
+        <div style="position:relative;z-index:1;">
+          <span class="pill">Keynote Presentation · 45–60 Menit + Tanya Jawab</span>
+          <h1 style="margin-top:14px;max-width:16ch;color:var(--ink);">Computer Engineering <span style="text-decoration:underline;text-decoration-color:var(--red);">Beyond 2026</span></h1>
+          <p style="font-size:21px;max-width:40ch;margin-top:10px;">IoT, Edge AI, dan masa depan sistem cerdas terdistribusi — Mengapa lulusan Sistem Komputer menjadi penentu arsitektur komputasi fisik.</p>
+        </div>
+        <div style="display:flex;gap:22px;align-items:center;margin-top:24px;position:relative;z-index:1;">
+          <svg width="200" height="130" viewBox="0 0 200 130" aria-hidden="true">
+            <rect x="18" y="24" width="86" height="80" fill="#fff" stroke="#2D2D2D" stroke-width="3" rx="8"/>
+            <rect x="28" y="36" width="66" height="42" fill="none" stroke="#2D2D2D" stroke-width="2" stroke-dasharray="4 3"/>
+            <circle cx="44" cy="58" r="6" fill="#E63946"/><circle cx="62" cy="50" r="6" fill="#2D2D2D"/><circle cx="80" cy="62" r="6" fill="#E63946"/>
+            <path d="M44 58 C70 18, 136 18, 162 46" fill="none" stroke="#2D2D2D" stroke-width="2" stroke-dasharray="5 4"/>
+            <circle cx="162" cy="50" r="20" fill="#FFF9C4" stroke="#2D2D2D" stroke-width="3"/>
+            <path d="M152 50h20M162 40v20" stroke="#2D2D2D" stroke-width="2"/>
+          </svg>
+          <div class="wobble blob-card" style="padding:14px 18px;transform:rotate(-1deg);">
+            <div style="font-family:var(--font-display);font-size:22px;">Anton Prafanto, S.Kom., M.T.</div>
+            <div class="kicker">Alumnus S1 Sistem Komputer UNIKOM · S2 STEI ITB · Dosen Informatika UNMUL</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 AGENDA -->
+    <section class="slide" id="slide-2" data-notes="Tunjukkan peta 4 fase presentasi. Peserta dipersilakan mencatat poin yang paling menarik untuk didiskusikan saat sesi tanya jawab.">
+      <div class="grow">
+        <p class="kicker">Peta Sesi · Klik kartu untuk berpindah slide</p>
+        <h2>Empat Fase Perjalanan di Bidang Sistem Komputer</h2>
+        <div class="grid-4" style="margin-top:18px;">
+          <button class="card wobble blob-card" onclick="goTo(3)" style="text-align:left;transform:rotate(-1deg);">
+            <div class="kicker">01 Identitas</div>
+            <h3>Akar Lab UNIKOM</h3>
+            <p>Dari solder ke sinergi keahlian hardware + software.</p>
+          </button>
+          <button class="card wobble blob-alt" onclick="goTo(4)" style="text-align:left;background:var(--note-blue);transform:rotate(0.8deg);">
+            <div class="kicker">02 Paradigma</div>
+            <h3>Cloud → Edge AI</h3>
+            <p>Mengapa data sensor tidak harus selalu dikirim ke cloud.<button class="cite" data-cite="1" onclick="event.stopPropagation();openCite(1)">1</button></p>
+          </button>
+          <button class="card wobble blob-card" onclick="goTo(6)" style="text-align:left;background:var(--note);transform:rotate(-0.6deg);">
+            <div class="kicker">03 Dampak</div>
+            <h3>TinyML & Kasus Nyata</h3>
+            <p>Kuantisasi model, studi kasus lapangan, dan perlindungan HKI.</p>
+          </button>
+          <button class="card wobble blob-alt" onclick="goTo(10)" style="text-align:left;background:var(--note-mint);transform:rotate(1deg);">
+            <div class="kicker">04 Aksi</div>
+            <h3>Roadmap & Skripsi</h3>
+            <p>Pilihan board terjangkau, 4 level skill, dan judul skripsi 2026.</p>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 ROOTS -->
+    <section class="slide" id="slide-3" data-notes="Bangun koneksi emosional: Ajak interaksi audiens siapa yang pernah terkena solder saat praktikum, lalu tunjukkan kekuatan pondasi sistem komputer.">
+      <div class="grow">
+        <p class="kicker">01 / Akar & Identitas Keilmuan</p>
+        <h2>Dari Lab Hardware Menuju Solusi Masa Depan</h2>
+        <div class="grid-3" style="margin-top:16px;">
+          <div class="card wobble blob-card fragment" style="transform:rotate(-1deg);">
+            <svg width="48" height="34" viewBox="0 0 48 34" aria-hidden="true"><path d="M6 26 L18 8 h8 L38 26" fill="none" stroke="#2D2D2D" stroke-width="2.5"/><circle cx="22" cy="18" r="4" fill="#E63946"/></svg>
+            <h3>The Lab Days</h3>
+            <p>Solder, breadboard, interupsi timer, dan kode Assembly. Fondasi esensial mengenai cara kerja perangkat keras dan sistem komputasi secara nyata.</p>
+          </div>
+          <div class="card wobble blob-alt fragment" style="background:var(--note-pink);transform:rotate(0.7deg);">
+            <h3>The Dilemma</h3>
+            <p>“Apakah lulusan Sistem Komputer kalah bersaing dengan software engineer murni?” Keraguan umum yang perlu dijawab dengan portofolio dan fakta industri.</p>
+          </div>
+          <div class="card wobble blob-card fragment" style="background:var(--note-mint);transform:rotate(-0.4deg);">
+            <h3>The Unfair Advantage</h3>
+            <p>Software bekerja pada lapisan abstraksi, namun komputasi nyata selalu berpijak pada perangkat keras fisik. Menguasai arsitektur hardware dan mikrokontroler adalah keunggulan langka di era AI.</p>
+          </div>
+        </div>
+        <div class="fragment" style="margin-top:16px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+          <div class="wobble blob-note" style="padding:12px 18px;background:var(--note);max-width:48ch;transform:rotate(-0.5deg);">
+            Pesan Kunci: <i>“Software exists in the abstract, but computing happens in the physical world.”</i>
+          </div>
+          <button class="nav-btn primary" type="button" onclick="raiseHands()">✋ Angkat tangan: Pernah terkena solder saat praktikum?</button>
+          <span id="hands-count" class="pill" hidden></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 CLOUD VS EDGE -->
+    <section class="slide" id="slide-4" data-notes="Jelaskan alasan industri beralih ke edge: latensi, bandwidth, privasi, dan keandalan saat offline. Jalankan simulasi balapan paket data.">
+      <div class="grow">
+        <p class="kicker">02 / Pergeseran Paradigma</p>
+        <h2>Cloud AI vs Edge AI <button class="cite" data-cite="1" onclick="openCite(1)">1</button></h2>
+        <div class="grid-2" style="margin-top:12px;">
+          <div class="wobble-thick blob-card" style="padding:16px;transform:rotate(-0.5deg);">
+            <h3>Cloud-Centric AI (Tantangan & Bottleneck)</h3>
+            <ul style="margin:8px 0 0;padding-left:18px;font-size:16px;">
+              <li><b>Latensi Tinggi (100–1000 ms):</b> Tidak dapat diandalkan untuk respons waktu-nyata (real-time kritis).</li>
+              <li><b>Beban Bandwidth:</b> Pengiriman data sensor mentah terus-menerus membebani jaringan.</li>
+              <li><b>Ketergantungan Jaringan:</b> Sistem lumpuh jika koneksi internet terputus di lapangan.</li>
+              <li><b>Risiko Privasi:</b> Data mentah audio/visual terekspos keluar jaringan lokal.</li>
+            </ul>
+          </div>
+          <div class="wobble-thick blob-alt" style="padding:16px;background:var(--note-mint);transform:rotate(0.6deg);">
+            <h3>Edge AI & TinyML (Solusi On-Device)</h3>
+            <ul style="margin:8px 0 0;padding-left:18px;font-size:16px;">
+              <li><b>Latensi Instan (&lt; 10 ms):</b> Inferensi cerdas dieksekusi langsung di chip lokal. <button class="cite" data-cite="3" onclick="openCite(3)">3</button></li>
+              <li><b>Efisiensi Bandwidth:</b> Hanya mengirimkan status anomali atau hasil keputusan akhir.</li>
+              <li><b>Mandiri Secara Offline:</b> Tetap beroperasi 24/7 tanpa ketergantungan internet.</li>
+              <li><b>Privasi Terjaga:</b> Pemrosesan data sensor sensitif tuntas di dalam perangkat.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="fragment" style="margin-top:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <strong style="font-family:var(--font-display);font-size:19px;">Simulasi: Waktu Respons Pengambilan Keputusan</strong>
+            <button class="nav-btn" type="button" onclick="runRace()">Jalankan Simulasi</button>
+          </div>
+          <div style="font-size:15px;margin-top:2px;">Cloud AI (Sensor → Internet → Server GPU → Aksi Aktuator)</div>
+          <div class="track"><div class="packet" id="pkt-cloud"></div></div>
+          <div style="font-size:15px;">Edge AI (Sensor → Mikrokontroler Lokal → Aksi Aktuator)</div>
+          <div class="track"><div class="packet edge" id="pkt-edge"></div></div>
+          <p class="kicker" id="race-result">Klik tombol simulasi di atas untuk mengamati perbandingan kecepatan respons inferensi lokal vs cloud.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 TRIFECTA -->
+    <section class="slide" id="slide-5" data-notes="Tunjukkan titik temu ketiga domain: Hardware, Jaringan, dan AI. Posisi Intelligent Edge Engineer adalah ranah mutlak lulusan Sistem Komputer.">
+      <div class="grow">
+        <p class="kicker">03 / Keunggulan Unik Lulusan Sistem Komputer</p>
+        <h2>Trifecta: Hardware × Jaringan × Kecerdasan Buatan</h2>
+        <div class="grid-3" style="margin-top:14px;">
+          <button class="card wobble blob-card" data-domain="hw" onclick="pickDomain(this)" style="text-align:left;">
+            <div class="kicker">Domain 1</div>
+            <h3>Hardware & Embedded</h3>
+            <p>Mikrokontroler, ADC, manajemen daya (sleep mode), bus I2C/SPI/UART, dan RTOS.</p>
+          </button>
+          <button class="card wobble blob-alt" data-domain="net" onclick="pickDomain(this)" style="text-align:left;background:var(--note-blue);">
+            <div class="kicker">Domain 2</div>
+            <h3>Jaringan & IoT</h3>
+            <p>Protokol MQTT, LoRaWAN, BLE Mesh, Wireless Sensor Network (WSN), dan telemetri jarak jauh.</p>
+          </button>
+          <button class="card wobble blob-card" data-domain="ai" onclick="pickDomain(this)" style="text-align:left;background:var(--note);">
+            <div class="kicker">Domain 3</div>
+            <h3>Kecerdasan Buatan (AI)</h3>
+            <p>TinyML, ekstraksi fitur (FFT), kuantisasi model, dan klasifikasi pola on-device. <button class="cite" data-cite="4" onclick="event.stopPropagation();openCite(4)">4</button></p>
+          </button>
+        </div>
+        <div class="wobble blob-note" style="margin-top:16px;padding:14px 18px;background:var(--note);display:flex;justify-content:space-between;align-items:center;gap:12px;">
+          <div>
+            <div class="kicker">Titik Temu Strategis (Sweet Spot)</div>
+            <h3 id="domain-copy">Intelligent Edge Systems Engineer — Klik domain di atas untuk melihat perannya.</h3>
+          </div>
+          <span class="pill">100% Ranah Sistem Komputer</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 TINYML -->
+    <section class="slide" id="slide-6" data-notes="Jelaskan konsep kuantisasi bobot model dari Float32 ke Int8: reduksi ukuran memori ~75% dan akselerasi CPU 3x+ dengan degradasi akurasi minimal. Jalankan simulasi tahap 1-4.">
+      <div class="grow">
+        <p class="kicker">04 / Arsitektur Teknis</p>
+        <h2>TinyML: Menjalankan Model AI pada Memori Terbatas (RAM Puluhan KB)</h2>
+        <div class="grid-2" style="margin-top:12px;align-items:start;">
+          <div>
+            <div class="wobble blob-card" style="padding:12px 14px;margin-bottom:10px;">
+              <h3>1. Post-Training Quantization (PTQ INT8)</h3>
+              <p>Mengonversi bobot jaringan saraf dari Float32 (32-bit) menjadi Int8 (integer 8-bit: −128 s/d 127). Berdasarkan dokumentasi resmi Google LiteRT / TFLite, ukuran model terkompresi hingga ~75% (4× lebih ringkas) dengan akselerasi CPU 3×+ lebih cepat serta retensi akurasi optimal. <button class="cite" data-cite="2" onclick="openCite(2)">2</button><button class="cite" data-cite="11" onclick="openCite(11)">11</button></p>
+            </div>
+            <div class="wobble blob-alt" style="padding:12px 14px;margin-bottom:10px;">
+              <h3>2. Pemangkasan Bobot (Pruning &amp; Sparsity)</h3>
+              <p>Menghapus koneksi bobot neuron yang bernilai mendekati nol atau tidak signifikan guna mereduksi beban komputasi dan konsumsi memori kerja (RAM). <button class="cite" data-cite="12" onclick="openCite(12)">12</button></p>
+            </div>
+            <div class="wobble blob-card" style="padding:12px 14px;">
+              <h3>3. Akselerasi Perangkat Keras</h3>
+              <p>Memanfaatkan instruksi vektor/SIMD pada mikrokontroler modern (ESP32-S3 PIE dan ARM CMSIS-NN) untuk memproses beberapa operasi matematis INT8 secara paralel. <button class="cite" data-cite="5" onclick="openCite(5)">5</button><button class="cite" data-cite="9" onclick="openCite(9)">9</button></p>
+            </div>
+          </div>
+          <div class="wobble-thick blob-alt" style="padding:14px;">
+            <div id="qsim" class="qsim">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+                <strong class="mono" style="font-size:12px;">SIMULASI KUANTISASI INT8 · TAHAP DEMI TAHAP</strong>
+                <div class="q-nav">
+                  <button class="nav-btn" type="button" id="q-prev" onclick="quantizeStep(-1)">← Tahap</button>
+                  <button class="nav-btn primary" type="button" id="q-next" onclick="quantizeStep(1)">Tahap 1 →</button>
+                  <button class="nav-btn" type="button" id="q-reset" onclick="resetQuantSim()">Ulangi</button>
+                </div>
+              </div>
+              <div class="q-steps">
+                <button type="button" class="s1" onclick="applyQuantStep(1)">1. Konsep Affine</button>
+                <button type="button" class="s2" onclick="applyQuantStep(2)">2. Reduksi Memori</button>
+                <button type="button" class="s3" onclick="applyQuantStep(3)">3. Akselerasi CPU</button>
+                <button type="button" class="s4" onclick="applyQuantStep(4)">4. Benchmark MCU</button>
+              </div>
+              <p class="q-story" id="q-label">Mikrokontroler memiliki keterbatasan SRAM. Klik tombol Tahap 1 untuk melihat cara pemetaan Float32 ke INT8.</p>
+              <div class="q-formula" id="q-formula">
+                <div class="q-plain">Pemetaan Affine Quantization: Mengonversi Float32 kontinu ke integer diskrit [−128, 127]:</div>
+                q = round(r / s) + z &nbsp;→&nbsp; r = s · (q − z)<br>
+                contoh: r = 0.850 &nbsp; s = 1/127 &nbsp; z = 0 &nbsp;⇒&nbsp; q = 108
+                <button class="cite" data-cite="11" onclick="openCite(11)">11</button>
+              </div>
+              <div>
+                <div class="kicker" id="q-bits-cap">Setiap kotak = 1 bit. 32 kotak = format Float32 (1 tanda + 8 eksponen + 23 mantissa).</div>
+                <div class="bitrow" id="bits" style="margin-top:4px;"></div>
+              </div>
+              <div class="q-meters">
+                <div class="q-meter"><span>Ukuran Bobot</span><div class="q-track q-mem"><span></span></div><span id="q-mem-n">32 bit</span></div>
+                <div class="q-meter"><span>Beban Waktu CPU</span><div class="q-track q-cpu"><span></span></div><span id="q-cpu-n">100%</span></div>
+              </div>
+              <div class="q-bench wobble blob-note">
+                <b>Karakteristik Latensi On-Device:</b> Pada SparkFun Edge (Apollo3 Cortex-M4 @ 96 MHz): Keyword Spotting (audio) = 0,38 ms; Visual Wake Words (kamera) = 51 ms. <button class="cite" data-cite="4" onclick="openCite(4)">4</button>
+                Optimasi kernel CMSIS-NN mempercepat eksekusi VWW hingga ~3,9× dibanding kernel referensi standar. <button class="cite" data-cite="9" onclick="openCite(9)">9</button>
+              </div>
+              <p class="kicker">Hasil Kuantisasi: Memori ~75% lebih hemat, komputasi 3×+ lebih cepat. <button class="cite" data-cite="2" onclick="openCite(2)">2</button> Runtime: TFLM, Edge Impulse, CMSIS-NN. <button class="cite" data-cite="10" onclick="openCite(10)">10</button></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 PIPELINE -->
+    <section class="slide" id="slide-7" data-notes="Jelaskan alur data dari sensor ke keputusan. Klik tiap tahapan pipeline untuk melihat penjelasan detailnya.">
+      <div class="grow">
+        <p class="kicker">05 / Alur Pemrosesan Sinyal On-Device</p>
+        <h2>Dari Data Sensor Mentah Menuju Aksi Keputusan Lokal</h2>
+        <div class="grid-4" style="margin-top:16px;" id="pipeline">
+          <button class="card wobble blob-card" onclick="pipeStep(0)" style="text-align:left;">1. Akuisisi Sensor<br><span class="kicker">IMU / Mic / ADC</span></button>
+          <button class="card wobble blob-alt" onclick="pipeStep(1)" style="text-align:left;">2. Windowing Sinyal<br><span class="kicker">Ring Buffer 1–2 Dtk</span></button>
+          <button class="card wobble blob-card" onclick="pipeStep(2)" style="text-align:left;background:var(--note);">3. Ekstraksi Fitur<br><span class="kicker">FFT / Spektral</span></button>
+          <button class="card wobble blob-alt" onclick="pipeStep(3)" style="text-align:left;background:var(--note-mint);">4. Inferensi TinyML<br><span class="kicker">Eksekusi & Aksi</span></button>
+        </div>
+        <div class="wobble blob-note" id="pipe-copy" style="margin-top:16px;padding:16px 18px;min-height:86px;">
+          Klik salah satu tahapan pipeline di atas untuk melihat rincian proses komputasinya.
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 CASES -->
+    <section class="slide" id="slide-8" data-notes="Bagikan pengalaman riset lapangan dan hilirisasi produk: Smart Poultry, POPULING (Air Quality Mobile IoT di JNTETI SINTA 2), dan Predictive Maintenance. Klik kartu untuk melihat detailnya.">
+      <div class="grow">
+        <p class="kicker">06 / Dampak &amp; Hilirisasi Nyata</p>
+        <h2>Studi Kasus Nyata: Dari Riset Terapan Menjadi Solusi &amp; HKI</h2>
+        <div class="grid-3" style="margin-top:14px;">
+          <div class="card wobble-thick blob-card" role="button" tabindex="0" onclick="flipCase(this)" onkeydown="if(event.key==='Enter'||event.key===' ')flipCase(this)" style="text-align:left;transform:rotate(-1deg);cursor:pointer;">
+            <svg width="64" height="44" viewBox="0 0 64 44" aria-hidden="true"><ellipse cx="32" cy="26" rx="20" ry="11" fill="#FFF9C4" stroke="#2D2D2D" stroke-width="2"/><circle cx="24" cy="16" r="7" fill="#fff" stroke="#2D2D2D" stroke-width="2"/></svg>
+            <h3>Smart Poultry Farming</h3>
+            <p class="front">Otomasi mikroklimat kandang ayam broiler: Pemantauan suhu, kelembaban, dan amonia dengan kendali aktuator lokal adaptif. Terdaftar HKI &amp; terimplementasi pada UMKM peternakan.</p>
+            <p class="back" hidden>Prinsip Utama: Jika koneksi internet terputus, mikrokontroler lokal tetap mandiri mengatur ventilasi dan pendingin untuk mencegah kematian ternak. (Karya &amp; Hak Cipta DJKI Anton Prafanto).</p>
+          </div>
+          <div class="card wobble-thick blob-alt" role="button" tabindex="0" onclick="flipCase(this)" onkeydown="if(event.key==='Enter'||event.key===' ')flipCase(this)" style="text-align:left;background:var(--note-blue);transform:rotate(0.7deg);cursor:pointer;">
+            <svg width="64" height="44" viewBox="0 0 64 44" aria-hidden="true"><rect x="12" y="10" width="40" height="26" rx="4" fill="#fff" stroke="#2D2D2D" stroke-width="2"/><circle cx="24" cy="23" r="5" fill="#E63946"/><path d="M34 18h10M34 24h6M34 29h8" stroke="#2D2D2D" stroke-width="2"/></svg>
+            <h3>POPULING (Air Quality IoT)</h3>
+            <p class="front">Sistem pemantauan kualitas udara bergerak (mobile IoT) berbasis ESP32, sensor PM2.5/PM10 laser, GPS, dan MQTT Antares untuk pemetaan indeks ISPU di 862 titik Kota Samarinda.</p>
+            <p class="back" hidden>Publikasi Ilmiah: Diterima (Accepted) di JNTETI UGM (SINTA 2). Efisiensi biaya ~1% dari stasiun konvensional dengan cakupan spasial luas. (Riset Anton Prafanto dkk., 2026).</p>
+          </div>
+          <div class="card wobble-thick blob-card" role="button" tabindex="0" onclick="flipCase(this)" onkeydown="if(event.key==='Enter'||event.key===' ')flipCase(this)" style="text-align:left;background:var(--note);transform:rotate(-0.5deg);cursor:pointer;">
+            <svg width="64" height="44" viewBox="0 0 64 44" aria-hidden="true"><circle cx="32" cy="22" r="13" fill="#fff" stroke="#2D2D2D" stroke-width="2"/><circle cx="32" cy="22" r="4" fill="#E63946"/><path d="M32 9 v-5 M32 40 v5 M11 22 h-5 M53 22 h5" stroke="#2D2D2D" stroke-width="2"/></svg>
+            <h3>Predictive Maintenance</h3>
+            <p class="front">Pemeliharaan prediktif motor industri: Analisis spektral getaran (IMU + FFT) dan klasifikasi anomali on-device menggunakan TinyML sebelum terjadi kerusakan mekanis fatal.</p>
+            <p class="back" hidden>Relevansi Industri: Menggantikan inspeksi manual dengan sensor otonom berdaya rendah yang terus memantau kesehatan mesin manufaktur secara 24/7. <span style="white-space:nowrap;">(Kerangka TFLM: David et al. <span class="cite" data-cite="4" onclick="event.stopPropagation();openCite(4)">4</span>)</span></p>
+          </div>
+        </div>
+        <p class="fragment" style="margin-top:14px;font-size:17px;">💡 <b>Prinsip Rekayasa:</b> Inovasi teknologi yang bernilai tinggi selalu berakar dari <b>masalah nyata di masyarakat</b>, bukan sekadar mencoba alat baru.</p>
+      </div>
+    </section>
+
+    <!-- 9 HARDWARE -->
+    <section class="slide" id="slide-9" data-notes="Jelaskan bahwa hardware Edge AI modern sangat terjangkau. Klik masing-masing board untuk melihat ringkasan spesifikasi teknis resminya.">
+      <div class="grow">
+        <p class="kicker">07 / Rekomendasi Hardware · Kisaran harga merupakan estimasi marketplace di Indonesia</p>
+        <h2>Pilihan Perangkat Keras Edge AI 2026 (&lt; Rp 200.000)</h2>
+        <div class="grid-4" style="margin-top:12px;">
+          <button class="card wobble blob-card" onclick="pickBoard('s3')" style="text-align:left;">ESP32-S3<br><span class="kicker">Xtensa + Wi-Fi/BLE</span></button>
+          <button class="card wobble blob-alt" onclick="pickBoard('pico')" style="text-align:left;background:var(--note-blue);">Pico 2 (RP2350)<br><span class="kicker">ARM M33 / RISC-V</span></button>
+          <button class="card wobble blob-card" onclick="pickBoard('k210')" style="text-align:left;background:var(--note);">Kendryte K210<br><span class="kicker">KPU 0.8 TOPS (Vision)</span></button>
+          <button class="card wobble blob-alt" onclick="pickBoard('stm')" style="text-align:left;background:var(--note-mint);">STM32 Series<br><span class="kicker">ST Edge AI / X-CUBE</span></button>
+        </div>
+        <div class="wobble blob-card hw-detail" id="hw-detail" style="margin-top:14px;padding:14px 16px;">
+          Klik salah satu papan mikrokontroler di atas untuk melihat spesifikasi teknis dan use-case terbaiknya.
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 ROADMAP -->
+    <section class="slide" id="slide-10" data-notes="Paparkan 4 level roadmap keahlian. Tekankan kepada mahasiswa semester awal untuk menguasai Level 1 terlebih dahulu sebelum melangkah ke level berikutnya.">
+      <div class="grow">
+        <p class="kicker">08 / Blueprint Pengembangan Keahlian Mahasiswa</p>
+        <h2>Roadmap 4 Level: Peta Jalan Menjadi Edge AI Engineer</h2>
+        <div class="grid-4" style="margin-top:14px;">
+          <button class="card wobble blob-card" onclick="pickLevel(1)" style="text-align:left;border-top:8px solid var(--ink);">Level 1<br><b>Hardware Core</b></button>
+          <button class="card wobble blob-alt" onclick="pickLevel(2)" style="text-align:left;background:var(--note-blue);border-top:8px solid var(--ink);">Level 2<br><b>Konektivitas & IoT</b></button>
+          <button class="card wobble blob-card" onclick="pickLevel(3)" style="text-align:left;background:var(--note);border-top:8px solid var(--ink);">Level 3<br><b>Edge AI & TinyML</b></button>
+          <button class="card wobble blob-alt" onclick="pickLevel(4)" style="text-align:left;background:var(--note-mint);border-top:8px solid var(--ink);">Level 4<br><b>Produk & Hilirisasi</b></button>
+        </div>
+        <div class="wobble blob-note" id="level-copy" style="margin-top:16px;padding:16px 18px;min-height:86px;">
+          Level 1 · Fondasi Hardware: Penguasaan bahasa C/C++, struktur memori (Flash vs SRAM), GPIO, timer interupsi, manajemen daya (sleep mode), dan protokol bus (I2C/SPI/UART). Pondasi mutlak sebelum melangkah lebih jauh.
+        </div>
+      </div>
+    </section>
+
+    <!-- 11 THESIS -->
+    <section class="slide" id="slide-11" data-notes="Ajak mahasiswa tingkat akhir untuk meningkatkan standar judul skripsi mereka. Tunjukkan perbandingan sebelum dan sesudah mengintegrasikan Edge AI.">
+      <div class="grow">
+        <p class="kicker">09 / Peningkatan Kualitas Tugas Akhir</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+          <h2>Transformasi Judul Skripsi: Standar Usang vs Standar 2026</h2>
+          <button class="nav-btn primary" type="button" onclick="toggleThesis()">Tukar Tampilan: Standar Usang ↔ Standar 2026</button>
+        </div>
+        <table class="sketch" style="margin-top:14px;">
+          <thead><tr><th>Domain Proyek</th><th id="th-col">Versi Judul yang Ditampilkan</th></tr></thead>
+          <tbody id="thesis-body"></tbody>
+        </table>
+        <p style="margin-top:12px;font-size:16px;">💡 <b>Langkah Aksi:</b> Publikasikan kode di GitHub, dokumentasikan hasil pengujian lapangan secara terukur, dan daftarkan karya cipta ke Sentra HKI. (Portofolio: 130+ repositori di <a href="https://github.com/antonprafanto" target="_blank" rel="noopener" style="color:var(--ink);font-weight:700;text-decoration:underline;">github.com/antonprafanto</a>).</p>
+      </div>
+    </section>
+
+    <!-- 12 REFERENCES -->
+    <section class="slide" id="slide-12" data-notes="Tampilkan daftar referensi akademik utama untuk transparansi ilmiah dan rujukan studi mandiri mahasiswa.">
+      <div class="grow" style="justify-content:flex-start;padding-top:6px;">
+        <p class="kicker">Daftar Pustaka · Klik nomor referensi di slide manapun untuk membaca kutipannya</p>
+        <h2>Referensi & Rujukan Akademik Utama</h2>
+        <div id="ref-list" style="margin-top:8px;max-height:56vh;overflow:auto;padding-right:8px;"></div>
+      </div>
+    </section>
+
+    <!-- 13 CLOSE -->
+    <section class="slide" id="slide-13" data-notes="Tutup presentasi dengan pesan inspiratif. Buka sesi tanya jawab interaktif dan tunjukkan kontak jejaring profesional.">
+      <div class="grow" style="text-align:center;align-items:center;">
+        <p class="kicker">Pesan Penutup</p>
+        <h1 style="max-width:18ch;">Masa Depan Komputasi Cerdas, <span style="text-decoration:underline;text-decoration-color:var(--red);">Ada di Tangan Kalian.</span></h1>
+        <div style="font-size:17px;color:var(--muted);margin-top:4px;font-style:italic;">“The future of intelligent computing is physical, connected, and built by you.”</div>
+        <p style="font-size:19px;max-width:44ch;margin:12px auto 16px;">Masa depan teknologi cerdas sedang dibangun hari ini. Jadilah lulusan Sistem Komputer yang menciptakan solusi nyata untuk bangsa.</p>
+        <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center;">
+          <div class="wobble blob-card" style="padding:12px 16px;text-align:left;">
+            <div class="kicker">Email Resmi:</div>
+            <div class="mono" style="font-weight:700;">antonprafanto@unmul.ac.id</div>
+            <div class="kicker" style="margin-top:8px;">GitHub Portofolio:</div>
+            <div class="mono" style="font-weight:700;">github.com/antonprafanto</div>
+          </div>
+          <div class="wobble blob-alt" style="padding:10px;background:#fff;">
+            <img src="qr_github.svg" alt="QR code menuju GitHub antonprafanto" width="110" height="110">
+            <div class="kicker" style="font-size:13px;margin-top:4px;">Pindai Portofolio GitHub</div>
+          </div>
+        </div>
+        <details class="qa blob-card" style="margin-top:14px;text-align:left;max-width:740px;width:100%;">
+          <summary style="font-size:17px;font-weight:700;">Panduan Tanya Jawab Populer (Q&A Anticipation - Klik untuk membuka)</summary>
+          <details class="qa"><summary>1. Saya masih semester awal (2/4), apakah harus menunggu matkul AI untuk mulai belajar Edge AI?</summary><p>Tidak perlu menunggu. Mulailah secara praktis melalui platform no-code/low-code seperti <b>Edge Impulse (edgeimpulse.com)</b>. Anda bisa merekam data sensor smartphone atau mikrokontroler, melatih model klasifikasi sederhana, dan mengekspornya langsung ke library C++ Arduino. Teori matematis yang didapat di kelas nanti akan memperdalam apa yang sudah Anda praktikkan. <button class="cite" data-cite="10" onclick="openCite(10)">10</button></p></details>
+          <details class="qa"><summary>2. Bagaimana perbandingan akurasi model TinyML on-device dengan AI di Cloud?</summary><p>Untuk tugas spesifik (Narrow AI)—seperti deteksi pola getaran abnormal, pengenalan kata kunci suara (wake-word), atau klasifikasi citra sederhana—model kuantisasi INT8 memiliki akurasi yang hampir setara dengan model Float32 di cloud (penurunan umumnya hanya &lt; 1–2%). Namun, Anda mendapatkan keuntungan latensi instan tanpa internet, konsumsi daya ultra rendah, dan privasi penuh. <button class="cite" data-cite="11" onclick="openCite(11)">11</button></p></details>
+          <details class="qa"><summary>3. Bagaimana tips agar Tugas Akhir / Skripsi bisa tembus publikasi SINTA/IEEE dan meraih HKI?</summary><p>Kuncinya terletak pada <b>konteks masalah yang nyata</b> dan <b>metode pengujian yang komprehensif</b>. Jangan hanya menguji alat di atas meja lab selama beberapa menit. Pasang purwarupa Anda di lingkungan nyata (kandang peternak, bantaran sungai, atau mesin bengkel) selama 1–2 minggu. Catat metrik performa secara terukur: latensi inferensi (ms), konsumsi arus (mA), daya tahan baterai, dan tingkat akurasi data. Data empiris lapangan inilah yang sangat dinilai tinggi oleh reviewer jurnal dan penguji skripsi.</p></details>
+          <details class="qa"><summary>4. Apakah prospek karier di bidang Embedded / Hardware menjanjikan dibanding Software Engineer?</summary><p>Sangat menjanjikan. Pasar pengembang software aplikasi web/mobile saat ini sangat padat dengan jumlah lulusan yang melimpah. Sebaliknya, industri otomotif (kendaraan listrik/EV), robotika, perangkat medis, manufaktur cerdas, dan IoT menghadapi kelangkaan talenta yang menguasai perancangan sirkuit perangkat keras sekaligus logika pemrograman embedded dan AI. Keahlian lintas domain ini memiliki nilai tawar yang sangat tinggi.</p></details>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bar">
+    <div style="flex:1;position:relative;height:24px;">
+      <div class="progress"><span id="progress-bar"></span></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-left:16px;">
+      <button class="icon-btn" title="Peta Slide (O)" onclick="toggleOverlay('overview')">▦</button>
+      <button class="icon-btn" title="Daftar Sitasi (C)" onclick="toggleOverlay('cites')">[*]</button>
+      <button class="icon-btn" title="Catatan Pembicara (N)" onclick="toggleNotes()">N</button>
+      <button class="icon-btn" title="Bantuan Pintasan Keyboard (?)" onclick="toggleOverlay('help')">?</button>
+      <button class="nav-btn" type="button" onclick="prevSlide()">← Sebelumnya</button>
+      <button class="nav-btn primary" type="button" onclick="nextSlide()">Berikutnya →</button>
+    </div>
+  </footer>
+
+  <div class="notes" id="notes"></div>
+
+  <div class="overlay" id="overview">
+    <div class="panel">
+      <h2>Peta Seluruh Slide · Klik untuk berpindah</h2>
+      <div class="overview-grid" id="thumbs" style="margin-top:12px;"></div>
+    </div>
+  </div>
+  <div class="overlay" id="cites">
+    <div class="panel">
+      <h2>Daftar Referensi & Sitasi Akademik</h2>
+      <div id="cite-panel"></div>
+    </div>
+  </div>
+  <div class="overlay" id="help">
+    <div class="panel">
+      <h2>Pintasan Navigasi Keyboard</h2>
+      <div class="help-grid" style="margin-top:12px;">
+        <div><kbd>→</kbd> <kbd>Space</kbd> <kbd>Klik</kbd> : Maju ke slide / fragmen berikutnya</div>
+        <div><kbd>←</kbd> <kbd>Backspace</kbd> : Kembali ke slide sebelumnya</div>
+        <div><kbd>Home</kbd> / <kbd>End</kbd> : Lompat ke slide awal / akhir</div>
+        <div><kbd>O</kbd> : Buka peta seluruh slide (Overview)</div>
+        <div><kbd>C</kbd> : Buka panel referensi ilmiah (Citations)</div>
+        <div><kbd>N</kbd> : Tampilkan / sembunyikan catatan pembicara (Notes)</div>
+        <div><kbd>F</kbd> : Mode layar penuh (Fullscreen)</div>
+        <div><kbd>Esc</kbd> : Tutup panel popup / catatan</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const TOTAL = 13;
+    const REFS = {
+      1: { t: "Satyanarayanan, M. (2017). The Emergence of Edge Computing. IEEE Computer, 50(1), 30–39.", u: "https://doi.org/10.1109/MC.2017.9", n: "Dasar ilmiah keunggulan latensi dan batasan komputasi cloud untuk sistem fisik real-time." },
+      2: { t: "Google. Post-training quantization (LiteRT / TensorFlow Lite). Full integer: 4× smaller, 3×+ CPU speedup.", u: "https://www.tensorflow.org/lite/performance/post_training_quantization", n: "Tabel resmi PTQ: full integer untuk CPU, Edge TPU, dan mikrokontroler. Bukan latensi ESP32 yang diukur sendiri." },
+      3: { t: "Warden, P. (2020). tinyML Talks: working definition ≈ ML on embedded devices averaging < 1 mW power.", u: "https://www.tinyml.org", n: "Definisi konsumsi daya standar komunitas internasional TinyML." },
+      4: { t: "David, R. et al. (2021). TensorFlow Lite Micro. MLSys. arXiv:2010.08678. Table 2a SparkFun Edge (Apollo3 Cortex-M4 @ 96 MHz): Hotword INT8 CMSIS-NN 36.4K cycles; VWW INT8 CMSIS-NN 4,857.7K cycles.", u: "https://arxiv.org/abs/2010.08678", n: "Siklus terukur pada model INT8; konversi ke ms memakai 96 MHz di Table 1 paper yang sama." },
+      5: { t: "Espressif Systems. ESP32-S3 Series Datasheet: dual-core Xtensa LX7 @ 240 MHz, 512 KB SRAM, Wi-Fi + Bluetooth LE, PIE vector/AI instructions.", u: "https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf", n: "Spesifikasi resmi arsitektur chip mikrokontroler ESP32-S3." },
+      6: { t: "Raspberry Pi Ltd. Pico 2 / RP2350: dual Cortex-M33 or Hazard3 RISC-V @ 150 MHz, 520 KB SRAM.", u: "https://www.raspberrypi.com/products/raspberry-pi-pico-2/", n: "Spesifikasi resmi mikrokontroler arsitektur ganda RP2350." },
+      7: { t: "Canaan Inc. Kendryte K210: dual-core 64-bit RISC-V, neural processor (KPU) rated 0.8 TOPS.", u: "https://canaan.io", n: "Spesifikasi chip pemroses citra berbasis NPU terintegrasi." },
+      8: { t: "STMicroelectronics. X-CUBE-AI / ST Edge AI — generate optimized NN code for STM32.", u: "https://www.st.com/en/embedded-software/x-cube-ai.html", n: "Ekosistem generator kode neural network untuk mikrokontroler STM32 standar industri." },
+      9: { t: "Lai, L., Suda, N., Chandra, V. (2018). CMSIS-NN: Efficient Neural Network Kernels for Arm Cortex-M CPUs. arXiv:1801.06601.", u: "https://arxiv.org/abs/1801.06601", n: "Optimasi kernel neural network pada arsitektur ARM Cortex-M." },
+      10: { t: "Edge Impulse Documentation (Data collection, DSP, INT8 deployment to Arduino/C++).", u: "https://docs.edgeimpulse.com", n: "Panduan praktis pengembangan model TinyML untuk pemula." },
+      11: { t: "Jacob, B. et al. (2018). Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference. CVPR.", u: "https://arxiv.org/abs/1712.05877", n: "Kajian ilmiah stabilitas akurasi inferensi integer INT8 pada jaringan saraf." },
+      12: { t: "Han, S., Mao, H., Dally, W. (2016). Deep Compression (Pruning, Quantization, Huffman Coding). ICLR.", u: "https://arxiv.org/abs/1510.00149", n: "Fondasi teori kompresi dan pemangkasan parameter model AI." },
+      13: { t: "Harvard CS249r Tiny Machine Learning (Open Course Materials).", u: "https://tinyml.seas.harvard.edu", n: "Kurikulum rujukan akademik TinyML global." }
+    };
+
+    const BOARDS = {
+      s3: "ESP32-S3: Dual-core 32-bit Xtensa LX7 (hingga 240 MHz), 512 KB SRAM internal, Wi-Fi 2.4 GHz + Bluetooth LE 5.0, akselerasi instruksi vektor PIE untuk TinyML/DSP. Kisaran harga devkit di marketplace Indonesia: ± Rp 80.000–120.000. Sangat direkomendasikan untuk proyek audio recognition dan computer vision ringan. (Sitasi [5]).",
+      pico: "Raspberry Pi Pico 2 (RP2350): Menawarkan fleksibilitas dual ARM Cortex-M33 atau dual Hazard3 RISC-V @ 150 MHz, 520 KB SRAM, 4 MB Flash on-board, serta konsumsi daya ultra rendah. Kisaran harga di Indonesia: ± Rp 80.000–95.000. Sangat cocok untuk sensor getaran bertenaga baterai koin yang beroperasi jangka panjang. (Sitasi [6]).",
+      k210: "Kendryte K210: Dual-core 64-bit RISC-V hingga 400 MHz dengan dedicated Knowledge Processing Unit (KPU 0.8 TOPS) untuk pemrosesan citra/kamera real-time hingga 60 FPS. Kisaran modul Maixduino: ± Rp 150.000–250.000. (Sitasi [7]).",
+      stm: "STM32 Series (ARM Cortex-M4/M7): Didukung toolchain industri ST Edge AI / X-CUBE-AI untuk mengonversi model neural network langsung ke kode C/C++ teroptimasi. Merupakan standar utama di sektor otomotif dan kontrol manufaktur cerdas. (Sitasi [8][9])."
+    };
+
+    const LEVELS = {
+      1: "Level 1 · Fondasi Hardware: Penguasaan bahasa C/C++, struktur memori (Flash vs SRAM), GPIO, timer interupsi, manajemen daya (sleep mode), dan protokol bus (I2C/SPI/UART). Pondasi mutlak sebelum melangkah lebih jauh.",
+      2: "Level 2 · Komunikasi & IoT: Protokol pertukaran data ringan (MQTT, LoRaWAN, BLE, REST API), format data (JSON/FlatBuffers), dan arsitektur Wireless Sensor Network (WSN) hemat energi.",
+      3: "Level 3 · Kecerdasan On-Device: Pemrosesan sinyal digital (windowing, FFT), pengenalan platform Edge Impulse, optimasi kuantisasi INT8, dan implementasi runtime TensorFlow Lite for Microcontrollers (TFLM). (Sitasi [2][4][10]).",
+      4: "Level 4 · Produk & Hilirisasi: Integrasi dashboard monitoring (Flutter/Web), pembaruan firmware nirkabel (OTA), desain casing 3D, pengujian lapangan terukur, pendaftaran Hak Cipta (HKI), dan publikasi ilmiah."
+    };
+
+    const PIPE = [
+      "1. Akuisisi Sensor: Mengambil data analog/digital pada frekuensi sampling yang presisi (misal: 50–100 Hz). Konsistensi sampling rate sangat krusial agar model inferensi bekerja akurat sesuai data latih.",
+      "2. Windowing Sinyal: Menampung deret data sensor selama 1–2 detik ke dalam ring buffer sebelum diproses, karena pola getaran/suara memerlukan konteks rentang waktu.",
+      "3. Ekstraksi Fitur (FFT): Mentransformasi sinyal dari domain waktu ke domain frekuensi untuk mengekstrak karakteristik spektral unik dari getaran mesin atau suara.",
+      "4. Inferensi & Keputusan: Model INT8 dijalankan on-device, lalu aksi lokal (sleep / alarm / LoRa). Latensi bergantung model dan kernel: David et al. mengukur Hotword ≈ 0,38 ms vs VWW ≈ 51 ms pada Cortex-M4 96 MHz. (Sitasi [2][4])."
+    ];
+
+    const THESIS = {
+      old: [
+        ["Smart Farming", "Sistem Monitoring Suhu Kandang Ayam Berbasis Arduino dan Aplikasi Blynk"],
+        ["Kebencanaan", "Alat Pengukur Ketinggian Air Sungai Menggunakan Sensor Ultrasonik dan SMS Gateway"],
+        ["Smart Industry", "Sistem Monitoring Getaran Dinamo Motor Menggunakan Web Server Lokal"]
+      ],
+      neu: [
+        ["Smart Farming", "Rancang Bangun Edge Node Deteksi Dini Gejala Penyakit Ayam Berbasis Analisis Audio TinyML pada ESP32-S3"],
+        ["Kebencanaan", "Stasiun Telemetri Sungai Cerdas Berbasis LoRaWAN dengan Prediksi Kenaikan Debit Air On-Chip"],
+        ["Smart Industry", "Implementasi Fast Fourier Transform (FFT) dan TinyML pada ESP32 untuk Predictive Maintenance Motor Induksi"]
+      ]
+    };
+
+    const TITLES = ["Judul Utama","Peta Sesi","Akar Lab UNIKOM","Cloud vs Edge AI","Trifecta Keahlian","Teknis TinyML","Pipeline Sinyal","Studi Kasus & HKI","Hardware 2026","Roadmap 4 Level","Upgrade Skripsi","Referensi Ilmiah","Pesan Penutup & Q&A"];
+
+    let current = 1;
+    let thesisNew = true;
+
+    function slides() { return [...document.querySelectorAll(".slide")]; }
+    function frags(slide) { return [...slide.querySelectorAll(".fragment")]; }
+
+    function showSlide(i, revealAll) {
+      current = Math.min(TOTAL, Math.max(1, i));
+      slides().forEach((s, idx) => s.classList.toggle("active", idx === current - 1));
+      const active = document.getElementById("slide-" + current);
+      const fs = frags(active);
+      fs.forEach((f, fi) => f.classList.toggle("visible", revealAll ? true : fi === 0));
+      document.getElementById("slide-number").textContent = current + " / " + TOTAL;
+      document.getElementById("progress-bar").style.width = (current / TOTAL * 100) + "%";
+      document.getElementById("notes").textContent = active.dataset.notes || "";
+      active.scrollTop = 0;
+      const hash = "#slide-" + current;
+      if (location.hash !== hash) history.replaceState(null, "", hash);
+      renderThumbs();
+      if (current === 6) resetQuantSim();
+      if (current === 11) renderThesis();
+      if (current === 12) renderRefs();
+    }
+
+    function visibleCount(slide) { return frags(slide).filter(f => f.classList.contains("visible")).length; }
+
+    function nextSlide() {
+      const s = document.getElementById("slide-" + current);
+      const fs = frags(s);
+      const vis = visibleCount(s);
+      if (vis < fs.length) { fs[vis].classList.add("visible"); return; }
+      if (current < TOTAL) showSlide(current + 1);
+    }
+    function prevSlide() {
+      const s = document.getElementById("slide-" + current);
+      const fs = frags(s);
+      const vis = visibleCount(s);
+      if (vis > 1) { fs[vis - 1].classList.remove("visible"); return; }
+      if (current > 1) showSlide(current - 1, true);
+    }
+    function goTo(n) { closeOverlays(); showSlide(n); }
+
+    function toggleOverlay(id) {
+      const el = document.getElementById(id);
+      const open = el.classList.contains("open");
+      closeOverlays();
+      if (!open) {
+        el.classList.add("open");
+        if (id === "cites") renderCitePanel();
+        if (id === "overview") renderThumbs();
+      }
+    }
+    function closeOverlays() { document.querySelectorAll(".overlay").forEach(o => o.classList.remove("open")); }
+    function toggleNotes() { document.getElementById("notes").classList.toggle("open"); }
+
+    function renderThumbs() {
+      document.getElementById("thumbs").innerHTML = TITLES.map((t, i) =>
+        `<button class="thumb blob-card ${i+1===current?"current":""}" onclick="goTo(${i+1})"><b>${i+1}.</b> ${t}</button>`
+      ).join("");
+    }
+    function renderRefs() {
+      document.getElementById("ref-list").innerHTML = Object.entries(REFS).map(([k, v]) =>
+        `<div class="ref-item"><b>[${k}]</b> ${v.t}<br><a href="${v.u}" target="_blank" rel="noopener">${v.u}</a><br><span class="kicker">${v.n}</span></div>`
+      ).join("");
+    }
+    function renderCitePanel(focus) {
+      const keys = focus ? [focus] : Object.keys(REFS);
+      document.getElementById("cite-panel").innerHTML = keys.map(k => {
+        const v = REFS[k];
+        return `<div class="ref-item"><b>[${k}]</b> ${v.t}<br><a href="${v.u}" target="_blank" rel="noopener">${v.u}</a><br><span class="kicker">${v.n}</span></div>`;
+      }).join("") + (focus ? `<p class="kicker" style="margin-top:10px;">Seluruh daftar referensi juga dapat dibaca pada slide 12.</p>` : "");
+    }
+    function openCite(n) { renderCitePanel(n); document.getElementById("cites").classList.add("open"); }
+
+    let hands = 0;
+    function raiseHands() {
+      hands = Math.min(65, hands + 4 + Math.floor(Math.random() * 5));
+      const el = document.getElementById("hands-count");
+      el.hidden = false;
+      el.textContent = "✋ " + hands + " Mahasiswa Mengangkat Tangan";
+    }
+
+    function runRace() {
+      const c = document.getElementById("pkt-cloud");
+      const e = document.getElementById("pkt-edge");
+      c.classList.remove("run-cloud"); e.classList.remove("run-edge");
+      void c.offsetWidth;
+      c.classList.add("run-cloud"); e.classList.add("run-edge");
+      document.getElementById("race-result").textContent = "Hasil Simulasi: Edge AI mengambil keputusan instan (< 10 ms). Cloud AI masih dalam proses transmisi jaringan. (Sitasi [1]).";
+    }
+
+    const DOMAIN = {
+      hw: "Pemahaman arsitektur hardware, ADC, timer, dan sleep mode memastikan sistem cerdas dapat beroperasi secara mandiri di lapangan dengan efisiensi daya optimal.",
+      net: "Protokol komunikasi nirkabel yang andal memastikan ringkasan insight atau peringatan anomali dapat terkirim ke pengguna jarak jauh secara efisien.",
+      ai: "Kecerdasan di tingkat chip memungkinkan perangkat mengambil keputusan otomatis secara real-time tanpa bergantung pada koneksi internet cloud."
+    };
+    function pickDomain(btn) {
+      document.querySelectorAll("[data-domain]").forEach(b => b.setAttribute("aria-pressed", "false"));
+      btn.setAttribute("aria-pressed", "true");
+      document.getElementById("domain-copy").textContent = "Intelligent Edge Systems Engineer: " + DOMAIN[btn.dataset.domain];
+    }
+
+    const Q_COPY = [
+      "Mikrokontroler memiliki keterbatasan SRAM. Klik tombol Tahap 1 untuk melihat cara pemetaan Float32 ke INT8.",
+      "Tahap 1 · Nilai pecahan Float32 (misal r = 0,850) dipetakan ke integer 8-bit (q = 108) menggunakan skala s dan zero-point z. (Sitasi [11]).",
+      "Tahap 2 · 32 bit Float32 menyusut menjadi 8 bit Int8. Ukuran model terkompresi ~75% (4× lebih hemat memori). (Sitasi [2]).",
+      "Tahap 3 · Beban komputasi siklus CPU turun drastis (≤33%), menghasilkan eksekusi 3×+ lebih cepat pada mikrokontroler. (Sitasi [2]).",
+      "Tahap 4 · Karakteristik latensi riil: Keyword Spotting ~0,38 ms dan Visual Wake Words ~51 ms pada ARM Cortex-M4. (Sitasi [4][9])."
+    ];
+    let qPhase = 0;
+    function paintBits(int8) {
+      const bits = [];
+      bits.push(`<span class="bit sign${int8 ? " int8" : ""}"></span>`);
+      for (let i = 0; i < 8; i++) bits.push(`<span class="bit exp${int8 ? " gone" : ""}"></span>`);
+      for (let i = 0; i < 23; i++) bits.push(`<span class="bit mant${int8 && i >= 7 ? " gone" : int8 ? " int8" : ""}"></span>`);
+      document.getElementById("bits").innerHTML = bits.join("");
+    }
+    function applyQuantStep(p) {
+      const root = document.getElementById("qsim");
+      if (!root) return;
+      qPhase = Math.max(0, Math.min(4, p));
+      root.className = qPhase ? "qsim p" + qPhase : "qsim";
+      paintBits(qPhase >= 2);
+      document.getElementById("q-label").textContent = Q_COPY[qPhase];
+      document.getElementById("q-bits-cap").textContent = qPhase >= 2
+        ? "8 kotak hijau terisi = Format INT8 (8-bit integer). Memori terhemat hingga ~75% (4× lebih ringkas). (Sitasi [2])."
+        : "Setiap kotak = 1 bit. 32 kotak = format Float32 (1 tanda + 8 eksponen + 23 mantissa).";
+      document.getElementById("q-mem-n").textContent = qPhase >= 2 ? "8 bit" : "32 bit";
+      document.getElementById("q-cpu-n").textContent = qPhase >= 3 ? "≤33%" : "100%";
+      const prev = document.getElementById("q-prev");
+      const next = document.getElementById("q-next");
+      if (prev) prev.disabled = qPhase <= 0;
+      if (next) {
+        next.disabled = qPhase >= 4;
+        next.textContent = qPhase === 0 ? "Tahap 1 →" : qPhase >= 4 ? "Selesai" : "Tahap berikutnya →";
+      }
+    }
+    function quantizeStep(dir) { applyQuantStep(qPhase + dir); }
+    function resetQuantSim() { applyQuantStep(0); }
+
+    function pipeStep(i) {
+      [...document.getElementById("pipeline").children].forEach((c, idx) => c.setAttribute("aria-pressed", idx === i));
+      document.getElementById("pipe-copy").textContent = PIPE[i];
+    }
+    function pickBoard(k) { document.getElementById("hw-detail").textContent = BOARDS[k]; }
+    function pickLevel(k) { document.getElementById("level-copy").textContent = LEVELS[k]; }
+
+    function flipCase(btn) {
+      const f = btn.querySelector(".front");
+      const b = btn.querySelector(".back");
+      const showBack = b.hidden;
+      f.hidden = showBack; b.hidden = !showBack;
+    }
+
+    function renderThesis() {
+      const rows = thesisNew ? THESIS.neu : THESIS.old;
+      document.getElementById("th-col").textContent = thesisNew ? "Standar Beyond 2026 (Bernilai Tinggi & Siap HKI/Publikasi)" : "Standar Usang (Hindari / Terlalu Sederhana)";
+      document.getElementById("thesis-body").innerHTML = rows.map(r => `<tr><td style="font-weight:700;">${r[0]}</td><td>${r[1]}</td></tr>`).join("");
+    }
+    function toggleThesis() { thesisNew = !thesisNew; renderThesis(); }
+
+    document.addEventListener("keydown", (e) => {
+      if (["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
+      if (e.key === "Escape") { closeOverlays(); document.getElementById("notes").classList.remove("open"); return; }
+      if (e.key === "?" || (e.shiftKey && e.key === "/")) { e.preventDefault(); toggleOverlay("help"); return; }
+      if (e.key === "o" || e.key === "O") { toggleOverlay("overview"); return; }
+      if (e.key === "c" || e.key === "C") { toggleOverlay("cites"); return; }
+      if (e.key === "n" || e.key === "N") { toggleNotes(); return; }
+      if (e.key === "f" || e.key === "F") { document.documentElement.requestFullscreen?.(); return; }
+      if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { e.preventDefault(); nextSlide(); }
+      else if (e.key === "ArrowLeft" || e.key === "Backspace" || e.key === "PageUp") { e.preventDefault(); prevSlide(); }
+      else if (e.key === "Home") showSlide(1);
+      else if (e.key === "End") showSlide(TOTAL);
+    });
+
+    document.querySelectorAll(".overlay").forEach(o => o.addEventListener("click", e => { if (e.target === o) closeOverlays(); }));
+
+    let tx = 0, ty = 0;
+    document.addEventListener("touchstart", e => {
+      tx = e.changedTouches[0].screenX;
+      ty = e.changedTouches[0].screenY;
+    }, {passive:true});
+    document.addEventListener("touchend", e => {
+      const dx = e.changedTouches[0].screenX - tx;
+      const dy = e.changedTouches[0].screenY - ty;
+      if (Math.abs(dx) < 50 || Math.abs(dx) <= Math.abs(dy)) return;
+      if (dx < 0) nextSlide();
+      else prevSlide();
+    }, {passive:true});
+
+    window.addEventListener("hashchange", () => {
+      const h = parseInt((location.hash.match(/\d+/) || [])[0], 10);
+      if (h >= 1 && h <= TOTAL && h !== current) showSlide(h);
+    });
+
+    resetQuantSim();
+    renderThesis();
+    renderRefs();
+    renderThumbs();
+    document.querySelector("main").addEventListener("click", (e) => {
+      if (e.target.closest("button, a, details, summary, .cite, input, #qsim")) return;
+      nextSlide();
+    });
+
+    const hash = parseInt((location.hash.match(/\d+/) || [])[0], 10);
+    showSlide(hash >= 1 && hash <= TOTAL ? hash : 1);
+  </script>
+</body>
+</html>

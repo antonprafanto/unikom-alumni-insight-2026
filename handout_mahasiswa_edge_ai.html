@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Handout Mahasiswa — Edge AI Starter Kit · UNIKOM 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #FDFBF7;
+      --dot: #E5E0D8;
+      --ink: #2D2D2D;
+      --muted: rgba(45, 45, 45, 0.65);
+      --card: #FFFFFF;
+      --note: #FFF9C4;
+      --note-blue: #D6EFFF;
+      --note-pink: #FFD6D6;
+      --note-mint: #D8F3DC;
+      --red: #E63946;
+      --ok: #2A9D8F;
+      --shadow: 4px 4px 0 #2D2D2D;
+      --font-display: "Kalam", cursive;
+      --font-hand: "Patrick Hand", cursive;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: var(--font-hand);
+      background: var(--paper);
+      background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+      background-size: 24px 24px;
+      color: var(--ink);
+      overflow: hidden;
+    }
+    button, a { font-family: inherit; }
+    code, pre, .mono { font-family: var(--font-mono); }
+    h1, h2, h3 { font-family: var(--font-display); margin: 0; color: var(--ink); line-height: 1.15; }
+    h1 { font-size: clamp(32px, 4.4vw, 50px); font-weight: 700; }
+    h2 { font-size: clamp(22px, 2.8vw, 34px); font-weight: 700; }
+    h3 { font-size: 21px; font-weight: 700; }
+    p { margin: 0; }
+    .blob { border-radius: 255px 15px 225px / 15px 225px 15px 255px; }
+    .blob-card { border-radius: 36px 18px 46px 26px / 26px 46px 18px 36px; }
+    .blob-alt { border-radius: 26px 56px 18px 46px / 46px 18px 56px 26px; }
+    .blob-note { border-radius: 18px 210px / 210px 18px; }
+    .wobble { border: 2.2px solid var(--ink); background: var(--card); box-shadow: var(--shadow); }
+    header.bar, footer.bar {
+      position: fixed; left: 0; right: 0; z-index: 40; height: 54px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 18px; background: rgba(253, 251, 247, 0.94);
+    }
+    header.bar { top: 0; border-bottom: 2px dashed var(--ink); }
+    footer.bar { bottom: 0; border-top: 2px dashed var(--ink); }
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 3px 11px; border: 2px solid var(--ink);
+      border-radius: 255px 15px 225px / 15px 225px 15px 255px;
+      background: #fff; font-size: 15px; font-weight: 600;
+    }
+    .pill.red { background: var(--red); color: #fff; }
+    .icon-btn, .nav-btn {
+      border: 2.2px solid var(--ink); background: #fff; color: var(--ink);
+      border-radius: 255px 15px 225px / 15px 225px 15px 255px;
+      box-shadow: var(--shadow); cursor: pointer; font-weight: 700;
+    }
+    .icon-btn { width: 36px; height: 32px; font-size: 15px; }
+    .nav-btn { padding: 6px 14px; font-size: 16px; }
+    .nav-btn.primary { background: var(--ink); color: #fff; }
+    .icon-btn:hover, .nav-btn:hover { transform: translate(-1px, -1px); }
+    kbd { font-family: var(--font-mono); font-size: 11px; border: 1.5px solid var(--ink); border-radius: 6px; padding: 1px 5px; background: #fff; }
+    main { height: 100%; padding: 54px 0; }
+    .slide { display: none; height: 100%; width: 100%; padding: 22px 48px 14px; overflow: auto; }
+    .slide.active { display: flex; flex-direction: column; animation: inkIn .3s ease; }
+    body.doc .slide { display: flex; height: auto; min-height: 70vh; overflow: visible; border-bottom: 2px dashed var(--ink); }
+    body.doc { overflow: auto; }
+    body.doc main { height: auto; padding: 64px 0 80px; }
+    @keyframes inkIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .kicker { font-size: 15px; color: var(--muted); }
+    .grow { flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 1120px; margin: 0 auto; width: 100%; gap: 14px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
+    .cite {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 18px; height: 18px; margin: 0 2px; border-radius: 50%;
+      background: var(--red); color: #fff; font-size: 11px; font-family: var(--font-mono);
+      cursor: pointer; vertical-align: super; border: 1.5px solid var(--ink); padding: 0; line-height: 1;
+    }
+    .card { padding: 14px 16px; text-align: left; }
+    .card[aria-pressed="true"] { background: var(--note); }
+    .progress { position: absolute; left: 16px; right: 320px; height: 6px; border: 1.5px solid var(--ink); border-radius: 99px; overflow: hidden; background: #fff; }
+    .progress > span { display: block; height: 100%; background: var(--red); width: 0; transition: width .25s; }
+    .overlay { display: none; position: fixed; inset: 0; z-index: 60; background: rgba(45,45,45,.35); padding: 40px; }
+    .overlay.open { display: flex; }
+    .overlay .panel {
+      background: var(--paper); background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+      background-size: 24px 24px; border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink);
+      margin: auto; max-width: 920px; width: 100%; max-height: 86vh; overflow: auto;
+      padding: 22px; border-radius: 36px 18px 46px 26px / 26px 46px 18px 36px;
+    }
+    .overview-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .thumb { border: 2px solid var(--ink); background: #fff; min-height: 72px; padding: 8px; text-align: left; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); font-size: 15px; }
+    .thumb.current { background: var(--note); }
+    .ref-item { border-bottom: 1px dashed var(--ink); padding: 8px 0; font-size: 15px; }
+    .ref-item a { color: var(--ink); }
+    table.sketch { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 15px; }
+    table.sketch th, table.sketch td { border: 2px solid var(--ink); padding: 8px 10px; background: #fff; vertical-align: top; }
+    table.sketch th { background: var(--note); font-family: var(--font-display); font-size: 16px; }
+    .check { display: flex; gap: 8px; align-items: flex-start; padding: 8px 0; border-bottom: 1px dashed var(--dot); color: var(--ink); font-size: 16px; line-height: 1.35; }
+    .qa { border: 2.2px solid var(--ink); background: #fff; margin-bottom: 8px; }
+    .qa summary { cursor: pointer; padding: 10px 14px; font-family: var(--font-display); font-size: 17px; color: var(--ink); }
+    .qa p, .qa div { padding: 0 14px 12px; font-size: 15px; line-height: 1.4; }
+    pre.block { margin: 0; font-size: 12px; color: var(--ink); background: #fff; border: 2px dashed var(--ink); padding: 12px; overflow: auto; white-space: pre-wrap; line-height: 1.45; }
+    .step { opacity: .45; }
+    .step.on { opacity: 1; background: var(--note); }
+    @media (max-width: 900px) {
+      .slide { padding: 16px; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .overview-grid { grid-template-columns: 1fr 1fr; }
+      .progress { right: 16px; top: 8px; }
+    }
+    @media print {
+      body, body.doc { overflow: visible !important; background: #fff !important; }
+      header.bar, footer.bar, .overlay, .no-print { display: none !important; }
+      main { padding: 0 !important; height: auto !important; }
+      .slide { display: block !important; height: auto !important; overflow: visible !important; page-break-inside: avoid; padding: 16px !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <span class="pill red">Handout · Alumni Insight 2026</span>
+      <span class="kicker">Sistem Komputer UNIKOM</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <span class="kicker">Anton Prafanto, S.Kom., M.T.</span>
+      <span class="pill mono" id="slide-number">1 / 11</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1 COVER -->
+    <section class="slide active" id="slide-1">
+      <div class="grow">
+        <span class="pill">Modul Praktis &amp; Panduan Belajar Mahasiswa</span>
+        <h1>Master Handout &amp; Starter Kit: Edge AI</h1>
+        <p style="font-size:20px;max-width:42ch;">Panduan komprehensif menguasai konvergensi hardware, IoT, dan kecerdasan buatan on-device menuju era Beyond 2026.</p>
+        <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+          <svg width="200" height="120" viewBox="0 0 200 120" aria-hidden="true">
+            <rect x="12" y="22" width="88" height="76" fill="#fff" stroke="#2D2D2D" stroke-width="3" rx="8"/>
+            <rect x="22" y="34" width="68" height="36" fill="none" stroke="#2D2D2D" stroke-width="2" stroke-dasharray="4 3"/>
+            <circle cx="40" cy="52" r="6" fill="#E63946"/><circle cx="62" cy="48" r="6" fill="#2D2D2D"/><circle cx="82" cy="56" r="6" fill="#E63946"/>
+            <path d="M40 52 C70 12 130 18 164 44" fill="none" stroke="#2D2D2D" stroke-width="2" stroke-dasharray="5 4"/>
+            <circle cx="168" cy="50" r="20" fill="#FFF9C4" stroke="#2D2D2D" stroke-width="3"/>
+          </svg>
+          <div class="wobble blob-card" style="padding:12px 16px;">
+            <div style="font-family:var(--font-display);font-size:20px;">Anton Prafanto, S.Kom., M.T.</div>
+            <div class="kicker">Alumnus S1 Sistem Komputer UNIKOM · S2 STEI ITB · Dosen Informatika UNMUL</div>
+            <div class="mono" style="margin-top:6px;font-size:13px;font-weight:700;">antonprafanto@unmul.ac.id · github.com/antonprafanto</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 ROADMAP -->
+    <section class="slide" id="slide-2">
+      <div class="grow">
+        <p class="kicker">01 / Peta Jalan Keahlian · Klik level untuk melihat detailnya</p>
+        <h2>Empat Level Penguasaan Edge AI</h2>
+        <div class="grid-4">
+          <button type="button" class="card wobble blob-card" data-level="1" onclick="pickLevel(this)">Level 1<br><b>Hardware Core</b></button>
+          <button type="button" class="card wobble blob-alt" data-level="2" onclick="pickLevel(this)" style="background:var(--note-blue);">Level 2<br><b>Konektivitas &amp; IoT</b></button>
+          <button type="button" class="card wobble blob-card" data-level="3" onclick="pickLevel(this)" style="background:var(--note);">Level 3<br><b>Edge AI &amp; TinyML</b></button>
+          <button type="button" class="card wobble blob-alt" data-level="4" onclick="pickLevel(this)" style="background:var(--note-mint);">Level 4<br><b>Produk &amp; Hilirisasi HKI</b></button>
+        </div>
+        <div class="wobble blob-note" id="level-copy" style="padding:14px 16px;background:var(--note);">Klik salah satu level di atas untuk melihat rincian kompetensi yang harus dipelajari secara bertahap.</div>
+      </div>
+    </section>
+
+    <!-- 3 GLOSSARY -->
+    <section class="slide" id="slide-3">
+      <div class="grow">
+        <p class="kicker">02 / Kamus Konsep Inti · Klik istilah untuk melihat penjelasan</p>
+        <h2>Kamus Konsep: Dari Mikrokontroler hingga Neural Network</h2>
+        <div class="grid-3" id="glossary">
+          <button type="button" class="card wobble blob-card" onclick="pickTerm(this,'edge')">Edge AI</button>
+          <button type="button" class="card wobble blob-alt" onclick="pickTerm(this,'tiny')" style="background:var(--note);">TinyML</button>
+          <button type="button" class="card wobble blob-card" onclick="pickTerm(this,'ptq')" style="background:var(--note-blue);">Kuantisasi INT8</button>
+          <button type="button" class="card wobble blob-alt" onclick="pickTerm(this,'arena')" style="background:var(--note-mint);">Tensor Arena</button>
+          <button type="button" class="card wobble blob-card" onclick="pickTerm(this,'train')">Training vs Inference</button>
+          <button type="button" class="card wobble blob-alt" onclick="pickTerm(this,'fft')" style="background:var(--note-pink);">Fast Fourier Transform</button>
+        </div>
+        <div class="wobble blob-note" id="term-copy" style="padding:14px 16px;">Klik salah satu istilah di atas untuk membaca definisi dan rujukan literatur resminya.</div>
+      </div>
+    </section>
+
+    <!-- 4 SHOP -->
+    <section class="slide" id="slide-4">
+      <div class="grow" style="justify-content:flex-start;">
+        <p class="kicker">03 / Panduan Perangkat Keras · Kisaran harga merupakan estimasi marketplace di Indonesia</p>
+        <h2>Daftar Komponen Starter Kit (Centang yang Sudah Dimiliki)</h2>
+        <div class="grid-2">
+          <div class="wobble blob-card" style="padding:12px 14px;">
+            <h3>Papan Mikrokontroler</h3>
+            <label class="check"><input type="checkbox" data-item="s3"> ESP32-S3 DevKit — Dual-core Xtensa LX7 @ 240 MHz, 512 KB SRAM, Wi-Fi + BLE, instruksi vektor PIE. Estimasi: ± Rp 80.000–120.000. <button type="button" class="cite" onclick="openCite(5)">5</button></label>
+            <label class="check"><input type="checkbox" data-item="pico"> Pico 2 (RP2350) — Dual Cortex-M33 / Hazard3 RISC-V @ 150 MHz, 520 KB SRAM, ultra low-power. Estimasi: ± Rp 80.000–95.000. <button type="button" class="cite" onclick="openCite(6)">6</button></label>
+            <label class="check"><input type="checkbox" data-item="stm"> STM32F401 / F411 (“BlackPill”) — Cortex-M4 dengan FPU hardware + toolchain ST Edge AI / X-CUBE-AI. Estimasi: ± Rp 55.000–75.000. <button type="button" class="cite" onclick="openCite(8)">8</button></label>
+          </div>
+          <div class="wobble blob-alt" style="padding:12px 14px;">
+            <h3>Sensor &amp; Komunikasi</h3>
+            <label class="check"><input type="checkbox" data-item="imu"> Sensor IMU 6-Axis (MPU-6050 / LSM6DS3) ~Rp 25.000 — Deteksi getaran mesin &amp; gestur (skala ±2 g = 16384 LSB/g). <button type="button" class="cite" onclick="openCite(16)">16</button></label>
+            <label class="check"><input type="checkbox" data-item="mic"> Mikrofon I2S INMP441 ~Rp 18.000 — Keyword spotting &amp; deteksi anomali audio ternak/mesin.</label>
+            <label class="check"><input type="checkbox" data-item="cam"> Kamera OV2640 ~Rp 35.000 — Klasifikasi objek &amp; vision sederhana pada ESP32-CAM.</label>
+            <label class="check"><input type="checkbox" data-item="env"> BME280 / DHT22 ~Rp 30.000–50.000 — Pemantauan presisi suhu dan kelembaban.</label>
+            <label class="check"><input type="checkbox" data-item="lora"> Modul LoRa SX1276 / RFM95 ~Rp 85.000 — Telemetri jarak jauh hemat energi.</label>
+          </div>
+        </div>
+        <p class="kicker" id="kit-count">0 item dicentang. Status penyimpanan tersimpan otomatis di browser ini.</p>
+      </div>
+    </section>
+
+    <!-- 5 TUTORIAL -->
+    <section class="slide" id="slide-5">
+      <div class="grow">
+        <p class="kicker">04 / Tutorial Praktis 15 Menit · Eksperimen Gratis via Edge Impulse &amp; Wokwi</p>
+        <h2>Proyek Pertama: Deteksi Anomali Gerakan (TinyML)</h2>
+        <div class="grid-3" id="steps">
+          <button type="button" class="card wobble blob-card step on" onclick="pickStep(0)">1. Akun Edge Impulse</button>
+          <button type="button" class="card wobble blob-alt step" onclick="pickStep(1)">2. Rekam Data di HP</button>
+          <button type="button" class="card wobble blob-card step" onclick="pickStep(2)">3. Pipeline &amp; FFT</button>
+          <button type="button" class="card wobble blob-alt step" onclick="pickStep(3)">4. Latih Model (INT8)</button>
+          <button type="button" class="card wobble blob-card step" onclick="pickStep(4)">5. Ekspor Library C++</button>
+          <button type="button" class="card wobble blob-alt step" onclick="pickStep(5)">6. Simulasi di Wokwi</button>
+        </div>
+        <div class="wobble blob-note" id="step-copy" style="padding:14px 16px;min-height:96px;"></div>
+      </div>
+    </section>
+
+    <!-- 6 CODE -->
+    <section class="slide" id="slide-6">
+      <div class="grow" style="justify-content:flex-start;">
+        <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;">
+          <div>
+            <p class="kicker">05 / Arsitektur Firmware C++ · Contoh Pola Inferensi On-Device pada ESP32</p>
+            <h2>Pola Kodingan Inferensi di Mikrokontroler</h2>
+          </div>
+          <button type="button" class="nav-btn" onclick="copyCode()">📋 Salin Pola Kode</button>
+        </div>
+        <pre class="block" id="code-block">// Pola: Windowing Sinyal 50 Hz → Eksekusi Inferensi run_classifier → Aksi Aktuator Lokal
+// Catatan: Library "my_tinyml_model_inferencing.h" merupakan hasil ekspor dari Edge Impulse.
+
+#include &lt;Wire.h&gt;
+#include &lt;MPU6050.h&gt;
+#include "my_tinyml_model_inferencing.h"
+
+float sensor_buffer[EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE];
+MPU6050 mpu;
+
+void setup() {
+  Serial.begin(115200);
+  Wire.begin();
+  mpu.initialize();
+}
+
+void loop() {
+  // 1. Mengisi ring buffer data sensor (Sampling Rate 50 Hz = interval 20 ms)
+  for (size_t i = 0; i &lt; EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE; i += 3) {
+    int16_t ax, ay, az;
+    mpu.getAcceleration(&amp;ax, &amp;ay, &amp;az);
+    sensor_buffer[i]     = (float)ax / 16384.0f * 9.81f; // Normalisasi ke satuan m/s^2
+    sensor_buffer[i + 1] = (float)ay / 16384.0f * 9.81f;
+    sensor_buffer[i + 2] = (float)az / 16384.0f * 9.81f;
+    delay(20); // Gunakan timer interrupt untuk implementasi produksi
+  }
+
+  // 2. Membungkus buffer ke format sinyal Edge Impulse
+  signal_t signal;
+  numpy::signal_from_buffer(sensor_buffer, EI_CLASSIFIER_DSP_INPUT_FRAME_SIZE, &amp;signal);
+
+  // 3. Menjalankan inferensi model kuantisasi INT8 on-device (< 15 ms)
+  ei_impulse_result_t result = { 0 };
+  run_classifier(&amp;signal, &amp;result, false);
+
+  // 4. Pengambilan keputusan otomatis secara lokal di mikrokontroler
+  if (result.classification[1].value &gt; 0.85f) {
+    // Terdeteksi kondisi anomali > 85%: Picu relay, buzzer, atau kirim alert via LoRa
+    Serial.println("PERINGATAN: Kerusakan / Anomali Terdeteksi!");
+  }
+}</pre>
+        <p class="kicker">API <span class="mono">run_classifier</span> mengikuti standar Edge Impulse. <button type="button" class="cite" onclick="openCite(10)">10</button> Skala 16384 LSB/g merujuk datasheet resmi MPU-6050. <button type="button" class="cite" onclick="openCite(16)">16</button> Runtime TinyML: TFLM. <button type="button" class="cite" onclick="openCite(4)">4</button></p>
+      </div>
+    </section>
+
+    <!-- 7 DATASETS -->
+    <section class="slide" id="slide-7">
+      <div class="grow">
+        <p class="kicker">06 / Dataset &amp; Simulator Terverifikasi untuk Melatih Model</p>
+        <h2>Sumber Dataset &amp; Alat Simulasi Siap Pakai</h2>
+        <div class="grid-2">
+          <a class="card wobble blob-card" href="https://www.nasa.gov/intelligent-systems-division/" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+            <h3>NASA / IMS Bearing Dataset</h3>
+            <p>Kumpulan data akselerometer getaran bearing mesin sehat vs rusak untuk riset Predictive Maintenance industri manufaktur. <button type="button" class="cite" onclick="event.preventDefault();openCite(13)">13</button></p>
+          </a>
+          <div class="card wobble blob-alt" style="background:var(--note-blue);">
+            <h3>Google Speech Commands</h3>
+            <p>Dataset rekaman kata pendek 1 detik ("yes", "no", "stop", "go") untuk melatih model Keyword Spotting audio pada mikrokontroler. <button type="button" class="cite" onclick="openCite(12)">12</button></p>
+          </div>
+          <a class="card wobble blob-card" href="https://wokwi.com" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;background:var(--note);">
+            <h3>Wokwi Online Simulator</h3>
+            <p>Platform simulator ESP32 dan Arduino berbasis browser untuk menguji kodingan firmware TinyML secara virtual sebelum membeli hardware. <button type="button" class="cite" onclick="event.preventDefault();openCite(15)">15</button></p>
+          </a>
+          <div class="card wobble blob-alt" style="background:var(--note-mint);">
+            <h3>Dataset Domain Pertanian &amp; Peternakan</h3>
+            <p>Dataset rekaman suara batuk ternak atau spektrum daun untuk topik tugas akhir agro-teknologi terapan (dapat dicari via Kaggle / Zenodo dengan sitasi resmi).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 TROUBLESHOOT -->
+    <section class="slide" id="slide-8">
+      <div class="grow" style="justify-content:flex-start;">
+        <p class="kicker">07 / Panduan Mengatasi Masalah (Troubleshooting &amp; Debugging Lapangan)</p>
+        <h2>Solusi 4 Gejala Error yang Paling Sering Terjadi</h2>
+        <details class="qa blob-card"><summary>1. Error: AllocateTensors() failed / Kehabisan Memori RAM</summary><p><b>Penyebab:</b> Alokasi tensor arena di SRAM terlalu kecil untuk menampung layer model.<br><b>Solusi:</b> Perbesar nilai <span class="mono">kTensorArenaSize</span> (misal dari 10KB menjadi 25KB), atau kurangi resolusi input / jumlah neuron pada model. Konsep arsitektur arena: TFLM. <button type="button" class="cite" onclick="openCite(4)">4</button></p></details>
+        <details class="qa blob-card"><summary>2. Akurasi di PC 95%, tetapi di ESP32 Sering Salah Tebak</summary><p><b>Penyebab:</b> Perbedaan frekuensi sampling (Sampling Rate Mismatch) antara saat merekam data latih dengan pembacaan sensor nyata.<br><b>Solusi:</b> Jangan mengandalkan <span class="mono">delay()</span> biasa; gunakan hardware timer interrupt agar frekuensi sampling tepat konstan (misal: stabil di 50 Hz). Kuantisasi INT8 sendiri umumnya hanya menyumbang penurunan akurasi sangat kecil. <button type="button" class="cite" onclick="openCite(11)">11</button></p></details>
+        <details class="qa blob-card"><summary>3. Mikrokontroler Mendadak Restart / Brownout Saat Sensor Aktif</summary><p><b>Penyebab:</b> Lonjakan tarikan arus sesaat saat sensor atau radio aktif menyebabkan tegangan 3.3V turun mendadak.<br><b>Solusi:</b> Pasang kapasitor decoupling 100 µF (elektrolit) dan 0.1 µF (keramik) secara paralel di antara pin VCC dan GND sensor.</p></details>
+        <details class="qa blob-card"><summary>4. Daya Baterai Cepat Habis (&lt; 2 Hari Operasional)</summary><p><b>Penyebab:</b> Modul Wi-Fi dan CPU mikrokontroler terus aktif tanpa manajemen daya.<br><b>Solusi:</b> Aktifkan mode Deep Sleep ESP32 dan gunakan interupsi eksternal (ext0 wake-up) dari sensor getaran agar mikrokontroler hanya bangun saat ada peristiwa penting. Rujukan API: Espressif Sleep Modes. <button type="button" class="cite" onclick="openCite(17)">17</button><button type="button" class="cite" onclick="openCite(3)">3</button></p></details>
+      </div>
+    </section>
+
+    <!-- 9 THESIS -->
+    <section class="slide" id="slide-9">
+      <div class="grow">
+        <p class="kicker">08 / Transformasi Judul Tugas Akhir &amp; Panduan HKI</p>
+        <h2>Perbandingan Standar Judul: Usang vs Beyond 2026</h2>
+        <table class="sketch">
+          <thead><tr><th>Domain Proyek</th><th>❌ Standar Usang (Hindari)</th><th>✅ Standar Beyond 2026 (Bernilai Tinggi)</th></tr></thead>
+          <tbody>
+            <tr><td><b>Smart Farming</b></td><td>Monitoring Suhu Kandang Ayam Berbasis Blynk</td><td>Edge Node Deteksi Dini Gejala Penyakit Ayam via Audio TinyML pada ESP32-S3</td></tr>
+            <tr><td><b>Kebencanaan</b></td><td>Alat Pengukur Ketinggian Air Sungai Menggunakan SMS Gateway</td><td>Stasiun Telemetri Sungai Cerdas Berbasis LoRaWAN dengan Prediksi Debit On-Chip</td></tr>
+            <tr><td><b>Smart Industry</b></td><td>Monitoring Getaran Dinamo Motor Menggunakan Web Server</td><td>Implementasi FFT dan TinyML pada ESP32 untuk Predictive Maintenance Motor Induksi</td></tr>
+          </tbody>
+        </table>
+        <div class="grid-2">
+          <div class="wobble blob-card" style="padding:12px 14px;">
+            <h3>4 Langkah Meraih Hak Cipta (HKI)</h3>
+            <p>1. Rapikan kode dan skematik. 2. Susun manual book PDF 15–25 halaman. 3. Rekam video demonstrasi alat 3–5 menit. 4. Ajukan ke Sentra HKI UNIKOM untuk memperoleh sertifikat resmi DJKI Kemenkumham.</p>
+          </div>
+          <div class="wobble blob-alt" style="padding:12px 14px;background:var(--note);">
+            <h3>Kiat Menembus Jurnal (SINTA / IEEE)</h3>
+            <p>Reviewer jurnal sangat menyukai data empiris lapangan: metrik latensi inferensi (ms), konsumsi arus listrik (mA), akurasi model, dan durasi uji nyata 1–2 minggu di lingkungan kerja sesungguhnya.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 RESOURCES -->
+    <section class="slide" id="slide-10">
+      <div class="grow">
+        <p class="kicker">09 / Sumber Belajar &amp; Repositori Lanjutan</p>
+        <h2>Tautan Repositori, Kursus, dan Dokumentasi Resmi</h2>
+        <div class="grid-2">
+          <a class="card wobble blob-card" href="https://github.com/antonprafanto" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+            <b>GitHub Portofolio Narasumber</b><br><span class="mono">github.com/antonprafanto</span><br><span class="kicker">Koleksi 130+ repositori proyek IoT, AI, dan perangkat lunak.</span>
+          </a>
+          <a class="card wobble blob-alt" href="https://tinyml.seas.harvard.edu" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;background:var(--note);">
+            <b>Harvard CS249r Tiny Machine Learning</b><br><span class="kicker">Materi kursus akademik TinyML terbaik di dunia (gratis).</span> <button type="button" class="cite" onclick="event.preventDefault();openCite(14)">14</button>
+          </a>
+          <a class="card wobble blob-card" href="https://docs.edgeimpulse.com" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;background:var(--note-blue);">
+            <b>Dokumentasi Resmi Edge Impulse</b><br><span class="kicker">Panduan lengkap akuisisi data, DSP, dan ekspor C++.</span> <button type="button" class="cite" onclick="event.preventDefault();openCite(10)">10</button>
+          </a>
+          <a class="card wobble blob-alt" href="https://github.com/tensorflow/tflite-micro" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;background:var(--note-mint);">
+            <b>TensorFlow Lite for Microcontrollers</b><br><span class="kicker">Repositori source code runtime resmi dari tim Google.</span> <button type="button" class="cite" onclick="event.preventDefault();openCite(18)">18</button>
+          </a>
+          <a class="card wobble blob-card" href="https://www.st.com/en/embedded-software/x-cube-ai.html" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+            <b>ST Edge AI / X-CUBE-AI Portal</b><br><span class="kicker">Toolchain konversi neural network mikrokontroler industri.</span> <button type="button" class="cite" onclick="event.preventDefault();openCite(8)">8</button>
+          </a>
+          <div class="card wobble blob-alt" style="padding:12px;display:flex;align-items:center;gap:14px;">
+            <img src="qr_github.svg" alt="QR GitHub antonprafanto" width="80" height="80" style="display:block;">
+            <span class="kicker">Pindai QR untuk membuka portofolio GitHub pembicara langsung di ponsel Anda.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11 REFS -->
+    <section class="slide" id="slide-11">
+      <div class="grow" style="justify-content:flex-start;">
+        <p class="kicker">Daftar Pustaka · Klik nomor referensi di slide manapun untuk membaca kutipannya</p>
+        <h2>Referensi &amp; Rujukan Akademik Utama</h2>
+        <div id="ref-list" style="max-height:58vh;overflow:auto;"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bar no-print">
+    <div style="flex:1;position:relative;height:24px;"><div class="progress"><span id="progress-bar"></span></div></div>
+    <div style="display:flex;gap:6px;margin-left:12px;flex-wrap:wrap;">
+      <button type="button" class="icon-btn" title="Peta Bagian (O)" onclick="toggleOverlay('overview')">▦</button>
+      <button type="button" class="icon-btn" title="Daftar Sitasi (C)" onclick="toggleOverlay('cites')">[*]</button>
+      <button type="button" class="icon-btn" title="Bantuan Pintasan Keyboard (?)" onclick="toggleOverlay('help')">?</button>
+      <button type="button" class="nav-btn" id="mode-btn" onclick="toggleDoc()">Mode Tampilan</button>
+      <button type="button" class="nav-btn" onclick="window.print()">🖨️ Cetak PDF</button>
+      <button type="button" class="nav-btn" onclick="prevSlide()">← Sebelumnya</button>
+      <button type="button" class="nav-btn primary" onclick="nextSlide()">Berikutnya →</button>
+    </div>
+  </footer>
+
+  <div class="overlay" id="overview"><div class="panel"><h2>Lompat ke Bagian Handout</h2><div class="overview-grid" id="thumbs" style="margin-top:12px;"></div></div></div>
+  <div class="overlay" id="cites"><div class="panel"><h2>Daftar Referensi &amp; Sitasi Ilmiah</h2><div id="cite-panel"></div></div></div>
+  <div class="overlay" id="help"><div class="panel">
+    <h2>Pintasan Navigasi Keyboard</h2>
+    <p style="margin-top:10px;"><kbd>→</kbd> <kbd>Space</kbd> : Maju ke bagian berikutnya · <kbd>←</kbd> : Kembali ke bagian sebelumnya · <kbd>O</kbd> : Peta bagian · <kbd>C</kbd> : Panel sitasi · <kbd>Esc</kbd> : Tutup panel popup</p>
+    <p class="kicker" style="margin-top:8px;">Gunakan tombol <b>Mode Tampilan</b> untuk beralih antara mode satu-per-layar (slide) dan mode gulir penuh (dokumen/cetak).</p>
+  </div></div>
+
+  <script>
+    const TOTAL = 11;
+    const TITLES = ["Sampul Modul","Roadmap Keahlian","Kamus Konsep","Daftar Komponen","Tutorial 15 Menit","Kode ESP32","Dataset & Simulator","Troubleshooting","Upgrade Skripsi","Sumber Belajar","Daftar Pustaka"];
+    const REFS = {
+      1: { t: "Satyanarayanan, M. (2017). The Emergence of Edge Computing. IEEE Computer, 50(1), 30–39.", u: "https://doi.org/10.1109/MC.2017.9", n: "Dasar ilmiah keunggulan latensi dan batasan komputasi cloud untuk sistem fisik real-time." },
+      2: { t: "Google Developers. Post-training quantization (LiteRT / TensorFlow Lite). Full integer: ~4× more compact, 3×+ CPU speedup.", u: "https://www.tensorflow.org/lite/performance/post_training_quantization", n: "Dokumentasi kompresi bobot model INT8 (~75% lebih hemat memori dan 3-4x lebih cepat pada CPU embedded)." },
+      3: { t: "Warden, P. (2020). tinyML Talks: working definition ≈ ML on embedded devices averaging < 1 mW power.", u: "https://www.tinyml.org", n: "Definisi konsumsi daya standar komunitas internasional TinyML." },
+      4: { t: "David, R. et al. (2021). TensorFlow Lite Micro: Embedded Machine Learning on TinyML Systems. MLSys. arXiv:2010.08678.", u: "https://arxiv.org/abs/2010.08678", n: "Publikasi arsitektur runtime eksekusi model AI pada mikrokontroler." },
+      5: { t: "Espressif Systems. ESP32-S3 Series Datasheet: dual-core Xtensa LX7 @ 240 MHz, 512 KB SRAM, Wi-Fi + Bluetooth LE, PIE vector/AI instructions.", u: "https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf", n: "Spesifikasi resmi arsitektur chip mikrokontroler ESP32-S3." },
+      6: { t: "Raspberry Pi Ltd. Pico 2 / RP2350: dual Cortex-M33 or Hazard3 RISC-V @ 150 MHz, 520 KB SRAM.", u: "https://www.raspberrypi.com/products/raspberry-pi-pico-2/", n: "Spesifikasi resmi mikrokontroler arsitektur ganda RP2350." },
+      7: { t: "Canaan Inc. Kendryte K210: dual-core 64-bit RISC-V, neural processor (KPU) rated 0.8 TOPS.", u: "https://canaan.io", n: "Spesifikasi chip pemroses citra berbasis NPU terintegrasi." },
+      8: { t: "STMicroelectronics. X-CUBE-AI / ST Edge AI — generate optimized NN code for STM32.", u: "https://www.st.com/en/embedded-software/x-cube-ai.html", n: "Ekosistem generator kode neural network untuk mikrokontroler STM32 standar industri." },
+      9: { t: "Lai, L., Suda, N., Chandra, V. (2018). CMSIS-NN: Efficient Neural Network Kernels for Arm Cortex-M CPUs. arXiv:1801.06601.", u: "https://arxiv.org/abs/1801.06601", n: "Optimasi kernel neural network pada arsitektur ARM Cortex-M." },
+      10: { t: "Edge Impulse Documentation (Data collection, DSP, INT8 deployment to Arduino/C++).", u: "https://docs.edgeimpulse.com", n: "Panduan praktis pengembangan model TinyML untuk pemula." },
+      11: { t: "Jacob, B. et al. (2018). Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference. CVPR.", u: "https://arxiv.org/abs/1712.05877", n: "Kajian ilmiah stabilitas akurasi inferensi integer INT8 pada jaringan saraf." },
+      12: { t: "Warden, P. (2018). Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition. arXiv:1804.03209.", u: "https://arxiv.org/abs/1804.03209", n: "Dataset resmi pengenalan kata kunci suara." },
+      13: { t: "Lee, J. et al. IMS Bearing Data Set. NASA Ames Prognostics Data Repository.", u: "https://www.nasa.gov/intelligent-systems-division/", n: "Dataset akselerometer getaran bearing mesin industri." },
+      14: { t: "Harvard CS249r Tiny Machine Learning (Open Course Materials).", u: "https://tinyml.seas.harvard.edu", n: "Kurikulum rujukan akademik TinyML global." },
+      15: { t: "Wokwi Online Simulator (ESP32 / Arduino Virtual Simulation).", u: "https://wokwi.com", n: "Platform simulator mikrokontroler dan sensor di browser." },
+      16: { t: "InvenSense. MPU-6000/MPU-6050 Product Specification (PS-MPU-6000A-00). Accelerometer sensitivity 16384 LSB/g at ±2 g.", u: "https://invensense.tdk.com/products/motion-tracking/6-axis/mpu-6050/", n: "Datasheet spesifikasi sensor MPU-6050." },
+      17: { t: "Espressif Systems. Sleep Modes (ESP-IDF) — deep sleep, ext0 wake-up.", u: "https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/sleep_modes.html", n: "Dokumentasi manajemen daya dan mode tidur hemat energi." },
+      18: { t: "TensorFlow Lite Micro Source Code Repository.", u: "https://github.com/tensorflow/tflite-micro", n: "Repositori resmi Google TFLite Micro." }
+    };
+    const LEVELS = {
+      1: { t: "Level 1 · Fondasi Hardware & Embedded: Penguasaan C/C++, struktur memori (Flash vs SRAM), GPIO, timer interupsi, mode hemat daya (sleep), komunikasi bus (I2C/SPI/UART/ADC), dan perancangan sirkuit pada breadboard. Merupakan pondasi mutlak sebelum mempelajari AI.", cites: [] },
+      2: { t: "Level 2 · Konektivitas & Jaringan IoT: Penguasaan protokol transmisi data ringan (MQTT, LoRaWAN, BLE Mesh, REST API), serialisasi data (JSON/FlatBuffers), dan arsitektur Wireless Sensor Network (WSN) hemat daya yang dilengkapi buffer lokal saat koneksi terputus.", cites: [] },
+      3: { t: "Level 3 · Kecerdasan On-Device (TinyML): Pengolahan sinyal digital (windowing, FFT), pelatihan model pada platform Edge Impulse, optimasi kompresi model Post-Training Quantization (INT8), dan eksekusi inferensi lokal menggunakan TensorFlow Lite for Microcontrollers (TFLM).", cites: [2, 4, 10] },
+      4: { t: "Level 4 · Hilirisasi & Produk Siap Pakai: Pembuatan dashboard visualisasi mobile/web (Flutter/React), pembaruan firmware nirkabel (OTA), desain casing 3D print, pengujian empiris di lapangan, pendaftaran Hak Cipta (HKI) ke DJKI, dan penulisan artikel ilmiah bereputasi (SINTA/IEEE).", cites: [] }
+    };
+    const TERMS = {
+      edge: "Edge AI: Penerapan model Machine Learning yang dieksekusi langsung pada perangkat lokal (mikrokontroler/edge device) di dekat sumber sensor, meminimalkan latensi, menghemat bandwidth, dan menjaga privasi data tanpa ketergantungan wajib pada server cloud. ",
+      tiny: "TinyML (Tiny Machine Learning): Cabang AI yang memungkinkan algoritma Machine Learning berjalan pada mikrokontroler berdaya sangat rendah (< 1 mW) dengan keterbatasan memori RAM puluhan hingga ratusan kilobyte. ",
+      ptq: "Post-Training Quantization (PTQ): Setelah model selesai dilatih, angkanya dikecilkan dari 32 bit (Float32) ke tiket 8 bit (Int8). Analoginya: 0,850 tidak disimpan utuh — chip cukup mengingat 108. Google: model ~4× lebih ringkas dan CPU 3×+ lebih cepat pada full integer PTQ. Bukan jaminan ‘selalu 4× di ESP32’, dan penurunan akurasi harus diukur sendiri. ",
+      arena: "Tensor Arena: Alokasi ruang memori RAM (SRAM) internal pada mikrokontroler yang disiapkan khusus oleh interpreter TensorFlow Lite Micro untuk menampung data input, output, dan memori kerja sementara selama proses inferensi. ",
+      train: "Training vs Inference: Training adalah proses pembelajaran model AI dengan dataset besar yang membutuhkan komputasi berat (PC/GPU), sedangkan Inference adalah proses menjalankan model yang sudah jadi untuk mengenali data sensor baru secara real-time pada mikrokontroler. ",
+      fft: "Fast Fourier Transform (FFT): Algoritma matematika untuk mentransformasi sinyal dari domain waktu (misal: getaran accelerometer atau sinyal audio) menjadi domain frekuensi guna mengekstrak pola spektral anomali kerusakan mesin atau suara."
+    };
+    const TERM_CITE = { edge: 1, tiny: 3, ptq: 2, arena: 4 };
+    const STEPS = [
+      { t: "Langkah 1: Kunjungi edgeimpulse.com dan buat akun gratis untuk memulai proyek TinyML pertama Anda.", cites: [10] },
+      { t: "Langkah 2: Hubungkan smartphone Anda sebagai sensor akselerometer via browser. Rekam 2 kelas data gerakan: 'Gerakan Normal (Jalan)' vs 'Gerakan Anomali (Jatuh/Guncangan)' sebanyak ±50 sampel per kelas (durasi 2 detik per sampel).", cites: [] },
+      { t: "Langkah 3: Rancang Impulse (Pipeline) dengan memilih Time Series Data → Blok Pemrosesan Spectral Analysis (FFT) → Blok Pembelajaran Klasifikasi (Keras Neural Network).", cites: [] },
+      { t: "Langkah 4: Jalankan proses Model Training dan evaluasi matriks akurasi pada Confusion Matrix (target akurasi > 90%). Platform akan secara otomatis mengoptimasi model ke format kuantisasi INT8.", cites: [2, 10] },
+      { t: "Langkah 5: Buka menu Deployment, pilih opsi 'Arduino Library' atau 'C++ Library', lalu unduh berkas .ZIP hasil kompilasi model Anda.", cites: [] },
+      { t: "Langkah 6: Buka simulator online wokwi.com, buat proyek ESP32 baru, tambahkan library Edge Impulse yang telah diunduh, lalu amati hasil klasifikasi real-time pada Serial Monitor tanpa memerlukan perangkat fisik.", cites: [15] }
+    ];
+
+    let current = 1;
+    function slides() { return [...document.querySelectorAll(".slide")]; }
+    function overlayOpen() { return [...document.querySelectorAll(".overlay.open")].length > 0; }
+    function isDoc() { return document.body.classList.contains("doc"); }
+
+    function showSlide(i) {
+      current = Math.min(TOTAL, Math.max(1, i));
+      slides().forEach((s, idx) => s.classList.toggle("active", idx === current - 1));
+      document.getElementById("slide-number").textContent = current + " / " + TOTAL;
+      document.getElementById("progress-bar").style.width = (current / TOTAL * 100) + "%";
+      const hash = "#slide-" + current;
+      if (location.hash !== hash) history.replaceState(null, "", hash);
+      renderThumbs();
+      if (current === 11) renderRefs();
+    }
+    function nextSlide() { if (!isDoc() && current < TOTAL) showSlide(current + 1); }
+    function prevSlide() { if (!isDoc() && current > 1) showSlide(current - 1); }
+    function goTo(n) { closeOverlays(); if (isDoc()) document.getElementById("slide-" + n).scrollIntoView({ behavior: "smooth" }); else showSlide(n); }
+
+    function toggleOverlay(id) {
+      const el = document.getElementById(id);
+      const open = el.classList.contains("open");
+      closeOverlays();
+      if (!open) {
+        el.classList.add("open");
+        if (id === "cites") renderCitePanel();
+        if (id === "overview") renderThumbs();
+      }
+    }
+    function closeOverlays() { document.querySelectorAll(".overlay").forEach(o => o.classList.remove("open")); }
+    function toggleDoc() {
+      document.body.classList.toggle("doc");
+      closeOverlays();
+      const btn = document.getElementById("mode-btn");
+      if (btn) btn.textContent = isDoc() ? "Mode Slide" : "Mode Dokumen";
+      if (isDoc()) {
+        requestAnimationFrame(() => {
+          const el = document.getElementById("slide-" + current);
+          if (el) el.scrollIntoView({ behavior: "auto", block: "start" });
+        });
+      }
+    }
+
+    function renderThumbs() {
+      document.getElementById("thumbs").innerHTML = TITLES.map((t, i) =>
+        `<button type="button" class="thumb blob-card ${i+1===current?"current":""}" onclick="goTo(${i+1})"><b>${i+1}.</b> ${t}</button>`
+      ).join("");
+    }
+    function refHtml(k, v) {
+      return `<div class="ref-item"><b>[${k}]</b> ${v.t}<br><a href="${v.u}" target="_blank" rel="noopener">${v.u}</a><br><span class="kicker">${v.n}</span></div>`;
+    }
+    function renderRefs() {
+      document.getElementById("ref-list").innerHTML = Object.keys(REFS).sort((a,b)=>a-b).map(k => refHtml(k, REFS[k])).join("");
+    }
+    function renderCitePanel(focus) {
+      const keys = focus ? [String(focus)] : Object.keys(REFS).sort((a,b)=>a-b);
+      document.getElementById("cite-panel").innerHTML = keys.filter(k => REFS[k]).map(k => refHtml(k, REFS[k])).join("") +
+        (focus ? `<p class="kicker" style="margin-top:10px;">Daftar lengkap seluruh rujukan dapat dibaca pada bagian 11.</p>` : "");
+    }
+    function openCite(n) {
+      closeOverlays();
+      renderCitePanel(n);
+      document.getElementById("cites").classList.add("open");
+    }
+
+    function appendCites(box, nums) {
+      (nums || []).forEach(n => {
+        const c = document.createElement("button");
+        c.type = "button"; c.className = "cite"; c.textContent = n;
+        c.addEventListener("click", () => openCite(n));
+        box.appendChild(c);
+      });
+    }
+    function pickLevel(btn) {
+      document.querySelectorAll("[data-level]").forEach(b => b.setAttribute("aria-pressed", "false"));
+      btn.setAttribute("aria-pressed", "true");
+      const item = LEVELS[btn.dataset.level];
+      const box = document.getElementById("level-copy");
+      box.textContent = item.t;
+      appendCites(box, item.cites);
+    }
+    function pickTerm(btn, key) {
+      document.querySelectorAll("#glossary .card").forEach(b => b.setAttribute("aria-pressed", "false"));
+      btn.setAttribute("aria-pressed", "true");
+      const box = document.getElementById("term-copy");
+      box.textContent = TERMS[key];
+      if (TERM_CITE[key]) appendCites(box, [TERM_CITE[key]]);
+    }
+    function pickStep(i) {
+      [...document.getElementById("steps").children].forEach((el, idx) => el.classList.toggle("on", idx === i));
+      const box = document.getElementById("step-copy");
+      box.textContent = STEPS[i].t;
+      appendCites(box, STEPS[i].cites);
+    }
+
+    function copyCode() {
+      const t = document.getElementById("code-block").innerText;
+      navigator.clipboard.writeText(t).then(() => alert("Pola kode berhasil disalin ke clipboard.")).catch(() => {});
+    }
+
+    function bindChecks() {
+      const saved = JSON.parse(localStorage.getItem("alumni-kit") || "{}");
+      document.querySelectorAll("input[data-item]").forEach(inp => {
+        inp.checked = !!saved[inp.dataset.item];
+        inp.addEventListener("change", () => {
+          saved[inp.dataset.item] = inp.checked;
+          localStorage.setItem("alumni-kit", JSON.stringify(saved));
+          countKit();
+        });
+      });
+      countKit();
+    }
+    function countKit() {
+      const n = document.querySelectorAll("input[data-item]:checked").length;
+      const el = document.getElementById("kit-count");
+      if (el) el.textContent = n + " item dicentang. Status penyimpanan tersimpan otomatis di browser ini.";
+    }
+
+    function shouldIgnoreKeys(e) {
+      const tag = e.target.tagName;
+      return overlayOpen() || ["INPUT","TEXTAREA","SELECT","BUTTON","SUMMARY","A"].includes(tag);
+    }
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") { closeOverlays(); return; }
+      if (shouldIgnoreKeys(e)) return;
+      if (e.key === "?" || (e.shiftKey && e.key === "/")) { e.preventDefault(); toggleOverlay("help"); return; }
+      if (e.key === "o" || e.key === "O") { toggleOverlay("overview"); return; }
+      if (e.key === "c" || e.key === "C") { toggleOverlay("cites"); return; }
+      if (isDoc()) return;
+      if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { e.preventDefault(); nextSlide(); }
+      else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); prevSlide(); }
+      else if (e.key === "Home") showSlide(1);
+      else if (e.key === "End") showSlide(TOTAL);
+    });
+    document.querySelectorAll(".overlay").forEach(o => o.addEventListener("click", e => { if (e.target === o) closeOverlays(); }));
+
+    let tx = 0;
+    document.addEventListener("touchstart", e => { tx = e.changedTouches[0].screenX; }, { passive: true });
+    document.addEventListener("touchend", e => {
+      if (overlayOpen() || isDoc()) return;
+      const dx = e.changedTouches[0].screenX - tx;
+      if (dx < -50) nextSlide();
+      if (dx > 50) prevSlide();
+    }, { passive: true });
+
+    window.addEventListener("hashchange", () => {
+      const h = parseInt((location.hash.match(/\d+/) || [])[0], 10);
+      if (h >= 1 && h <= TOTAL && h !== current) showSlide(h);
+    });
+
+    pickStep(0);
+    bindChecks();
+    renderRefs();
+    renderThumbs();
+    const hash = parseInt((location.hash.match(/\d+/) || [])[0], 10);
+    showSlide(hash >= 1 && hash <= TOTAL ? hash : 1);
+  </script>
+</body>
+</html>
