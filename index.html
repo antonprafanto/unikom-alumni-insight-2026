@@ -76,7 +76,13 @@
     }
     .meta-box { padding: 18px 24px; margin-top: 32px; background: var(--note); }
     @media (max-width: 768px) {
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      body { padding: 18px 12px 36px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 14px; }
+      h1 { font-size: clamp(26px, 7vw, 36px); }
+      h2 { font-size: clamp(20px, 5.5vw, 28px); }
+      p { font-size: 17px; }
+      .hub-card { padding: 18px 16px; }
+      .meta-box { padding: 14px 16px; }
     }
   </style>
 </head>

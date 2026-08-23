@@ -116,11 +116,67 @@
     pre.block { margin: 0; font-size: 12px; color: var(--ink); background: #fff; border: 2px dashed var(--ink); padding: 12px; overflow: auto; white-space: pre-wrap; line-height: 1.45; }
     .step { opacity: .45; }
     .step.on { opacity: 1; background: var(--note); }
-    @media (max-width: 900px) {
-      .slide { padding: 16px; }
-      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-      .overview-grid { grid-template-columns: 1fr 1fr; }
-      .progress { right: 16px; top: 8px; }
+    .table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 10px 0; }
+
+    @media (max-width: 768px) {
+      header.bar {
+        height: 48px;
+        padding: 0 12px;
+      }
+      .hide-mobile {
+        display: none !important;
+      }
+      footer.bar {
+        height: 52px;
+        padding: 0 10px;
+      }
+      .progress {
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 4px;
+        border: none;
+        border-radius: 0;
+        background: rgba(45,45,45,0.1);
+      }
+      main {
+        padding: 48px 0 52px;
+        height: 100%;
+      }
+      .slide {
+        padding: 14px 14px 24px;
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      body.doc .slide {
+        height: auto;
+        min-height: auto;
+        padding: 16px 14px 24px;
+      }
+      body.doc main {
+        padding: 52px 0 60px;
+      }
+      .grow {
+        justify-content: flex-start !important;
+        min-height: min-content !important;
+        padding-bottom: 28px;
+        gap: 12px;
+      }
+      h1 { font-size: clamp(24px, 6.2vw, 34px); }
+      h2 { font-size: clamp(20px, 5.0vw, 26px); }
+      h3 { font-size: 17px; }
+      p { font-size: 16px; line-height: 1.35; }
+      .pill { font-size: 13px; padding: 2px 8px; }
+      .nav-btn { padding: 5px 10px; font-size: 14px; }
+      .icon-btn { width: 32px; height: 30px; font-size: 14px; }
+
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr !important; gap: 10px; }
+      .overview-grid { grid-template-columns: 1fr; }
+
+      pre.block { font-size: 11px; padding: 10px; }
+
+      .overlay { padding: 12px; }
+      .overlay .panel { padding: 16px; max-height: 90vh; border-radius: 20px; }
     }
     @media print {
       body, body.doc { overflow: visible !important; background: #fff !important; }
@@ -133,11 +189,11 @@
 <body>
   <header class="bar">
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-      <span class="pill red">Handout · Alumni Insight 2026</span>
-      <span class="kicker">Sistem Komputer UNIKOM</span>
+      <span class="pill red">📘 Handout Mahasiswa</span>
+      <span class="kicker hide-mobile">Sistem Komputer UNIKOM</span>
     </div>
     <div style="display:flex;gap:8px;align-items:center;">
-      <span class="kicker">Anton Prafanto, S.Kom., M.T.</span>
+      <span class="kicker hide-mobile">Anton Prafanto, S.Kom., M.T.</span>
       <span class="pill mono" id="slide-number">1 / 11</span>
     </div>
   </header>
@@ -338,14 +394,16 @@ void loop() {
       <div class="grow">
         <p class="kicker">08 / Transformasi Judul Tugas Akhir &amp; Panduan HKI</p>
         <h2>Perbandingan Standar Judul: Usang vs Beyond 2026</h2>
-        <table class="sketch">
-          <thead><tr><th>Domain Proyek</th><th>❌ Standar Usang (Hindari)</th><th>✅ Standar Beyond 2026 (Bernilai Tinggi)</th></tr></thead>
-          <tbody>
-            <tr><td><b>Smart Farming</b></td><td>Monitoring Suhu Kandang Ayam Berbasis Blynk</td><td>Edge Node Deteksi Dini Gejala Penyakit Ayam via Audio TinyML pada ESP32-S3</td></tr>
-            <tr><td><b>Kebencanaan</b></td><td>Alat Pengukur Ketinggian Air Sungai Menggunakan SMS Gateway</td><td>Stasiun Telemetri Sungai Cerdas Berbasis LoRaWAN dengan Prediksi Debit On-Chip</td></tr>
-            <tr><td><b>Smart Industry</b></td><td>Monitoring Getaran Dinamo Motor Menggunakan Web Server</td><td>Implementasi FFT dan TinyML pada ESP32 untuk Predictive Maintenance Motor Induksi</td></tr>
-          </tbody>
-        </table>
+        <div class="table-scroll">
+          <table class="sketch">
+            <thead><tr><th>Domain Proyek</th><th>❌ Standar Usang (Hindari)</th><th>✅ Standar Beyond 2026 (Bernilai Tinggi)</th></tr></thead>
+            <tbody>
+              <tr><td><b>Smart Farming</b></td><td>Monitoring Suhu Kandang Ayam Berbasis Blynk</td><td>Edge Node Deteksi Dini Gejala Penyakit Ayam via Audio TinyML pada ESP32-S3</td></tr>
+              <tr><td><b>Kebencanaan</b></td><td>Alat Pengukur Ketinggian Air Sungai Menggunakan SMS Gateway</td><td>Stasiun Telemetri Sungai Cerdas Berbasis LoRaWAN dengan Prediksi Debit On-Chip</td></tr>
+              <tr><td><b>Smart Industry</b></td><td>Monitoring Getaran Dinamo Motor Menggunakan Web Server</td><td>Implementasi FFT dan TinyML pada ESP32 untuk Predictive Maintenance Motor Induksi</td></tr>
+            </tbody>
+          </table>
+        </div>
         <div class="grid-2">
           <div class="wobble blob-card" style="padding:12px 14px;">
             <h3>4 Langkah Meraih Hak Cipta (HKI)</h3>
@@ -399,15 +457,19 @@ void loop() {
   </main>
 
   <footer class="bar no-print">
-    <div style="flex:1;position:relative;height:24px;"><div class="progress"><span id="progress-bar"></span></div></div>
-    <div style="display:flex;gap:6px;margin-left:12px;flex-wrap:wrap;">
-      <button type="button" class="icon-btn" title="Peta Bagian (O)" onclick="toggleOverlay('overview')">▦</button>
-      <button type="button" class="icon-btn" title="Daftar Sitasi (C)" onclick="toggleOverlay('cites')">[*]</button>
-      <button type="button" class="icon-btn" title="Bantuan Pintasan Keyboard (?)" onclick="toggleOverlay('help')">?</button>
-      <button type="button" class="nav-btn" id="mode-btn" onclick="toggleDoc()">Mode Tampilan</button>
-      <button type="button" class="nav-btn" onclick="window.print()">🖨️ Cetak PDF</button>
-      <button type="button" class="nav-btn" onclick="prevSlide()">← Sebelumnya</button>
-      <button type="button" class="nav-btn primary" onclick="nextSlide()">Berikutnya →</button>
+    <div class="progress"><span id="progress-bar"></span></div>
+    <div style="display:flex;gap:6px;align-items:center;width:100%;justify-content:space-between;">
+      <div style="display:flex;gap:6px;">
+        <button type="button" class="icon-btn" title="Peta Bagian (O)" onclick="toggleOverlay('overview')">▦</button>
+        <button type="button" class="icon-btn" title="Daftar Sitasi (C)" onclick="toggleOverlay('cites')">[*]</button>
+        <button type="button" class="icon-btn hide-mobile" title="Bantuan Pintasan Keyboard (?)" onclick="toggleOverlay('help')">?</button>
+        <button type="button" class="nav-btn" id="mode-btn" onclick="toggleDoc()">Mode Dokumen</button>
+        <button type="button" class="nav-btn hide-mobile" onclick="window.print()">🖨️ Cetak PDF</button>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button type="button" class="nav-btn" onclick="prevSlide()">← <span class="hide-mobile">Sebelumnya</span></button>
+        <button type="button" class="nav-btn primary" onclick="nextSlide()"><span class="hide-mobile">Berikutnya </span>→</button>
+      </div>
     </div>
   </footer>
 

@@ -223,16 +223,69 @@
       background: var(--red); opacity: 0.85; z-index: 0;
     }
 
-    table.sketch { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 15px; }
-    table.sketch th, table.sketch td { border: 2px solid var(--ink); padding: 8px 10px; background: #fff; }
-    table.sketch th { background: var(--note); font-family: var(--font-display); font-size: 16px; }
+    .table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 12px; }
 
-    .hw-detail { min-height: 104px; }
+    @media (max-width: 768px) {
+      header.bar {
+        height: 48px;
+        padding: 0 12px;
+      }
+      .hide-mobile {
+        display: none !important;
+      }
+      footer.bar {
+        height: 52px;
+        padding: 0 10px;
+      }
+      .progress {
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 4px;
+        border: none;
+        border-radius: 0;
+        background: rgba(45,45,45,0.1);
+      }
+      main {
+        height: 100%;
+        padding: 48px 0 52px;
+        overflow: hidden;
+      }
+      .slide {
+        padding: 14px 14px 24px;
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .grow {
+        justify-content: flex-start !important;
+        min-height: min-content !important;
+        padding-bottom: 28px;
+        gap: 12px;
+      }
+      h1 { font-size: clamp(24px, 6.2vw, 34px); }
+      h2 { font-size: clamp(20px, 5.0vw, 26px); }
+      h3 { font-size: 17px; }
+      p { font-size: 16px; line-height: 1.35; }
+      .pill { font-size: 13px; padding: 2px 8px; }
+      .nav-btn { padding: 5px 10px; font-size: 14px; }
+      .icon-btn { width: 32px; height: 30px; font-size: 14px; }
 
-    @media (max-width: 900px) {
-      .slide { padding: 16px; }
-      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-      .overview-grid { grid-template-columns: 1fr 1fr; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr !important; gap: 12px; }
+      .overview-grid { grid-template-columns: 1fr; }
+
+      .cover-hero { flex-direction: column !important; align-items: flex-start !important; gap: 14px !important; }
+      .cover-hero svg { width: 150px; height: 95px; }
+
+      .bitrow { gap: 2px; }
+      .bit { width: 8px; height: 13px; border-width: 1.2px; }
+      .q-meter { grid-template-columns: 80px 1fr 48px; font-size: 11px; gap: 6px; }
+      .q-formula { font-size: 11px; }
+      .q-steps button { font-size: 10px; padding: 2px 5px; }
+      .q-bench { font-size: 12px; }
+
+      .overlay { padding: 12px; }
+      .overlay .panel { padding: 16px; max-height: 90vh; border-radius: 20px; }
+      .help-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -240,10 +293,10 @@
   <header class="bar">
     <div style="display:flex;align-items:center;gap:10px;">
       <span class="pill red">UNIKOM Alumni Insight 2026</span>
-      <span class="kicker" style="display:inline;">Prodi Sistem Komputer</span>
+      <span class="kicker hide-mobile" style="display:inline;">Prodi Sistem Komputer</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
-      <span class="kicker">Anton Prafanto, S.Kom., M.T.</span>
+      <span class="kicker hide-mobile">Anton Prafanto, S.Kom., M.T.</span>
       <span class="pill mono" id="slide-number">1 / 13</span>
     </div>
   </header>
@@ -258,7 +311,7 @@
           <h1 style="margin-top:14px;max-width:16ch;color:var(--ink);">Computer Engineering <span style="text-decoration:underline;text-decoration-color:var(--red);">Beyond 2026</span></h1>
           <p style="font-size:21px;max-width:40ch;margin-top:10px;">IoT, Edge AI, dan masa depan sistem cerdas terdistribusi — Mengapa lulusan Sistem Komputer menjadi penentu arsitektur komputasi fisik.</p>
         </div>
-        <div style="display:flex;gap:22px;align-items:center;margin-top:24px;position:relative;z-index:1;">
+        <div class="cover-hero" style="display:flex;gap:22px;align-items:center;margin-top:24px;position:relative;z-index:1;">
           <svg width="200" height="130" viewBox="0 0 200 130" aria-hidden="true">
             <rect x="18" y="24" width="86" height="80" fill="#fff" stroke="#2D2D2D" stroke-width="3" rx="8"/>
             <rect x="28" y="36" width="66" height="42" fill="none" stroke="#2D2D2D" stroke-width="2" stroke-dasharray="4 3"/>
@@ -556,10 +609,12 @@
           <h2>Transformasi Judul Skripsi: Standar Usang vs Standar 2026</h2>
           <button class="nav-btn primary" type="button" onclick="toggleThesis()">Tukar Tampilan: Standar Usang ↔ Standar 2026</button>
         </div>
-        <table class="sketch" style="margin-top:14px;">
-          <thead><tr><th>Domain Proyek</th><th id="th-col">Versi Judul yang Ditampilkan</th></tr></thead>
-          <tbody id="thesis-body"></tbody>
-        </table>
+        <div class="table-scroll">
+          <table class="sketch">
+            <thead><tr><th>Domain Proyek</th><th id="th-col">Versi Judul yang Ditampilkan</th></tr></thead>
+            <tbody id="thesis-body"></tbody>
+          </table>
+        </div>
         <p style="margin-top:12px;font-size:16px;">💡 <b>Langkah Aksi:</b> Publikasikan kode di GitHub, dokumentasikan hasil pengujian lapangan secara terukur, dan daftarkan karya cipta ke Sentra HKI. (Portofolio: 130+ repositori di <a href="https://github.com/antonprafanto" target="_blank" rel="noopener" style="color:var(--ink);font-weight:700;text-decoration:underline;">github.com/antonprafanto</a>).</p>
       </div>
     </section>
@@ -604,16 +659,18 @@
   </main>
 
   <footer class="bar">
-    <div style="flex:1;position:relative;height:24px;">
-      <div class="progress"><span id="progress-bar"></span></div>
-    </div>
-    <div style="display:flex;gap:8px;margin-left:16px;">
-      <button class="icon-btn" title="Peta Slide (O)" onclick="toggleOverlay('overview')">▦</button>
-      <button class="icon-btn" title="Daftar Sitasi (C)" onclick="toggleOverlay('cites')">[*]</button>
-      <button class="icon-btn" title="Catatan Pembicara (N)" onclick="toggleNotes()">N</button>
-      <button class="icon-btn" title="Bantuan Pintasan Keyboard (?)" onclick="toggleOverlay('help')">?</button>
-      <button class="nav-btn" type="button" onclick="prevSlide()">← Sebelumnya</button>
-      <button class="nav-btn primary" type="button" onclick="nextSlide()">Berikutnya →</button>
+    <div class="progress"><span id="progress-bar"></span></div>
+    <div style="display:flex;gap:6px;align-items:center;width:100%;justify-content:space-between;">
+      <div style="display:flex;gap:6px;">
+        <button class="icon-btn" title="Peta Slide (O)" onclick="toggleOverlay('overview')">▦</button>
+        <button class="icon-btn" title="Daftar Sitasi (C)" onclick="toggleOverlay('cites')">[*]</button>
+        <button class="icon-btn hide-mobile" title="Catatan Pembicara (N)" onclick="toggleNotes()">N</button>
+        <button class="icon-btn hide-mobile" title="Bantuan Pintasan Keyboard (?)" onclick="toggleOverlay('help')">?</button>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button class="nav-btn" type="button" onclick="prevSlide()">← <span class="hide-mobile">Sebelumnya</span></button>
+        <button class="nav-btn primary" type="button" onclick="nextSlide()"><span class="hide-mobile">Berikutnya </span>→</button>
+      </div>
     </div>
   </footer>
 
@@ -900,10 +957,6 @@
     renderThesis();
     renderRefs();
     renderThumbs();
-    document.querySelector("main").addEventListener("click", (e) => {
-      if (e.target.closest("button, a, details, summary, .cite, input, #qsim")) return;
-      nextSlide();
-    });
 
     const hash = parseInt((location.hash.match(/\d+/) || [])[0], 10);
     showSlide(hash >= 1 && hash <= TOTAL ? hash : 1);
