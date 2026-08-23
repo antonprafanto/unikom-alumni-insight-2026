@@ -9,9 +9,11 @@
 
 ## 🌐 Akses Langsung (Live GitHub Pages)
 
-* 🚀 **Portal Utama:** [https://antonprafanto.github.io/unikom-alumni-insight-2026/](https://antonprafanto.github.io/unikom-alumni-insight-2026/)
-* 📽️ **Slide Presentasi Interaktif:** [Buka Slide Presentasi](https://antonprafanto.github.io/unikom-alumni-insight-2026/slides_alumni_insight_2026.html)
-* 📘 **Master Handout & Starter Kit Mahasiswa:** [Buka Modul Handout (Siap Cetak PDF)](https://antonprafanto.github.io/unikom-alumni-insight-2026/handout_mahasiswa_edge_ai.html)
+* 📽️ **Slide Presentasi Interaktif (Keynote Deck):**  
+  👉 [https://antonprafanto.github.io/unikom-alumni-insight-2026/slides_alumni_insight_2026.html](https://antonprafanto.github.io/unikom-alumni-insight-2026/slides_alumni_insight_2026.html)
+
+* 📘 **Master Handout & Starter Kit Mahasiswa (Siap Cetak PDF):**  
+  👉 [https://antonprafanto.github.io/unikom-alumni-insight-2026/handout_mahasiswa_edge_ai.html](https://antonprafanto.github.io/unikom-alumni-insight-2026/handout_mahasiswa_edge_ai.html)
 
 ---
 
@@ -27,16 +29,12 @@ Materi ini dirancang khusus untuk membedah arah transformasi keilmuan **Teknik/S
 
 ---
 
-## 📁 Struktur Berkas Repositori
+## 📁 Berkas Repositori
 
 ```text
 unikom-alumni-insight-2026/
-├── index.html                        # Portal utama GitHub Pages
 ├── slides_alumni_insight_2026.html   # Slide presentasi interaktif HTML5/CSS/JS (13 slide)
 ├── handout_mahasiswa_edge_ai.html    # Modul handout mahasiswa (dilengkapi tombol Cetak PDF)
-├── handout_mahasiswa_edge_ai.md      # Versi Markdown dari modul handout mahasiswa
-├── materi_alumni_insight_unikom_2026.md # Buku panduan naskah presentasi & skrip pembicara
-├── profil_anton_prafanto.md          # Profil akademik, publikasi SINTA/Scopus, dan HKI narasumber
 ├── qr_github.svg                     # Aset QR code portofolio GitHub pembicara
 └── README.md                         # Dokumentasi repositori
 ```
