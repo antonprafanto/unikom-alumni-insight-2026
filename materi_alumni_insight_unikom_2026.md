@@ -70,7 +70,7 @@ flowchart TD
   > 
   > Yang saya hormati Bapak/Ibu Dosen, pimpinan Program Studi Sistem Komputer UNIKOM, rekan-rekan panitia, dan yang paling saya banggakan: adik-adik mahasiswa Sistem Komputer UNIKOM.
   > 
-  > Berdiri di panggung ini, di hadapan almamater tempat saya pertama kali belajar memegang solder, membaca datasheet, dan memprogram mikrokontroler, adalah sebuah kehormatan dan kebahagiaan luar biasa. Hari ini, kita tidak hanya akan bernostalgia tentang masa kuliah, tetapi kita akan menatap masa depan: **Ke mana arah dunia teknik komputer menuju tahun 2026 dan seterusnya?** Mengapa kalian yang berada di ruangan ini sesungguhnya sedang memegang kunci revolusi teknologi berikutnya?"
+  > Hadir sebagai pemateri di almamater tempat saya pertama kali belajar memegang solder, membaca datasheet, dan memprogram mikrokontroler (kalau zaman saya duly ), adalah sebuah kehormatan dan kebahagiaan luar biasa. Hari ini, kita tidak hanya akan bernostalgia tentang masa kuliah, tetapi kita akan mencoba mengintip masa depan: **Ke mana arah dunia teknik komputer menuju tahun 2026 dan seterusnya?** Mengapa kalian yang berada di ruangan ini sesungguhnya sedang memegang kunci revolusi teknologi berikutnya?"
 
 * **Jembatan Transisi:**
   > *"Untuk memahaminya, mari kita mulai dari tempat di mana cerita kita semua bermula..."*

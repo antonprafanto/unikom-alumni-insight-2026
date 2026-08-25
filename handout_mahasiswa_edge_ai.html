@@ -91,7 +91,17 @@
     }
     .card { padding: 14px 16px; text-align: left; }
     .card[aria-pressed="true"] { background: var(--note); }
-    .progress { position: absolute; left: 16px; right: 320px; height: 6px; border: 1.5px solid var(--ink); border-radius: 99px; overflow: hidden; background: #fff; }
+    .progress-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      margin: 0 16px;
+      min-width: 60px;
+    }
+    .progress {
+      width: 100%; height: 6px;
+      border: 1.5px solid var(--ink); border-radius: 99px; overflow: hidden; background: #fff;
+    }
     .progress > span { display: block; height: 100%; background: var(--red); width: 0; transition: width .25s; }
     .overlay { display: none; position: fixed; inset: 0; z-index: 60; background: rgba(45,45,45,.35); padding: 40px; }
     .overlay.open { display: flex; }
@@ -130,13 +140,13 @@
         height: 52px;
         padding: 0 10px;
       }
+      .progress-wrap {
+        margin: 0 8px;
+        min-width: 40px;
+      }
       .progress {
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 4px;
-        border: none;
-        border-radius: 0;
-        background: rgba(45,45,45,0.1);
+        height: 5px;
+        border-width: 1.2px;
       }
       main {
         padding: 48px 0 52px;
@@ -457,19 +467,19 @@ void loop() {
   </main>
 
   <footer class="bar no-print">
-    <div class="progress"><span id="progress-bar"></span></div>
-    <div style="display:flex;gap:6px;align-items:center;width:100%;justify-content:space-between;">
-      <div style="display:flex;gap:6px;">
-        <button type="button" class="icon-btn" title="Peta Bagian (O)" onclick="toggleOverlay('overview')">▦</button>
-        <button type="button" class="icon-btn" title="Daftar Sitasi (C)" onclick="toggleOverlay('cites')">[*]</button>
-        <button type="button" class="icon-btn hide-mobile" title="Bantuan Pintasan Keyboard (?)" onclick="toggleOverlay('help')">?</button>
-        <button type="button" class="nav-btn" id="mode-btn" onclick="toggleDoc()">Mode Dokumen</button>
-        <button type="button" class="nav-btn hide-mobile" onclick="window.print()">🖨️ Cetak PDF</button>
-      </div>
-      <div style="display:flex;gap:6px;">
-        <button type="button" class="nav-btn" onclick="prevSlide()">← <span class="hide-mobile">Sebelumnya</span></button>
-        <button type="button" class="nav-btn primary" onclick="nextSlide()"><span class="hide-mobile">Berikutnya </span>→</button>
-      </div>
+    <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;">
+      <button type="button" class="icon-btn" title="Peta Bagian (O)" onclick="toggleOverlay('overview')">▦</button>
+      <button type="button" class="icon-btn" title="Daftar Sitasi (C)" onclick="toggleOverlay('cites')">[*]</button>
+      <button type="button" class="icon-btn hide-mobile" title="Bantuan Pintasan Keyboard (?)" onclick="toggleOverlay('help')">?</button>
+      <button type="button" class="nav-btn" id="mode-btn" onclick="toggleDoc()">Mode Dokumen</button>
+      <button type="button" class="nav-btn hide-mobile" onclick="window.print()">🖨️ Cetak PDF</button>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress"><span id="progress-bar"></span></div>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;">
+      <button type="button" class="nav-btn" onclick="prevSlide()">← <span class="hide-mobile">Sebelumnya</span></button>
+      <button type="button" class="nav-btn primary" onclick="nextSlide()"><span class="hide-mobile">Berikutnya </span>→</button>
     </div>
   </footer>
 
