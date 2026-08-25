@@ -27,7 +27,7 @@ Materi ini dirancang khusus untuk membedah arah transformasi keilmuan **Teknik/S
 ### 🎯 4 Pilar Pembahasan Utama:
 1. **Akar Keilmuan & Identitas Sistem Komputer:** Menghubungkan penguasaan dasar perangkat keras (*register, timer, interrupt, low-level C/C++*) dengan keunggulan langka di industri AI modern.
 2. **Pergeseran Paradigma (Cloud AI $\rightarrow$ Edge AI):** Membedah kelemahan latensi, bandwidth, privasi, dan keandalan offline pada arsitektur terpusat serta solusi *on-device intelligence*.
-3. **Bukti Terapan Lapangan & Hilirisasi:** Studi kasus implementasi nyata dari inovasi *Smart Poultry Farming* (teruji pada peternakan rakyat) dan riset *POPULING: IoT-Based Mobile Air Quality Monitoring for Urban Areas* (terpublikasi pada jurnal ilmiah nasional – JNTETI UGM).
+3. **Bukti Terapan Lapangan:** Studi kasus nyata sistem kendali mandiri *Smart Poultry Farming* dan pemantauan kualitas udara bergerak *POPULING (Mobile IoT)*.
 4. **Blueprint Mahasiswa & Transformasi Skripsi:** 4 level peta jalan belajar mahasiswa serta komparasi judul tugas akhir standar usang vs standar *Beyond 2026* berbobot publikasi ilmiah.
 
 ---
@@ -62,7 +62,7 @@ unikom-alumni-insight-2026/
 * **Nama:** Anton Prafanto, S.Kom., M.T.
 * **Institusi:** Program Studi S1 Informatika, Fakultas Teknik, Universitas Mulawarman (UNMUL), Samarinda
 * **Email Resmi:** [antonprafanto@unmul.ac.id](mailto:antonprafanto@unmul.ac.id)
-* **GitHub:** [github.com/antonprafanto](https://github.com/antonprafanto) (130+ Repositori Publik)
+* **GitHub:** [github.com/antonprafanto](https://github.com/antonprafanto)
 * **SINTA ID:** 6659198 | **Scopus Author ID:** 57195931078
 
 ---
