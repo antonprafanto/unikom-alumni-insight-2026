@@ -39,8 +39,6 @@ unikom-alumni-insight-2026/
 ├── index.html                        # Portal Hub & Landing Page interaktif utama
 ├── slides_alumni_insight_2026.html   # Slide presentasi interaktif HTML5/CSS/JS (13 slide)
 ├── handout_mahasiswa_edge_ai.html    # Modul handout mahasiswa (dilengkapi tombol Cetak PDF)
-├── materi_alumni_insight_unikom_2026.md # Naskah presentasi & modul referensi materi
-├── profil_anton_prafanto.md          # Biografi akademik & riset narasumber
 ├── qr_github.svg                     # Aset QR code portofolio GitHub pembicara
 └── README.md                         # Dokumentasi repositori
 ```
