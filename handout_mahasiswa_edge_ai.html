@@ -116,9 +116,9 @@
     .thumb.current { background: var(--note); }
     .ref-item { border-bottom: 1px dashed var(--ink); padding: 8px 0; font-size: 15px; }
     .ref-item a { color: var(--ink); }
-    table.sketch { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 15px; }
-    table.sketch th, table.sketch td { border: 2px solid var(--ink); padding: 8px 10px; background: #fff; vertical-align: top; }
-    table.sketch th { background: var(--note); font-family: var(--font-display); font-size: 16px; }
+    table.sketch { width: 100%; border-collapse: collapse; font-size: 15px; background: #fff; border: 2.5px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+    table.sketch th, table.sketch td { border: 2px solid var(--ink); padding: 8px 12px; vertical-align: top; line-height: 1.4; }
+    table.sketch th { background: var(--note); font-family: var(--font-display); font-size: 16px; color: var(--ink); }
     .check { display: flex; gap: 8px; align-items: flex-start; padding: 8px 0; border-bottom: 1px dashed var(--dot); color: var(--ink); font-size: 16px; line-height: 1.35; }
     .qa { border: 2.2px solid var(--ink); background: #fff; margin-bottom: 8px; }
     .qa summary { cursor: pointer; padding: 10px 14px; font-family: var(--font-display); font-size: 17px; color: var(--ink); }

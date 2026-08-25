@@ -231,6 +231,33 @@
     }
 
     .table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 12px; }
+    table.sketch {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 16px;
+      background: #fff;
+      border: 2.5px solid var(--ink);
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+    table.sketch th, table.sketch td {
+      border: 2px solid var(--ink);
+      padding: 10px 14px;
+      text-align: left;
+      vertical-align: middle;
+      line-height: 1.4;
+    }
+    table.sketch th {
+      background: var(--note);
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    table.sketch td:first-child {
+      background: #FAFAFA;
+      width: 26%;
+      white-space: nowrap;
+    }
 
     @media (max-width: 768px) {
       header.bar {
