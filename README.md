@@ -56,6 +56,24 @@ unikom-alumni-insight-2026/
 
 ---
 
+## 🚀 Panduan Praktikum & Live Demo Mahasiswa (ESP32-S3)
+
+Bagi adik-adik mahasiswa Sistem Komputer UNIKOM yang ingin **mempraktikkan langsung proyek Edge AI & TinyML**:
+
+👉 **Silakan buka modul panduan lengkap di: [`demo_edge_ai/README.md`](demo_edge_ai/README.md)**
+
+### 🧭 Langkah Cepat yang Dapat Anda Lakukan:
+1. **Jika Memiliki Alat Fisik (ESP32-S3 + MPU6050 + BME680 + OLED):**
+   * Ikuti skema kabel I2C (hanya 4 kabel) pada [`demo_edge_ai/README.md`](demo_edge_ai/README.md).
+   * Buka dan upload firmware di [`demo_edge_ai/firmware_esp32s3/firmware_esp32s3.ino`](demo_edge_ai/firmware_esp32s3/firmware_esp32s3.ino) via **Arduino IDE**.
+   * Buka [`demo_edge_ai/dashboard_web/index.html`](demo_edge_ai/dashboard_web/index.html) di Chrome/Edge, lalu klik **"Connect USB"** untuk melihat grafik getaran & orientasi 3D real-time.
+2. **Jika Belum Memiliki Alat Fisik (100% Gratis di Browser):**
+   * Gunakan simulator online Wokwi dengan mengimpor konfigurasi [`demo_edge_ai/wokwi/diagram.json`](demo_edge_ai/wokwi/diagram.json) dan [`demo_edge_ai/wokwi/libraries.txt`](demo_edge_ai/wokwi/libraries.txt).
+3. **Mengembangkan Ide Tugas Akhir / Skripsi:**
+   * Pelajari bab arsitektur TinyML, kuantisasi INT8, dan 5 bank ide judul skripsi terapan pada dokumentasi demo.
+
+---
+
 ## 🛠️ Pilihan Hardware Starter Kit Mahasiswa (< Rp 200.000)
 
 | Komponen | Spesifikasi Inti | Estimasi Harga |
