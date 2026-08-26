@@ -120,24 +120,24 @@ Buka **Sketch** $\rightarrow$ **Include Library** $\rightarrow$ **Manage Librari
 
 ---
 
-## 5. Menjalankan Web Telemetry Workstation
+## 6. Menjalankan Web Telemetry Workstation
 
 Dashboard dirancang menggunakan tampilan instrumen laboratorium teknik (*Engineering SCADA / Oscilloscope UI*) tanpa perlu meng-install server, Node.js, atau Python.
 
 1. Buka folder `dashboard_web/`.
 2. Buka berkas `index.html` menggunakan browser **Google Chrome** atau **Microsoft Edge**.
-3. Klik tombol hijau **"CONNECT USB (WebSerial)"**.
+3. Klik tombol hijau **"CONNECT USB"**.
 4. Pilih port USB ESP32-S3 Anda, lalu klik **Connect**.
 5. Dashboard langsung aktif menampilkan:
    * 📊 **Oscilloscope Waveform:** Grafik getaran 3-sumbu real-time (20 Hz).
    * 📐 **3D CAD Attitude:** Objek 3D berputar mengikuti pitch & roll board.
-   * 🌡️ **Environmental Matrix:** Nilai suhu, kelembaban, tekanan, dan resistansi gas VOC.
+   * 🔄 **Gyro & Kinematic Matrix:** Vektor sudut putar 3-sumbu (Gx, Gy, Gz) dan suhu sensor.
    * ⚡ **The Latency Race:** Perbandingan kecepatan inferensi lokal (~8 ms) vs Cloud (~450 ms).
    * 📥 **Export CSV:** Unduh riwayat telemetri untuk analisis laporan praktikum.
 
 ---
 
-## 6. Fitur Magic Gesture Remote (Mengontrol Slide Presentasi)
+## 7. Fitur Magic Gesture Remote (Mengontrol Slide Presentasi)
 
 Board ESP32-S3 Anda dapat difungsikan sebagai remote pengendali slide presentasi:
 
@@ -150,7 +150,7 @@ Board ESP32-S3 Anda dapat difungsikan sebagai remote pengendali slide presentasi
 
 ---
 
-## 7. Simulasi Online Wokwi (Untuk Mahasiswa Tanpa Alat Fisik)
+## 8. Simulasi Online Wokwi (Untuk Mahasiswa Tanpa Alat Fisik)
 
 Jika mahasiswa belum memiliki perangkat fisik di rumah:
 1. Buka [https://wokwi.com/](https://wokwi.com/).
@@ -161,7 +161,7 @@ Jika mahasiswa belum memiliki perangkat fisik di rumah:
 
 ---
 
-## 8. Matriks Pemecahan Masalah (Troubleshooting Guide)
+## 9. Matriks Pemecahan Masalah (Troubleshooting Guide)
 
 | Gejala Masalah | Penyebab Umum | Solusi Cepat |
 | :--- | :--- | :--- |
@@ -172,11 +172,11 @@ Jika mahasiswa belum memiliki perangkat fisik di rumah:
 
 ---
 
-## 9. Inspirasi Topik Tugas Akhir / Skripsi 2026
+## 10. Inspirasi Topik Tugas Akhir / Skripsi 2026
 
 1. **Sistem Deteksi Anomali Kerusakan Motor Induksi Berbasis TinyML Spectral Analysis pada Mikrokontroler ESP32-S3.**
 2. **Wearable IoT Berdaya Ultra Rendah untuk Klasifikasi Aktivitas dan Deteksi Jatuh Pasien Lanjut Usia Menggunakan INT8 Quantization.**
-3. **Larik Multi-Sensor Cerdas untuk Klasifikasi Kematangan Buah Berbasis Electronic Nose (E-Nose) dan On-Device Machine Learning.**
+3. **Larik Multi-Sensor Kinematik untuk Analisis Vibrasi Jembatan dan Pemeliharaan Prediktif Cerdas Berbasis Edge AI.**
 
 ---
 

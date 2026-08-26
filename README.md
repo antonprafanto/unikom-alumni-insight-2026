@@ -63,7 +63,7 @@ Bagi adik-adik mahasiswa Sistem Komputer UNIKOM yang ingin **mempraktikkan langs
 👉 **Silakan buka modul panduan lengkap di: [`demo_edge_ai/README.md`](demo_edge_ai/README.md)**
 
 ### 🧭 Langkah Cepat yang Dapat Anda Lakukan:
-1. **Jika Memiliki Alat Fisik (ESP32-S3 + MPU6050 + BME680 + OLED):**
+1. **Jika Memiliki Alat Fisik (ESP32-S3 + MPU-6050 + OLED 0.96"):**
    * Ikuti skema kabel I2C (hanya 4 kabel) pada [`demo_edge_ai/README.md`](demo_edge_ai/README.md).
    * Buka dan upload firmware di [`demo_edge_ai/firmware_esp32s3/firmware_esp32s3.ino`](demo_edge_ai/firmware_esp32s3/firmware_esp32s3.ino) via **Arduino IDE**.
    * Buka [`demo_edge_ai/dashboard_web/index.html`](demo_edge_ai/dashboard_web/index.html) di Chrome/Edge, lalu klik **"Connect USB"** untuk melihat grafik getaran & orientasi 3D real-time.
