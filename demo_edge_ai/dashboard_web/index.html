@@ -651,13 +651,15 @@
         const stateBadge = document.getElementById('stateBadge');
         const topStripe  = document.getElementById('aiTopStripe');
 
+        const rmsVal = pkt.ai.rms_vib !== undefined ? pkt.ai.rms_vib : (pkt.ai.rms_g || '0.00');
+        const peakVal = pkt.ai.dyn_g !== undefined ? pkt.ai.dyn_g : (pkt.ai.peak_g || '0.00');
+        const isAlert = pkt.ai.is_anomaly || pkt.ai.vib_alert || (pkt.ai.state && pkt.ai.state !== "NOMINAL" && pkt.ai.state !== "SYSTEM NOMINAL");
+
         document.getElementById('aiConf').innerText    = pkt.ai.conf + '%';
         document.getElementById('aiLatency').innerText = pkt.ai.latency_ms + ' ms';
         document.getElementById('edgeLatencyLabel').innerText = pkt.ai.latency_ms + ' ms';
-        document.getElementById('aiRms').innerText     = (pkt.ai.rms_g || '0.00') + ' G';
-        document.getElementById('aiPeak').innerText    = (pkt.ai.peak_g || '0.00') + ' G';
-
-        const isAlert = pkt.ai.vib_alert || pkt.ai.gas_alert;
+        document.getElementById('aiRms').innerText     = rmsVal + ' G';
+        document.getElementById('aiPeak').innerText    = peakVal + ' G';
 
         if (isAlert) {
           stateTitle.innerText = pkt.ai.state;
@@ -949,9 +951,9 @@
         alert("Belum ada data telemetri yang terekam.");
         return;
       }
-      let csv = "Timestamp,Ax,Ay,Az,Temp,GasResistance,State\n";
+      let csv = "Timestamp,Ax_ms2,Ay_ms2,Az_ms2,Gx_rads,Gy_rads,Gz_rads,Pitch_deg,Roll_deg,Dynamic_G,RMS_Vib,Latency_ms,State,Gesture\n";
       recordedData.forEach(r => {
-        csv += `${r.time},${r.ax},${r.ay},${r.az},${r.temp},${r.gas},${r.state}\n`;
+        csv += `${r.time},${r.ax},${r.ay},${r.az},${r.gx || 0},${r.gy || 0},${r.gz || 0},${r.pitch || 0},${r.roll || 0},${r.dyn_g || 0},${r.rms || 0},${r.latency || 0},"${r.state}","${r.gesture}"\n`;
       });
       const blob = new Blob([csv], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
