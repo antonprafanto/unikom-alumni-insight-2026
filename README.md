@@ -13,10 +13,10 @@
   👉 [https://antonprafanto.github.io/unikom-alumni-insight-2026/](https://antonprafanto.github.io/unikom-alumni-insight-2026/)
 
 * 📽️ **Slide Presentasi Interaktif (Keynote Deck):**  
-  👉 [https://antonprafanto.github.io/unikom-alumni-insight-2026/slides_alumni_insight_2026.html](https://antonprafanto.github.io/unikom-alumni-insight-2026/slides_alumni_insight_2026.html)
+  👉 [https://antonprafanto.github.io/unikom-alumni-insight-2026/event_alumni_insight/slides_alumni_insight_2026.html](https://antonprafanto.github.io/unikom-alumni-insight-2026/event_alumni_insight/slides_alumni_insight_2026.html)
 
 * 📘 **Master Handout & Starter Kit Mahasiswa (Siap Cetak PDF):**  
-  👉 [https://antonprafanto.github.io/unikom-alumni-insight-2026/handout_mahasiswa_edge_ai.html](https://antonprafanto.github.io/unikom-alumni-insight-2026/handout_mahasiswa_edge_ai.html)
+  👉 [https://antonprafanto.github.io/unikom-alumni-insight-2026/event_alumni_insight/handout_mahasiswa_edge_ai.html](https://antonprafanto.github.io/unikom-alumni-insight-2026/event_alumni_insight/handout_mahasiswa_edge_ai.html)
 
 ---
 
@@ -32,15 +32,18 @@ Materi ini dirancang khusus untuk membedah arah transformasi keilmuan **Teknik/S
 
 ---
 
-## 📁 Berkas Repositori
+## 📁 Berkas Repositori Event
 
 ```text
 unikom-alumni-insight-2026/
-├── index.html                        # Portal Hub & Landing Page interaktif utama
-├── slides_alumni_insight_2026.html   # Slide presentasi interaktif HTML5/CSS/JS (13 slide)
-├── handout_mahasiswa_edge_ai.html    # Modul handout mahasiswa (dilengkapi tombol Cetak PDF)
-├── qr_github.svg                     # Aset QR code portofolio GitHub pembicara
-└── README.md                         # Dokumentasi repositori
+├── index.html                                        # Portal Hub & Landing Page utama
+├── qr_github.svg                                     # Aset QR code portofolio GitHub
+├── event_alumni_insight/
+│   ├── slides_alumni_insight_2026.html               # Slide presentasi interaktif (13 slide)
+│   ├── handout_mahasiswa_edge_ai.html                # Modul handout mahasiswa (Fitur Cetak PDF)
+│   └── qr_github.svg                                 # Aset QR code lokal event
+├── .nojekyll                                         # Bypass Jekyll build untuk GitHub Pages
+└── README.md                                         # Dokumentasi repositori
 ```
 
 ---
@@ -57,7 +60,7 @@ unikom-alumni-insight-2026/
 
 ---
 
-## 👨‍🏫 Kontak Narasumber & Portofolio
+## 👨‍🏫 Kontak Narasumber
 
 * **Nama:** Anton Prafanto, S.Kom., M.T.
 * **Institusi:** Program Studi S1 Informatika, Fakultas Teknik, Universitas Mulawarman (UNMUL), Samarinda

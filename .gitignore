@@ -1,9 +1,15 @@
+# Private & Non-Event Folders (Kept locally only, DO NOT PUSH)
+data_pribadi/
+audit_mahasiswa/
+scratch/
+*.pdf
+
 # Local documentation & reference files (kept locally only)
-handout_mahasiswa_edge_ai.md
-materi_alumni_insight_unikom_2026.md
-profil_anton_prafanto.md
+event_alumni_insight/handout_mahasiswa_edge_ai.md
+event_alumni_insight/materi_alumni_insight_unikom_2026.md
 
 # OS and temp files
 .DS_Store
 Thumbs.db
 *.tmp
+
