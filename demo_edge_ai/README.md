@@ -25,6 +25,21 @@ Proyek ini membuktikan bahwa komputasi kecerdasan buatan (*Machine Learning / Ti
 
 ![Diagram Arsitektur Sistem Edge AI](arsitektur_edge_ai.svg)
 
+### 🧠 1.1 Mengapa Proyek Ini Dikategorikan Sebagai "Edge AI"?
+
+Sebuah sistem **bukan sekadar IoT biasa** melainkan sah disebut **Edge AI** apabila memenuhi 4 pilar utama:
+1. **On-Device Inference:** Perhitungan inferensi model dieksekusi 100% di dalam SRAM chip lokal (ESP32-S3 Xtensa LX7), bukan di server remote.
+2. **Data-Driven (Bukan Sekadar IF-ELSE Statis):** Menggunakan pipeline ekstraksi fitur sinyal dinamis (*DSP/Windowing*) dan estimasi *adaptive baseline* multi-kondisi.
+3. **Kemandirian Offline Total (*Zero Cloud Dependency*):** Sistem tetap mampu mendeteksi bahaya dan mengambil keputusan saat internet terputus.
+4. **Sensor-Centric Decision:** Keputusan lahir langsung dari tranduser fisik (*continuous streaming* getaran 3-sumbu dan gas VOC).
+
+#### 🔬 5 Lapisan Inteligensi On-Device pada Demo Ini:
+* **Layer 1 (On-Device Feature Extraction):** Mengonversi sinyal percepatan mentah ($a_x, a_y, a_z$) menjadi *Dynamic Acceleration Magnitude* $|\sqrt{a_x^2 + a_y^2 + a_z^2} - 1.0\text{g}|$ dan menghitung energi *Root Mean Square (RMS)* dalam *circular buffer window*.
+* **Layer 2 (Predictive Maintenance Engine):** Mengklasifikasikan pola getaran mekanis untuk membedakan gerakan goyang wajar vs anomali kerusakan bantalan mesin (*bearing fault*).
+* **Layer 3 (Adaptive Baseline Gas Tracker):** Sensor BME680 menggunakan algoritma moving average untuk mempelajari udara bersih ruangan secara kontinu dan mendeteksi lonjakan gas VOC berbahaya secara relatif.
+* **Layer 4 (Kinematic Gesture Intent Engine):** Menganalisis sudut sikap ruang (*Attitude Roll/Pitch*) untuk mendeteksi intensi perintah perpindahan slide presentasi dalam waktu $< 10\text{ ms}$.
+* **Layer 5 (Multi-Modal Decision Fusion):** Menggabungkan sinyal kinematik dan gas menjadi status komposit (`NOMINAL`, `VIB ANOMALY`, `GAS HAZARD`, `CRITICAL HAZARD`).
+
 ---
 
 ## 2. Skema Rangkaian Hardware (Single I2C Bus)
