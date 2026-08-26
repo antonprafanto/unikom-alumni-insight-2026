@@ -1,11 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 620" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 580" width="100%" height="100%">
   <defs>
     <!-- Background Dot Grid -->
-    <pattern id="dotgrid" width="20" height="20" patternUnits="userSpaceOnUse">
+    <pattern id="dotgrid-sc" width="20" height="20" patternUnits="userSpaceOnUse">
       <circle cx="2" cy="2" r="1.2" fill="#CBD5E1" />
     </pattern>
 
-    <!-- Neo-Brutalist Solid Shadow Filter -->
+    <!-- Neo-Brutalist Hard Drop Shadow Filter -->
     <filter id="nb-shadow" x="0" y="0" width="200%" height="200%">
       <feOffset result="offOut" in="SourceAlpha" dx="4" dy="4" />
       <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0 0 0 0 0.07   0 0 0 0 0.07   0 0 0 0 0.07  0 0 0 1 0" />
@@ -20,91 +20,69 @@
   </defs>
 
   <!-- Background Surface -->
-  <rect width="980" height="620" fill="#F8FAFC" rx="12" />
-  <rect width="980" height="620" fill="url(#dotgrid)" rx="12" />
-  <rect width="980" height="620" fill="none" stroke="#0F172A" stroke-width="3" rx="12" />
+  <rect width="960" height="580" fill="#F8FAFC" rx="12" />
+  <rect width="960" height="580" fill="url(#dotgrid-sc)" rx="12" />
+  <rect width="960" height="580" fill="none" stroke="#0F172A" stroke-width="3" rx="12" />
 
   <!-- ==================================================================== -->
-  <!-- TOP BANNER / HEADER -->
+  <!-- HEADER BANNER -->
   <!-- ==================================================================== -->
   <g transform="translate(30, 20)">
-    <rect x="0" y="0" width="920" height="52" rx="8" fill="#FFE600" stroke="#0F172A" stroke-width="2.5" filter="url(#nb-shadow-sm)" />
-    
+    <rect x="0" y="0" width="900" height="52" rx="8" fill="#FFE600" stroke="#0F172A" stroke-width="2.5" filter="url(#nb-shadow-sm)" />
     <text x="20" y="33" font-family="'Space Grotesk', 'Inter', sans-serif" font-weight="800" font-size="17" fill="#0F172A">
-      ⚡ SKEMA WIRING I2C: MULTI-MODAL EDGE AI NODE (ESP32-S3)
+      ⚡ SKEMA WIRING I2C: ESP32-S3 + MPU-6050 + OLED 0.96"
     </text>
-
-    <rect x="700" y="10" width="200" height="32" rx="6" fill="#0F172A" stroke="#0F172A" stroke-width="1.5" />
-    <text x="800" y="31" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="12" fill="#38BDF8" text-anchor="middle">
-      SHARED I2C BUS (400kHz)
+    <rect x="670" y="10" width="215" height="32" rx="6" fill="#0F172A" />
+    <text x="777" y="31" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="12" fill="#00F5A0" text-anchor="middle">
+      SINGLE I2C BUS (400kHz)
     </text>
   </g>
 
   <!-- ==================================================================== -->
-  <!-- 4 PARALLEL I2C BUS RAILS (TOP OVERHEAD TRACES - NO OVERLAPPING) -->
+  <!-- 4 PARALLEL I2C BUS RAILS (TOP OVERHEAD TRACES) -->
   <!-- ==================================================================== -->
   <g id="bus-rails" stroke-linecap="round" stroke-linejoin="round">
     
     <!-- RAIL 1: 3.3V VCC (RED - y = 92) -->
-    <!-- ESP32 Pin to Rail -->
-    <path d="M 235 240 L 255 240 L 255 92 L 805 92" fill="none" stroke="#EF4444" stroke-width="3.5" />
-    <!-- Vertical Drops to Modules -->
-    <path d="M 360 92 L 360 180" fill="none" stroke="#EF4444" stroke-width="3.5" />
-    <path d="M 580 92 L 580 180" fill="none" stroke="#EF4444" stroke-width="3.5" />
-    <path d="M 805 92 L 805 180" fill="none" stroke="#EF4444" stroke-width="3.5" />
+    <path d="M 235 235 L 260 235 L 260 92 L 725 92" fill="none" stroke="#EF4444" stroke-width="3.5" />
+    <path d="M 405 92 L 405 170" fill="none" stroke="#EF4444" stroke-width="3.5" />
+    <path d="M 725 92 L 725 170" fill="none" stroke="#EF4444" stroke-width="3.5" />
 
     <!-- RAIL 2: GND (BLACK - y = 112) -->
-    <!-- ESP32 Pin to Rail -->
-    <path d="M 235 285 L 270 285 L 270 112 L 835 112" fill="none" stroke="#0F172A" stroke-width="3.5" />
-    <!-- Vertical Drops to Modules -->
-    <path d="M 390 112 L 390 180" fill="none" stroke="#0F172A" stroke-width="3.5" />
-    <path d="M 610 112 L 610 180" fill="none" stroke="#0F172A" stroke-width="3.5" />
-    <path d="M 835 112 L 835 180" fill="none" stroke="#0F172A" stroke-width="3.5" />
+    <path d="M 235 275 L 275 275 L 275 112 L 760 112" fill="none" stroke="#0F172A" stroke-width="3.5" />
+    <path d="M 440 112 L 440 170" fill="none" stroke="#0F172A" stroke-width="3.5" />
+    <path d="M 760 112 L 760 170" fill="none" stroke="#0F172A" stroke-width="3.5" />
 
     <!-- RAIL 3: GPIO 9 / SCL (BLUE - y = 132) -->
-    <!-- ESP32 Pin to Rail -->
-    <path d="M 235 375 L 285 375 L 285 132 L 865 132" fill="none" stroke="#2563EB" stroke-width="3.5" />
-    <!-- Vertical Drops to Modules -->
-    <path d="M 420 132 L 420 180" fill="none" stroke="#2563EB" stroke-width="3.5" />
-    <path d="M 640 132 L 640 180" fill="none" stroke="#2563EB" stroke-width="3.5" />
-    <path d="M 865 132 L 865 180" fill="none" stroke="#2563EB" stroke-width="3.5" />
+    <path d="M 235 355 L 290 355 L 290 132 L 795 132" fill="none" stroke="#2563EB" stroke-width="3.5" />
+    <path d="M 475 132 L 475 170" fill="none" stroke="#2563EB" stroke-width="3.5" />
+    <path d="M 795 132 L 795 170" fill="none" stroke="#2563EB" stroke-width="3.5" />
 
     <!-- RAIL 4: GPIO 8 / SDA (GREEN - y = 152) -->
-    <!-- ESP32 Pin to Rail -->
-    <path d="M 235 330 L 300 330 L 300 152 L 895 152" fill="none" stroke="#10B981" stroke-width="3.5" />
-    <!-- Vertical Drops to Modules -->
-    <path d="M 450 152 L 450 180" fill="none" stroke="#10B981" stroke-width="3.5" />
-    <path d="M 670 152 L 670 180" fill="none" stroke="#10B981" stroke-width="3.5" />
-    <path d="M 895 152 L 895 180" fill="none" stroke="#10B981" stroke-width="3.5" />
+    <path d="M 235 315 L 305 315 L 305 152 L 830 152" fill="none" stroke="#10B981" stroke-width="3.5" />
+    <path d="M 510 152 L 510 170" fill="none" stroke="#10B981" stroke-width="3.5" />
+    <path d="M 830 152 L 830 170" fill="none" stroke="#10B981" stroke-width="3.5" />
 
     <!-- Bus Tap Junction Dots -->
-    <!-- Red (3.3V) -->
-    <circle cx="360" cy="92" r="4.5" fill="#EF4444" stroke="#0F172A" stroke-width="1.5" />
-    <circle cx="580" cy="92" r="4.5" fill="#EF4444" stroke="#0F172A" stroke-width="1.5" />
-    <circle cx="805" cy="92" r="4.5" fill="#EF4444" stroke="#0F172A" stroke-width="1.5" />
+    <circle cx="405" cy="92" r="4.5" fill="#EF4444" stroke="#0F172A" stroke-width="1.5" />
+    <circle cx="725" cy="92" r="4.5" fill="#EF4444" stroke="#0F172A" stroke-width="1.5" />
 
-    <!-- Black (GND) -->
-    <circle cx="390" cy="112" r="4.5" fill="#0F172A" stroke="#FFFFFF" stroke-width="1.5" />
-    <circle cx="610" cy="112" r="4.5" fill="#0F172A" stroke="#FFFFFF" stroke-width="1.5" />
-    <circle cx="835" cy="112" r="4.5" fill="#0F172A" stroke="#FFFFFF" stroke-width="1.5" />
+    <circle cx="440" cy="112" r="4.5" fill="#0F172A" stroke="#FFFFFF" stroke-width="1.5" />
+    <circle cx="760" cy="112" r="4.5" fill="#0F172A" stroke="#FFFFFF" stroke-width="1.5" />
 
-    <!-- Blue (SCL) -->
-    <circle cx="420" cy="132" r="4.5" fill="#2563EB" stroke="#0F172A" stroke-width="1.5" />
-    <circle cx="640" cy="132" r="4.5" fill="#2563EB" stroke="#0F172A" stroke-width="1.5" />
-    <circle cx="865" cy="132" r="4.5" fill="#2563EB" stroke="#0F172A" stroke-width="1.5" />
+    <circle cx="475" cy="132" r="4.5" fill="#2563EB" stroke="#0F172A" stroke-width="1.5" />
+    <circle cx="795" cy="132" r="4.5" fill="#2563EB" stroke="#0F172A" stroke-width="1.5" />
 
-    <!-- Green (SDA) -->
-    <circle cx="450" cy="152" r="4.5" fill="#10B981" stroke="#0F172A" stroke-width="1.5" />
-    <circle cx="670" cy="152" r="4.5" fill="#10B981" stroke="#0F172A" stroke-width="1.5" />
-    <circle cx="895" cy="152" r="4.5" fill="#10B981" stroke="#0F172A" stroke-width="1.5" />
+    <circle cx="510" cy="152" r="4.5" fill="#10B981" stroke="#0F172A" stroke-width="1.5" />
+    <circle cx="830" cy="152" r="4.5" fill="#10B981" stroke="#0F172A" stroke-width="1.5" />
   </g>
 
   <!-- ==================================================================== -->
-  <!-- 1. ESP32-S3 DEVKIT (LEFT CONTROLLER - EXPANDED & SPACIOUS) -->
+  <!-- 1. ESP32-S3 DEVKIT (LEFT CONTROLLER) -->
   <!-- ==================================================================== -->
   <g transform="translate(30, 160)">
     <!-- Board PCB Surface -->
-    <rect x="0" y="0" width="205" height="340" rx="8" fill="#0F172A" stroke="#0F172A" stroke-width="3" filter="url(#nb-shadow)" />
+    <rect x="0" y="0" width="205" height="315" rx="8" fill="#0F172A" stroke="#0F172A" stroke-width="3" filter="url(#nb-shadow)" />
 
     <!-- Board Header Title -->
     <rect x="14" y="14" width="177" height="24" rx="4" fill="#38BDF8" stroke="#0F172A" stroke-width="1.5" />
@@ -113,53 +91,53 @@
     </text>
 
     <!-- Metallic RF Shield (Positioned cleanly on Left side) -->
-    <rect x="14" y="52" width="105" height="180" rx="6" fill="#E2E8F0" stroke="#64748B" stroke-width="2" />
+    <rect x="14" y="50" width="105" height="175" rx="6" fill="#E2E8F0" stroke="#64748B" stroke-width="2" />
     
     <!-- RF Chip Details -->
-    <rect x="22" y="62" width="89" height="30" rx="3" fill="#0F172A" />
-    <text x="66" y="82" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="13" fill="#FFFFFF" text-anchor="middle">ESP32-S3</text>
+    <rect x="22" y="60" width="89" height="28" rx="3" fill="#0F172A" />
+    <text x="66" y="79" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="13" fill="#FFFFFF" text-anchor="middle">ESP32-S3</text>
     
-    <text x="66" y="112" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="9" fill="#334155" text-anchor="middle">Xtensa LX7</text>
-    <text x="66" y="126" font-family="'JetBrains Mono', monospace" font-size="8" fill="#64748B" text-anchor="middle">Dual-Core 240MHz</text>
+    <text x="66" y="106" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="9" fill="#334155" text-anchor="middle">Xtensa LX7</text>
+    <text x="66" y="120" font-family="'JetBrains Mono', monospace" font-size="8" fill="#64748B" text-anchor="middle">Dual-Core 240MHz</text>
     
-    <rect x="22" y="138" width="89" height="20" rx="3" fill="#00F5A0" stroke="#0F172A" stroke-width="1" />
-    <text x="66" y="152" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="8" fill="#0F172A" text-anchor="middle">AI Vector Ext.</text>
+    <rect x="22" y="132" width="89" height="20" rx="3" fill="#00F5A0" stroke="#0F172A" stroke-width="1" />
+    <text x="66" y="146" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="8" fill="#0F172A" text-anchor="middle">AI Vector Ext.</text>
     
-    <text x="66" y="180" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569" text-anchor="middle">Wi-Fi + BLE 5.0</text>
-    <text x="66" y="215" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#059669" text-anchor="middle">512KB SRAM</text>
+    <text x="66" y="172" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569" text-anchor="middle">Wi-Fi + BLE 5.0</text>
+    <text x="66" y="205" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#059669" text-anchor="middle">512KB SRAM</text>
 
     <!-- Right Header Pin Column (No Overlap with RF Shield) -->
     <!-- Pin 1: 3.3V -->
-    <g transform="translate(125, 68)">
+    <g transform="translate(125, 62)">
       <rect x="0" y="0" width="80" height="26" rx="4" fill="#EF4444" stroke="#0F172A" stroke-width="1.5" />
       <circle cx="70" cy="13" r="3" fill="#FFFFFF" />
       <text x="32" y="17" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="10" fill="#FFFFFF" text-anchor="middle">3.3V</text>
     </g>
 
     <!-- Pin 2: GND -->
-    <g transform="translate(125, 113)">
+    <g transform="translate(125, 102)">
       <rect x="0" y="0" width="80" height="26" rx="4" fill="#1E293B" stroke="#64748B" stroke-width="1.5" />
       <circle cx="70" cy="13" r="3" fill="#FFFFFF" />
       <text x="32" y="17" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="10" fill="#FFFFFF" text-anchor="middle">GND</text>
     </g>
 
     <!-- Pin 3: GPIO 8 (SDA) -->
-    <g transform="translate(125, 158)">
+    <g transform="translate(125, 142)">
       <rect x="0" y="0" width="80" height="26" rx="4" fill="#10B981" stroke="#0F172A" stroke-width="1.5" />
       <circle cx="70" cy="13" r="3" fill="#FFFFFF" />
       <text x="32" y="17" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="9" fill="#0F172A" text-anchor="middle">IO8 (SDA)</text>
     </g>
 
     <!-- Pin 4: GPIO 9 (SCL) -->
-    <g transform="translate(125, 203)">
+    <g transform="translate(125, 182)">
       <rect x="0" y="0" width="80" height="26" rx="4" fill="#2563EB" stroke="#0F172A" stroke-width="1.5" />
       <circle cx="70" cy="13" r="3" fill="#FFFFFF" />
       <text x="32" y="17" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="9" fill="#FFFFFF" text-anchor="middle">IO9 (SCL)</text>
     </g>
 
     <!-- USB Type-C Port at Bottom -->
-    <rect x="62" y="305" width="80" height="32" rx="5" fill="#475569" stroke="#0F172A" stroke-width="2" />
-    <text x="102" y="325" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#F8FAFC" text-anchor="middle">
+    <rect x="62" y="280" width="80" height="30" rx="5" fill="#475569" stroke="#0F172A" stroke-width="2" />
+    <text x="102" y="299" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#F8FAFC" text-anchor="middle">
       USB-C (CDC)
     </text>
   </g>
@@ -167,88 +145,91 @@
   <!-- ==================================================================== -->
   <!-- 2. OLED 0.96" SSD1306 (0x3C) -->
   <!-- ==================================================================== -->
-  <g transform="translate(330, 180)">
+  <g transform="translate(350, 170)">
     <!-- Board PCB -->
-    <rect x="0" y="0" width="150" height="320" rx="8" fill="#1E293B" stroke="#0F172A" stroke-width="2.5" filter="url(#nb-shadow)" />
+    <rect x="0" y="0" width="220" height="305" rx="8" fill="#1E293B" stroke="#0F172A" stroke-width="2.5" filter="url(#nb-shadow)" />
 
     <!-- 4 Top Pins Terminals (Spaced Cleanly) -->
-    <!-- Pin 1: VCC (x = 30) -->
-    <rect x="23" y="0" width="14" height="16" fill="#EF4444" stroke="#0F172A" stroke-width="1.5" rx="2" />
-    <text x="30" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#EF4444" text-anchor="middle">VCC</text>
+    <!-- Pin 1: VCC (x = 55) -->
+    <rect x="47" y="0" width="16" height="16" fill="#EF4444" stroke="#0F172A" stroke-width="1.5" rx="2" />
+    <text x="55" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#EF4444" text-anchor="middle">VCC</text>
 
-    <!-- Pin 2: GND (x = 60) -->
-    <rect x="53" y="0" width="14" height="16" fill="#0F172A" stroke="#FFFFFF" stroke-width="1.5" rx="2" />
-    <text x="60" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#94A3B8" text-anchor="middle">GND</text>
+    <!-- Pin 2: GND (x = 90) -->
+    <rect x="82" y="0" width="16" height="16" fill="#0F172A" stroke="#FFFFFF" stroke-width="1.5" rx="2" />
+    <text x="90" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#94A3B8" text-anchor="middle">GND</text>
 
-    <!-- Pin 3: SCL (x = 90) -->
-    <rect x="83" y="0" width="14" height="16" fill="#2563EB" stroke="#0F172A" stroke-width="1.5" rx="2" />
-    <text x="90" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#60A5FA" text-anchor="middle">SCL</text>
+    <!-- Pin 3: SCL (x = 125) -->
+    <rect x="117" y="0" width="16" height="16" fill="#2563EB" stroke="#0F172A" stroke-width="1.5" rx="2" />
+    <text x="125" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#60A5FA" text-anchor="middle">SCL</text>
 
-    <!-- Pin 4: SDA (x = 120) -->
-    <rect x="113" y="0" width="14" height="16" fill="#10B981" stroke="#0F172A" stroke-width="1.5" rx="2" />
-    <text x="120" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#34D399" text-anchor="middle">SDA</text>
+    <!-- Pin 4: SDA (x = 160) -->
+    <rect x="152" y="0" width="16" height="16" fill="#10B981" stroke="#0F172A" stroke-width="1.5" rx="2" />
+    <text x="160" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#34D399" text-anchor="middle">SDA</text>
 
     <!-- OLED Screen Display Surface -->
-    <rect x="15" y="46" width="120" height="210" rx="6" fill="#0284C7" stroke="#0F172A" stroke-width="2" />
+    <rect x="18" y="44" width="184" height="200" rx="6" fill="#0284C7" stroke="#0F172A" stroke-width="2" />
     
     <!-- Screen Banner -->
-    <rect x="15" y="46" width="120" height="24" rx="4" fill="#0C4A6E" />
-    <text x="22" y="62" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#38BDF8">EDGE-AI S3</text>
-    <text x="112" y="62" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#7DD3FC">8.4ms</text>
+    <rect x="18" y="44" width="184" height="24" rx="4" fill="#0C4A6E" />
+    <text x="26" y="60" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="800" fill="#38BDF8">EDGE-AI S3</text>
+    <text x="175" y="60" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#7DD3FC" text-anchor="end">8.4ms</text>
 
     <!-- Screen Status -->
-    <rect x="22" y="80" width="106" height="34" rx="4" fill="#0369A1" stroke="#38BDF8" stroke-width="1" />
-    <text x="75" y="96" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="800" fill="#FFFFFF" text-anchor="middle">&gt;&gt; NOMINAL</text>
-    <text x="75" y="108" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#BAE6FD" text-anchor="middle">CONF: 98% [INT8]</text>
+    <rect x="26" y="78" width="168" height="34" rx="4" fill="#0369A1" stroke="#38BDF8" stroke-width="1" />
+    <text x="110" y="94" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="800" fill="#FFFFFF" text-anchor="middle">&gt;&gt; NOMINAL (98%)</text>
+    <text x="110" y="106" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#BAE6FD" text-anchor="middle">INT8 QUANTIZED MODEL</text>
 
-    <line x1="22" y1="126" x2="128" y2="126" stroke="#38BDF8" stroke-width="1" stroke-dasharray="2 2" />
+    <line x1="26" y1="122" x2="194" y2="122" stroke="#38BDF8" stroke-width="1" stroke-dasharray="2 2" />
 
     <!-- Screen Telemetry Readouts -->
-    <text x="24" y="148" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#FFFFFF">Vib: 0.04G</text>
-    <text x="24" y="172" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#FFFFFF">GST: IDLE</text>
-    <text x="24" y="196" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#FFFFFF">Tmp: 28.4C</text>
-    <text x="24" y="220" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#FFFFFF">Gas: 85.4k</text>
+    <text x="28" y="142" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700" fill="#FFFFFF">DynG: 0.04G</text>
+    <text x="112" y="142" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700" fill="#FFFFFF">RMS: 0.02</text>
 
-    <rect x="22" y="234" width="106" height="14" rx="2" fill="#0C4A6E" />
-    <text x="75" y="244" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="700" fill="#38BDF8" text-anchor="middle">I2C BUS: OK</text>
+    <text x="28" y="165" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700" fill="#FFFFFF">Pitch: +2°</text>
+    <text x="112" y="165" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700" fill="#FFFFFF">Roll: -1°</text>
+
+    <rect x="26" y="180" width="168" height="24" rx="3" fill="#0C4A6E" />
+    <text x="110" y="196" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#38BDF8" text-anchor="middle">GESTURE: IDLE [MPU6050]</text>
+
+    <text x="110" y="232" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#BAE6FD" text-anchor="middle">I2C BUS: 400kHz FAST MODE</text>
 
     <!-- Bottom Badge -->
-    <rect x="15" y="272" width="120" height="32" rx="4" fill="#FFE600" stroke="#0F172A" stroke-width="1.5" />
-    <text x="75" y="287" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#0F172A" text-anchor="middle">OLED 0.96"</text>
-    <text x="75" y="299" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="9" fill="#0F172A" text-anchor="middle">ADDR: 0x3C</text>
+    <rect x="18" y="258" width="184" height="32" rx="4" fill="#FFE600" stroke="#0F172A" stroke-width="1.5" />
+    <text x="110" y="273" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#0F172A" text-anchor="middle">OLED 0.96" SSD1306</text>
+    <text x="110" y="285" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="9" fill="#0F172A" text-anchor="middle">I2C ADDRESS: 0x3C</text>
   </g>
 
   <!-- ==================================================================== -->
   <!-- 3. MPU-6050 6-AXIS IMU (0x68) -->
   <!-- ==================================================================== -->
-  <g transform="translate(550, 180)">
+  <g transform="translate(670, 170)">
     <!-- Board PCB -->
-    <rect x="0" y="0" width="150" height="320" rx="8" fill="#0284C7" stroke="#0F172A" stroke-width="2.5" filter="url(#nb-shadow)" />
+    <rect x="0" y="0" width="220" height="305" rx="8" fill="#0284C7" stroke="#0F172A" stroke-width="2.5" filter="url(#nb-shadow)" />
 
     <!-- 4 Top Pins Terminals -->
-    <!-- Pin 1: VCC (x = 30) -->
-    <rect x="23" y="0" width="14" height="16" fill="#EF4444" stroke="#0F172A" stroke-width="1.5" rx="2" />
-    <text x="30" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#FEE2E2" text-anchor="middle">VCC</text>
+    <!-- Pin 1: VCC (x = 55) -->
+    <rect x="47" y="0" width="16" height="16" fill="#EF4444" stroke="#0F172A" stroke-width="1.5" rx="2" />
+    <text x="55" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#FEE2E2" text-anchor="middle">VCC</text>
 
-    <!-- Pin 2: GND (x = 60) -->
-    <rect x="53" y="0" width="14" height="16" fill="#0F172A" stroke="#FFFFFF" stroke-width="1.5" rx="2" />
-    <text x="60" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#E2E8F0" text-anchor="middle">GND</text>
+    <!-- Pin 2: GND (x = 90) -->
+    <rect x="82" y="0" width="16" height="16" fill="#0F172A" stroke="#FFFFFF" stroke-width="1.5" rx="2" />
+    <text x="90" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#E2E8F0" text-anchor="middle">GND</text>
 
-    <!-- Pin 3: SCL (x = 90) -->
-    <rect x="83" y="0" width="14" height="16" fill="#2563EB" stroke="#0F172A" stroke-width="1.5" rx="2" />
-    <text x="90" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#DBEAFE" text-anchor="middle">SCL</text>
+    <!-- Pin 3: SCL (x = 125) -->
+    <rect x="117" y="0" width="16" height="16" fill="#2563EB" stroke="#0F172A" stroke-width="1.5" rx="2" />
+    <text x="125" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#DBEAFE" text-anchor="middle">SCL</text>
 
-    <!-- Pin 4: SDA (x = 120) -->
-    <rect x="113" y="0" width="14" height="16" fill="#10B981" stroke="#0F172A" stroke-width="1.5" rx="2" />
-    <text x="120" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#D1FAE5" text-anchor="middle">SDA</text>
+    <!-- Pin 4: SDA (x = 160) -->
+    <rect x="152" y="0" width="16" height="16" fill="#10B981" stroke="#0F172A" stroke-width="1.5" rx="2" />
+    <text x="160" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#D1FAE5" text-anchor="middle">SDA</text>
 
     <!-- IMU QFN Chip Center -->
-    <rect x="35" y="60" width="80" height="80" rx="6" fill="#0F172A" stroke="#38BDF8" stroke-width="2" />
-    <text x="75" y="96" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="13" fill="#FFFFFF" text-anchor="middle">MPU</text>
-    <text x="75" y="115" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700" fill="#38BDF8" text-anchor="middle">6050</text>
+    <rect x="65" y="55" width="90" height="90" rx="8" fill="#0F172A" stroke="#38BDF8" stroke-width="2.5" />
+    <text x="110" y="95" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="14" fill="#FFFFFF" text-anchor="middle">MPU</text>
+    <text x="110" y="118" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="700" fill="#38BDF8" text-anchor="middle">6050</text>
 
-    <!-- Coordinate Axis Icon -->
-    <g transform="translate(75, 185)">
+    <!-- Coordinate Axis Icon & Features -->
+    <g transform="translate(110, 185)">
       <circle cx="0" cy="0" r="28" fill="#0369A1" stroke="#38BDF8" stroke-width="1.5" />
       <path d="M 0 0 L 0 -18 M -5 -12 L 0 -18 L 5 -12" stroke="#FFE600" stroke-width="2" fill="none" />
       <path d="M 0 0 L 18 0 M 12 -5 L 18 0 L 12 5" stroke="#FFE600" stroke-width="2" fill="none" />
@@ -258,103 +239,55 @@
       <text x="-12" y="12" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="800" fill="#FFE600">Z⊙</text>
     </g>
 
-    <text x="75" y="240" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#E0F2FE" text-anchor="middle">
-      ACCEL + GYRO
+    <text x="110" y="235" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700" fill="#E0F2FE" text-anchor="middle">
+      ACCELEROMETER + GYRO
+    </text>
+    <text x="110" y="248" font-family="'JetBrains Mono', monospace" font-size="8" fill="#BAE6FD" text-anchor="middle">
+      ±4G Range · 44Hz LPF Filter
     </text>
 
     <!-- Bottom Badge -->
-    <rect x="15" y="272" width="120" height="32" rx="4" fill="#00F5A0" stroke="#0F172A" stroke-width="1.5" />
-    <text x="75" y="287" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#0F172A" text-anchor="middle">MPU-6050</text>
-    <text x="75" y="299" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="9" fill="#0F172A" text-anchor="middle">ADDR: 0x68</text>
-  </g>
-
-  <!-- ==================================================================== -->
-  <!-- 4. BME-680 GAS & ENV SENSOR (0x77) -->
-  <!-- ==================================================================== -->
-  <g transform="translate(775, 180)">
-    <!-- Board PCB -->
-    <rect x="0" y="0" width="150" height="320" rx="8" fill="#7C3AED" stroke="#0F172A" stroke-width="2.5" filter="url(#nb-shadow)" />
-
-    <!-- 4 Top Pins Terminals -->
-    <!-- Pin 1: VCC (x = 30) -->
-    <rect x="23" y="0" width="14" height="16" fill="#EF4444" stroke="#0F172A" stroke-width="1.5" rx="2" />
-    <text x="30" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#FEE2E2" text-anchor="middle">VCC</text>
-
-    <!-- Pin 2: GND (x = 60) -->
-    <rect x="53" y="0" width="14" height="16" fill="#0F172A" stroke="#FFFFFF" stroke-width="1.5" rx="2" />
-    <text x="60" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#E2E8F0" text-anchor="middle">GND</text>
-
-    <!-- Pin 3: SCL (x = 90) -->
-    <rect x="83" y="0" width="14" height="16" fill="#2563EB" stroke="#0F172A" stroke-width="1.5" rx="2" />
-    <text x="90" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#DBEAFE" text-anchor="middle">SCL</text>
-
-    <!-- Pin 4: SDA (x = 120) -->
-    <rect x="113" y="0" width="14" height="16" fill="#10B981" stroke="#0F172A" stroke-width="1.5" rx="2" />
-    <text x="120" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#D1FAE5" text-anchor="middle">SDA</text>
-
-    <!-- Metal Gas Chamber Center -->
-    <rect x="35" y="60" width="80" height="80" rx="8" fill="#E2E8F0" stroke="#4C1D95" stroke-width="2" />
-    <circle cx="75" cy="100" r="22" fill="#94A3B8" stroke="#475569" stroke-width="2" />
-    <circle cx="75" cy="100" r="8" fill="#475569" />
-    <circle cx="75" cy="100" r="3" fill="#1E293B" />
-
-    <!-- 4 Sensors Label List -->
-    <g transform="translate(20, 160)">
-      <rect x="0" y="0" width="110" height="18" rx="3" fill="#5B21B6" />
-      <text x="55" y="13" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#EDE9FE" text-anchor="middle">VOC GAS (kΩ)</text>
-
-      <rect x="0" y="24" width="110" height="18" rx="3" fill="#5B21B6" />
-      <text x="55" y="37" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#EDE9FE" text-anchor="middle">TEMPERATURE</text>
-
-      <rect x="0" y="48" width="110" height="18" rx="3" fill="#5B21B6" />
-      <text x="55" y="61" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#EDE9FE" text-anchor="middle">HUMIDITY (%RH)</text>
-
-      <rect x="0" y="72" width="110" height="18" rx="3" fill="#5B21B6" />
-      <text x="55" y="85" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#EDE9FE" text-anchor="middle">PRESSURE (hPa)</text>
-    </g>
-
-    <!-- Bottom Badge -->
-    <rect x="15" y="272" width="120" height="32" rx="4" fill="#FF6B8B" stroke="#0F172A" stroke-width="1.5" />
-    <text x="75" y="287" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#FFFFFF" text-anchor="middle">BME-680</text>
-    <text x="75" y="299" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="9" fill="#FFFFFF" text-anchor="middle">ADDR: 0x77</text>
+    <rect x="18" y="258" width="184" height="32" rx="4" fill="#00F5A0" stroke="#0F172A" stroke-width="1.5" />
+    <text x="110" y="273" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#0F172A" text-anchor="middle">MPU-6050 6-AXIS</text>
+    <text x="110" y="285" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="9" fill="#0F172A" text-anchor="middle">I2C ADDRESS: 0x68</text>
   </g>
 
   <!-- ==================================================================== -->
   <!-- BOTTOM FOOTER & COLOR LEGEND -->
   <!-- ==================================================================== -->
-  <g transform="translate(30, 528)">
-    <rect x="0" y="0" width="920" height="68" rx="8" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5" filter="url(#nb-shadow-sm)" />
+  <g transform="translate(30, 495)">
+    <rect x="0" y="0" width="900" height="65" rx="8" fill="#FFFFFF" stroke="#0F172A" stroke-width="2.5" filter="url(#nb-shadow-sm)" />
     
-    <text x="20" y="40" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="13" fill="#0F172A">
+    <text x="20" y="38" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="13" fill="#0F172A">
       PETUNJUK KABEL I2C:
     </text>
 
     <!-- Wire 1: VCC -->
-    <g transform="translate(200, 19)">
+    <g transform="translate(200, 18)">
       <rect x="0" y="0" width="145" height="30" rx="4" fill="#FEE2E2" stroke="#EF4444" stroke-width="1.5" />
       <line x1="12" y1="15" x2="32" y2="15" stroke="#EF4444" stroke-width="4" stroke-linecap="round" />
       <text x="38" y="19" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="800" fill="#B91C1C">3.3V (VCC)</text>
     </g>
 
     <!-- Wire 2: GND -->
-    <g transform="translate(365, 19)">
+    <g transform="translate(365, 18)">
       <rect x="0" y="0" width="155" height="30" rx="4" fill="#F1F5F9" stroke="#0F172A" stroke-width="1.5" />
       <line x1="12" y1="15" x2="32" y2="15" stroke="#0F172A" stroke-width="4" stroke-linecap="round" />
       <text x="38" y="19" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="800" fill="#0F172A">GND (Ground)</text>
     </g>
 
     <!-- Wire 3: SDA -->
-    <g transform="translate(540, 19)">
-      <rect x="0" y="0" width="170" height="30" rx="4" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5" />
+    <g transform="translate(540, 18)">
+      <rect x="0" y="0" width="165" height="30" rx="4" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5" />
       <line x1="12" y1="15" x2="32" y2="15" stroke="#10B981" stroke-width="4" stroke-linecap="round" />
-      <text x="38" y="19" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="800" fill="#065F46">GPIO 8 (SDA Data)</text>
+      <text x="38" y="19" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="800" fill="#065F46">GPIO 8 (SDA)</text>
     </g>
 
     <!-- Wire 4: SCL -->
-    <g transform="translate(730, 19)">
-      <rect x="0" y="0" width="170" height="30" rx="4" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.5" />
+    <g transform="translate(725, 18)">
+      <rect x="0" y="0" width="155" height="30" rx="4" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.5" />
       <line x1="12" y1="15" x2="32" y2="15" stroke="#2563EB" stroke-width="4" stroke-linecap="round" />
-      <text x="38" y="19" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="800" fill="#1E40AF">GPIO 9 (SCL Clock)</text>
+      <text x="38" y="19" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="800" fill="#1E40AF">GPIO 9 (SCL)</text>
     </g>
   </g>
 

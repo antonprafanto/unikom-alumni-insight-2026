@@ -30,22 +30,21 @@ Proyek ini membuktikan bahwa komputasi kecerdasan buatan (*Machine Learning / Ti
 
 Sebuah sistem **bukan sekadar IoT biasa** melainkan sah disebut **Edge AI** apabila memenuhi 4 pilar utama:
 1. **On-Device Inference:** Perhitungan inferensi model dieksekusi 100% di dalam SRAM chip lokal (ESP32-S3 Xtensa LX7), bukan di server remote.
-2. **Data-Driven (Bukan Sekadar IF-ELSE Statis):** Menggunakan pipeline ekstraksi fitur sinyal dinamis (*DSP/Windowing*) dan estimasi *adaptive baseline* multi-kondisi.
-3. **Kemandirian Offline Total (*Zero Cloud Dependency*):** Sistem tetap mampu mendeteksi bahaya dan mengambil keputusan saat internet terputus.
-4. **Sensor-Centric Decision:** Keputusan lahir langsung dari tranduser fisik (*continuous streaming* getaran 3-sumbu dan gas VOC).
+2. **Data-Driven (Bukan Sekadar IF-ELSE Statis):** Menggunakan pipeline ekstraksi fitur sinyal dinamis (*DSP/Windowing*) dan analisis energi getaran (*Root Mean Square*).
+3. **Kemandirian Offline Total (*Zero Cloud Dependency*):** Sistem tetap mampu mendeteksi anomali getaran mesin dan mengeksekusi kendali saat internet terputus.
+4. **Sensor-Centric Decision:** Keputusan lahir langsung dari tranduser fisik (*continuous streaming* sinyal kinematik 6-sumbu MPU-6050).
 
-#### 🔬 5 Lapisan Inteligensi On-Device pada Demo Ini:
-* **Layer 1 (On-Device Feature Extraction):** Mengonversi sinyal percepatan mentah ($a_x, a_y, a_z$) menjadi *Dynamic Acceleration Magnitude* $|\sqrt{a_x^2 + a_y^2 + a_z^2} - 1.0\text{g}|$ dan menghitung energi *Root Mean Square (RMS)* dalam *circular buffer window*.
-* **Layer 2 (Predictive Maintenance Engine):** Mengklasifikasikan pola getaran mekanis untuk membedakan gerakan goyang wajar vs anomali kerusakan bantalan mesin (*bearing fault*).
-* **Layer 3 (Adaptive Baseline Gas Tracker):** Sensor BME680 menggunakan algoritma moving average untuk mempelajari udara bersih ruangan secara kontinu dan mendeteksi lonjakan gas VOC berbahaya secara relatif.
-* **Layer 4 (Kinematic Gesture Intent Engine):** Menganalisis sudut sikap ruang (*Attitude Roll/Pitch*) untuk mendeteksi intensi perintah perpindahan slide presentasi dalam waktu $< 10\text{ ms}$.
-* **Layer 5 (Multi-Modal Decision Fusion):** Menggabungkan sinyal kinematik dan gas menjadi status komposit (`NOMINAL`, `VIB ANOMALY`, `GAS HAZARD`, `CRITICAL HAZARD`).
+#### 🔬 4 Lapisan Inteligensi On-Device pada Demo Ini:
+* **Layer 1 (On-Device DSP & Feature Extraction):** Mengonversi sinyal percepatan mentah ($a_x, a_y, a_z$) menjadi *Dynamic Acceleration Magnitude* $|\sqrt{a_x^2 + a_y^2 + a_z^2} - 1.0\text{g}|$ dan menghitung energi *Root Mean Square (RMS)* dalam *circular buffer window (N=16)*.
+* **Layer 2 (Predictive Maintenance Pattern Classifier):** Mengklasifikasikan pola getaran mekanis untuk membedakan gerakan goyang wajar vs anomali kerusakan bantalan mesin (*bearing fault*).
+* **Layer 3 (Kinematic Gesture Intent Engine):** Menganalisis sudut sikap ruang (*Attitude Roll/Pitch*) untuk mendeteksi intensi perintah perpindahan slide presentasi dalam waktu $< 10\text{ ms}$.
+* **Layer 4 (Composite Safety & Latency Benchmark):** Menghasilkan status keamanan mesin (`NOMINAL`, `VIB ANOMALY`, `HARSH IMPACT`) dan mencatat waktu inferensi lokal secara presisi.
 
 ---
 
 ## 2. Skema Rangkaian Hardware (Single I2C Bus)
 
-Semua sensor dan display menggunakan **1 jalur bus I2C bersama (Shared Bus)**. Cukup hubungkan 4 kabel utama dari ESP32-S3 ke breadboard:
+Semua modul menggunakan **1 jalur bus I2C bersama (Shared Bus)**. Cukup hubungkan 4 kabel utama dari ESP32-S3 ke breadboard:
 
 ![Skema Rangkaian I2C ESP32-S3](skema_rangkaian_i2c_esp32s3.svg)
 
@@ -53,10 +52,10 @@ Semua sensor dan display menggunakan **1 jalur bus I2C bersama (Shared Bus)**. C
 
 | Nama Modul | Pin Modul | Sambungkan ke ESP32-S3 | Keterangan |
 | :--- | :--- | :--- | :--- |
-| **Semua Modul** | `VCC` / `VIN` | **`3.3V`** | Jangan hubungkan ke 5V langsung kecuali modul memiliki regulator internal |
-| **Semua Modul** | `GND` | **`GND`** | Ground bersama |
-| **Semua Modul** | `SDA` | **`GPIO 8`** *(atau GPIO 21)* | Data Serial I2C |
-| **Semua Modul** | `SCL` | **`GPIO 9`** *(atau GPIO 22)* | Clock Serial I2C |
+| **MPU-6050 & OLED** | `VCC` / `VIN` | **`3.3V`** | Catu daya tegangan 3.3V |
+| **MPU-6050 & OLED** | `GND` | **`GND`** | Ground bersama |
+| **MPU-6050 & OLED** | `SDA` | **`GPIO 8`** | Jalur Data Serial I2C |
+| **MPU-6050 & OLED** | `SCL` | **`GPIO 9`** | Jalur Clock Serial I2C |
 
 ---
 
@@ -76,7 +75,7 @@ Sebagian besar board ESP32-S3 DevKit memiliki **2 port USB Type-C**:
 
 ## 4. Diagram Alir & Arsitektur Firmware (Flowchart)
 
-Diagram alir di bawah ini memvisualisasikan eksekusi siklus program `firmware_esp32s3.ino` dari inisialisasi boot hingga *5-Layer On-Device Edge AI Engine* dan *dual-output dispatch* (OLED + WebSerial):
+Diagram alir di bawah ini memvisualisasikan eksekusi siklus program `firmware_esp32s3.ino` dari inisialisasi boot hingga *Edge AI Kinematic Engine* dan *dual-output dispatch* (OLED + WebSerial):
 
 ![Diagram Alir Firmware ESP32-S3](flowchart_firmware_esp32s3_pipeline.svg)
 
@@ -97,9 +96,8 @@ Buka **Sketch** $\rightarrow$ **Include Library** $\rightarrow$ **Manage Librari
 1. `Adafruit SSD1306` by Adafruit
 2. `Adafruit GFX Library` by Adafruit
 3. `Adafruit MPU6050` by Adafruit
-4. `Adafruit BME680 Library` by Adafruit
-5. `Adafruit Unified Sensor` by Adafruit
-6. `ArduinoJson` by Benoit Blanchon (v6.x atau v7.x)
+4. `Adafruit Unified Sensor` by Adafruit
+5. `ArduinoJson` by Benoit Blanchon (v6.x atau v7.x)
 
 ### Langkah C: Konfigurasi Menu Tools
 * **Board:** `ESP32S3 Dev Module`
@@ -115,10 +113,9 @@ Buka **Sketch** $\rightarrow$ **Include Library** $\rightarrow$ **Manage Librari
 3. Buka Serial Monitor pada baud rate **115200**. Anda akan melihat hasil pemindaian I2C otomatis:
    ```text
    🔍 [I2C DIAGNOSTIC SCANNER] Memindai Alamat Bus I2C...
-     -> Ditemukan Device di Alamat: 0x3C (OLED 0.96 SSD1306)
+     -> Ditemukan Device di Alamat: 0x3C (OLED 0.96" SSD1306)
      -> Ditemukan Device di Alamat: 0x68 (MPU-6050 6-Axis IMU)
-     -> Ditemukan Device di Alamat: 0x77 (BME-680 Gas/Env Sensor)
-   ✅ Total 3 perangkat I2C terhubung dan aktif.
+   ✅ Total 2 perangkat I2C terhubung dan aktif.
    ```
 
 ---

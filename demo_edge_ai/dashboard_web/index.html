@@ -381,50 +381,53 @@
       </div>
     </div>
 
-    <!-- BME-680 ENVIRONMENTAL 4-IN-1 ARRAY (4 COLS) -->
+    <!-- MPU-6050 GYROSCOPE & KINEMATIC VECTOR ARRAY (4 COLS) -->
     <div class="nb-card p-4 lg:col-span-4 bg-white flex flex-col justify-between">
       <div>
         <div class="flex items-center justify-between pb-2 border-b-2 border-neo-black">
           <div class="flex items-center gap-2">
-            <span class="text-xl">🧪</span>
-            <h4 class="font-display font-black text-base text-neo-black">BME-680 Array</h4>
+            <span class="text-xl">🔄</span>
+            <h4 class="font-display font-black text-base text-neo-black">MPU-6050 Gyro & Vector</h4>
           </div>
-          <span class="nb-badge bg-neo-cyan text-black text-[10px]">I2C 0x77</span>
+          <span class="nb-badge bg-neo-cyan text-black text-[10px]">I2C 0x68</span>
         </div>
 
-        <!-- 4 Environment Cards -->
+        <!-- 4 Motion Vector Cards -->
         <div class="grid grid-cols-2 gap-2 my-2 font-mono">
-          <div class="p-2.5 rounded border-2 border-neo-black bg-neo-orange/20 shadow-brutal-sm">
-            <span class="text-[10px] text-slate-600 font-bold block">SUHU (°C)</span>
-            <span id="envTemp" class="text-xl font-black text-neo-black">28.4</span>
+          <div class="p-2.5 rounded border-2 border-neo-black bg-neo-cyan/20 shadow-brutal-sm">
+            <span class="text-[10px] text-slate-600 font-bold block">GYRO X (rad/s)</span>
+            <span id="rawGx" class="text-xl font-black text-neo-black">0.00</span>
           </div>
 
-          <div class="p-2.5 rounded border-2 border-neo-black bg-neo-cyan/20 shadow-brutal-sm">
-            <span class="text-[10px] text-slate-600 font-bold block">LEMBAB (%RH)</span>
-            <span id="envHum" class="text-xl font-black text-neo-black">62.0</span>
+          <div class="p-2.5 rounded border-2 border-neo-black bg-neo-yellow/30 shadow-brutal-sm">
+            <span class="text-[10px] text-slate-600 font-bold block">GYRO Y (rad/s)</span>
+            <span id="rawGy" class="text-xl font-black text-neo-black">0.00</span>
           </div>
 
           <div class="p-2.5 rounded border-2 border-neo-black bg-neo-purple/20 shadow-brutal-sm">
-            <span class="text-[10px] text-slate-600 font-bold block">TEKANAN (hPa)</span>
-            <span id="envPress" class="text-xl font-black text-neo-black">1012</span>
+            <span class="text-[10px] text-slate-600 font-bold block">GYRO Z (rad/s)</span>
+            <span id="rawGz" class="text-xl font-black text-neo-black">0.00</span>
           </div>
 
-          <div id="gasCard" class="p-2.5 rounded border-2 border-neo-black bg-neo-green/30 shadow-brutal-sm transition-colors">
-            <span class="text-[10px] text-slate-600 font-bold block">GAS VOC (kΩ)</span>
-            <span id="envGas" class="text-xl font-black text-neo-black">85.4</span>
+          <div class="p-2.5 rounded border-2 border-neo-black bg-neo-orange/20 shadow-brutal-sm">
+            <span class="text-[10px] text-slate-600 font-bold block">IMU TEMP (°C)</span>
+            <span id="imuTemp" class="text-xl font-black text-neo-black">28.4</span>
           </div>
         </div>
       </div>
 
       <!-- Test Injection Triggers -->
-      <div class="pt-2 border-t-2 border-neo-black flex items-center justify-between gap-2 text-xs font-mono">
-        <span class="text-slate-600 font-bold text-[11px]">Inject:</span>
-        <div class="flex gap-2">
-          <button onclick="injectVibrationShock()" class="nb-button bg-neo-yellow text-black px-2 py-1 text-[11px]">
+      <div class="pt-2 border-t-2 border-neo-black flex items-center justify-between gap-1 text-xs font-mono">
+        <span class="text-slate-600 font-bold text-[11px]">Simulasi:</span>
+        <div class="flex gap-1.5 flex-wrap">
+          <button onclick="injectVibrationShock()" class="nb-button bg-neo-yellow text-black px-2 py-1 text-[11px]" title="Simulasi Benturan / Getaran Rusak">
             💥 Shock
           </button>
-          <button onclick="injectGasDrop()" class="nb-button bg-neo-pink text-white px-2 py-1 text-[11px]">
-            💨 Gas Drop
+          <button onclick="injectTiltRight()" class="nb-button bg-neo-green text-black px-2 py-1 text-[11px]" title="Miring Kanan -> Next Slide">
+            ➡️ Next
+          </button>
+          <button onclick="injectTiltLeft()" class="nb-button bg-neo-pink text-white px-2 py-1 text-[11px]" title="Miring Kiri -> Prev Slide">
+            ⬅️ Prev
           </button>
         </div>
       </div>
@@ -592,13 +595,20 @@
         ax: pkt.acc ? pkt.acc.x : 0,
         ay: pkt.acc ? pkt.acc.y : 0,
         az: pkt.acc ? pkt.acc.z : 0,
-        temp: pkt.env ? pkt.env.temp : 0,
-        gas: pkt.env ? pkt.env.gas : 0,
-        state: pkt.ai ? pkt.ai.state : 'NOMINAL'
+        gx: pkt.gyro ? pkt.gyro.x : 0,
+        gy: pkt.gyro ? pkt.gyro.y : 0,
+        gz: pkt.gyro ? pkt.gyro.z : 0,
+        pitch: pkt.ori ? pkt.ori.pitch : 0,
+        roll: pkt.ori ? pkt.ori.roll : 0,
+        state: pkt.ai ? pkt.ai.state : 'NOMINAL',
+        dyn_g: pkt.ai ? (pkt.ai.dyn_g || pkt.ai.peak_g || 0) : 0,
+        rms: pkt.ai ? (pkt.ai.rms_vib || pkt.ai.rms_g || 0) : 0,
+        latency: pkt.ai ? pkt.ai.latency_ms : 0,
+        gesture: pkt.ai ? pkt.ai.gesture : 'NONE'
       });
       if (recordedData.length > 500) recordedData.shift();
 
-      // Kinematics
+      // Kinematics (Accelerometer)
       if (pkt.acc) {
         const ax = pkt.acc.x - tareAx;
         const ay = pkt.acc.y - tareAy;
@@ -614,6 +624,16 @@
         oscChart.update('none');
       }
 
+      // Gyroscope & Temperature
+      if (pkt.gyro) {
+        document.getElementById('rawGx').innerText = (pkt.gyro.x || 0).toFixed(2);
+        document.getElementById('rawGy').innerText = (pkt.gyro.y || 0).toFixed(2);
+        document.getElementById('rawGz').innerText = (pkt.gyro.z || 0).toFixed(2);
+      }
+      if (pkt.temp) {
+        document.getElementById('imuTemp').innerText = Number(pkt.temp).toFixed(1);
+      }
+
       // Orientation 3D
       if (pkt.ori && boardMesh) {
         const pitchRad = (pkt.ori.pitch * Math.PI) / 180.0;
@@ -621,16 +641,8 @@
         boardMesh.rotation.x = pitchRad;
         boardMesh.rotation.z = rollRad;
 
-        document.getElementById('valPitch').innerText = pkt.ori.pitch.toFixed(1) + '°';
-        document.getElementById('valRoll').innerText  = pkt.ori.roll.toFixed(1) + '°';
-      }
-
-      // Environmental
-      if (pkt.env) {
-        document.getElementById('envTemp').innerText  = pkt.env.temp.toFixed(1);
-        document.getElementById('envHum').innerText   = pkt.env.hum.toFixed(1);
-        document.getElementById('envPress').innerText = Math.round(pkt.env.press);
-        document.getElementById('envGas').innerText   = pkt.env.gas.toFixed(1);
+        document.getElementById('valPitch').innerText = Number(pkt.ori.pitch).toFixed(1) + '°';
+        document.getElementById('valRoll').innerText  = Number(pkt.ori.roll).toFixed(1) + '°';
       }
 
       // Edge AI State
@@ -782,7 +794,8 @@
     // SIMULATION ENGINE
     // ========================================================================
     let simShockUntil = 0;
-    let simGasUntil = 0;
+    let simTiltRightUntil = 0;
+    let simTiltLeftUntil = 0;
 
     function toggleSimulation() {
       isSimulating = !isSimulating;
@@ -802,12 +815,17 @@
 
     function injectVibrationShock() {
       if (!isSimulating) toggleSimulation();
-      simShockUntil = Date.now() + 1400;
+      simShockUntil = Date.now() + 1500;
     }
 
-    function injectGasDrop() {
+    function injectTiltRight() {
       if (!isSimulating) toggleSimulation();
-      simGasUntil = Date.now() + 3000;
+      simTiltRightUntil = Date.now() + 1800;
+    }
+
+    function injectTiltLeft() {
+      if (!isSimulating) toggleSimulation();
+      simTiltLeftUntil = Date.now() + 1800;
     }
 
     function startSimEngine() {
@@ -816,41 +834,52 @@
         t += 0.1;
         const now = Date.now();
         const shock = now < simShockUntil;
-        const gasLeak = now < simGasUntil;
+        const tiltRight = now < simTiltRightUntil;
+        const tiltLeft = now < simTiltLeftUntil;
 
-        const ax = shock ? (Math.random() * 14 - 7) : (Math.sin(t) * 0.35);
-        const ay = shock ? (Math.random() * 14 - 7) : (Math.cos(t) * 0.25);
-        const az = shock ? (9.81 + Math.random() * 16 - 8) : (9.81 + Math.sin(t * 1.5) * 0.15);
+        let ax = shock ? (Math.random() * 16 - 8) : (Math.sin(t) * 0.35);
+        let ay = shock ? (Math.random() * 16 - 8) : (Math.cos(t) * 0.25);
+        let az = shock ? (9.81 + Math.random() * 18 - 9) : (9.81 + Math.sin(t * 1.5) * 0.15);
 
-        const pitch = Math.atan2(-ax, Math.sqrt(ay * ay + az * az)) * (180 / Math.PI);
-        const roll  = Math.atan2(ay, az) * (180 / Math.PI);
-        const gasVal = gasLeak ? (16.0 + Math.random() * 4) : (85.0 + Math.sin(t * 0.4) * 2);
+        let pitch = Math.atan2(-ax, Math.sqrt(ay * ay + az * az)) * (180 / Math.PI);
+        let roll  = Math.atan2(ay, az) * (180 / Math.PI);
 
-        let state = "SYSTEM NOMINAL";
+        if (tiltRight) {
+          roll = 48.0;
+          ay = 7.2;
+          az = 6.4;
+        } else if (tiltLeft) {
+          roll = -48.0;
+          ay = -7.2;
+          az = 6.4;
+        }
+
+        let state = "NOMINAL";
         let conf = 98;
-        if (shock && gasLeak) { state = "CRITICAL HAZARD"; conf = 99; }
-        else if (shock) { state = "VIB ANOMALY!"; conf = 96; }
-        else if (gasLeak) { state = "GAS HAZARD!"; conf = 95; }
+        if (shock) {
+          state = "VIB ANOMALY!";
+          conf = 96;
+        }
 
         let gesture = "NONE";
-        if (roll > 42) gesture = "NEXT_SLIDE";
-        else if (roll < -42) gesture = "PREV_SLIDE";
+        if (roll > 40) gesture = "NEXT_SLIDE";
+        else if (roll < -40) gesture = "PREV_SLIDE";
 
         const packet = {
-          id: "SIM_NODE",
           acc: { x: ax, y: ay, z: az },
+          gyro: { x: shock ? (Math.random()*4-2) : (Math.sin(t)*0.08), y: shock ? (Math.random()*4-2) : (Math.cos(t)*0.08), z: shock ? (Math.random()*4-2) : 0.02 },
           ori: { pitch: pitch, roll: roll },
-          env: { temp: 28.4 + Math.sin(t * 0.1) * 0.4, hum: 62.0, press: 1012.4, gas: gasVal },
           ai: {
             state: state,
             conf: conf,
             vib_alert: shock,
-            gas_alert: gasLeak,
             gesture: gesture,
             peak_g: (shock ? 1.85 : 0.05).toFixed(2),
-            rms_g: (shock ? 0.62 : 0.03).toFixed(2),
-            latency_ms: (8.2 + Math.random() * 0.6).toFixed(2)
-          }
+            rms_vib: (shock ? 0.62 : 0.03).toFixed(2),
+            latency_ms: (8.2 + Math.random() * 0.6).toFixed(2),
+            is_anomaly: shock
+          },
+          temp: 28.4 + Math.sin(t * 0.1) * 0.4
         };
 
         processPacket(packet);
