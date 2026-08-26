@@ -18,6 +18,9 @@
 * 📘 **Master Handout & Starter Kit Mahasiswa (Siap Cetak PDF):**  
   👉 [https://antonprafanto.github.io/unikom-alumni-insight-2026/event_alumni_insight/handout_mahasiswa_edge_ai.html](https://antonprafanto.github.io/unikom-alumni-insight-2026/event_alumni_insight/handout_mahasiswa_edge_ai.html)
 
+* ⚡ **Live Edge AI Web Telemetry Workstation (ESP32-S3):**  
+  👉 [https://antonprafanto.github.io/unikom-alumni-insight-2026/demo_edge_ai/dashboard_web/index.html](https://antonprafanto.github.io/unikom-alumni-insight-2026/demo_edge_ai/dashboard_web/index.html)
+
 ---
 
 ## 📌 Ringkasan Acara & Deskripsi Materi
@@ -42,6 +45,11 @@ unikom-alumni-insight-2026/
 │   ├── slides_alumni_insight_2026.html               # Slide presentasi interaktif (13 slide)
 │   ├── handout_mahasiswa_edge_ai.html                # Modul handout mahasiswa (Fitur Cetak PDF)
 │   └── qr_github.svg                                 # Aset QR code lokal event
+├── demo_edge_ai/                                     # 🚀 Paket Live Demo Mahasiswa
+│   ├── firmware_esp32s3/                             # Source code Arduino C++ ESP32-S3
+│   ├── dashboard_web/                                # WebSerial Telemetry Workstation (HTML/JS)
+│   ├── wokwi/                                        # Diagram simulasi browser gratis Wokwi
+│   └── README.md                                     # Panduan perakitan & troubleshooting
 ├── .nojekyll                                         # Bypass Jekyll build untuk GitHub Pages
 └── README.md                                         # Dokumentasi repositori
 ```

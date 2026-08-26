@@ -1,0 +1,9 @@
+# Wokwi Library Dependencies
+# Salin baris di bawah ini ke tab libraries.txt di Wokwi.com:
+
+Adafruit SSD1306
+Adafruit GFX Library
+Adafruit MPU6050
+Adafruit BME680 Library
+Adafruit Unified Sensor
+ArduinoJson

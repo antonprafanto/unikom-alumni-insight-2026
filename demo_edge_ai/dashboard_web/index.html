@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNIKOM Edge AI Workstation · Neo-Brutalism Edition</title>
+
+  <!-- Google Fonts: Space Grotesk & JetBrains Mono & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Space+Grotesk:wght@500;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS & Phosphor Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <!-- Chart.js & Three.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Space Grotesk', 'sans-serif'],
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            neo: {
+              bg: '#F4EFE6',
+              paper: '#FFFDF9',
+              yellow: '#FFE600',
+              cyan: '#00F0FF',
+              pink: '#FF6B8B',
+              green: '#00F5A0',
+              purple: '#B388FF',
+              orange: '#FF9100',
+              black: '#121212',
+              darkcard: '#1E1E24'
+            }
+          },
+          boxShadow: {
+            'brutal-sm': '3px 3px 0px #121212',
+            'brutal': '5px 5px 0px #121212',
+            'brutal-lg': '8px 8px 0px #121212',
+            'brutal-xl': '12px 12px 0px #121212',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #F4EFE6;
+      background-image: radial-gradient(#D5CDC3 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+      color: #121212;
+    }
+
+    /* NEO-BRUTALIST ATOMS */
+    .nb-card {
+      background-color: #FFFDF9;
+      border: 3px solid #121212;
+      box-shadow: 5px 5px 0px #121212;
+      border-radius: 8px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .nb-button {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      border: 3px solid #121212;
+      box-shadow: 4px 4px 0px #121212;
+      border-radius: 6px;
+      transition: all 0.1s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .nb-button:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px #121212;
+    }
+    .nb-button:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px #121212;
+    }
+
+    .nb-badge {
+      border: 2px solid #121212;
+      box-shadow: 2px 2px 0px #121212;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      border-radius: 4px;
+      padding: 2px 8px;
+    }
+
+    .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #E5DFC5; border-left: 2px solid #121212; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #121212; border-radius: 0; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-neo-yellow selection:text-black">
+
+  <!-- TOP HEADER / NEO-BRUTALIST NAV BAR -->
+  <header class="border-b-[3px] border-neo-black bg-neo-yellow px-4 lg:px-6 py-3.5 sticky top-0 z-50">
+    <div class="max-w-[1720px] mx-auto flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Brand & Project Identity -->
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 bg-neo-black text-neo-yellow border-2 border-neo-black shadow-brutal-sm flex items-center justify-center rounded-lg font-display font-extrabold text-2xl rotate-[-2deg]">
+          ⚡
+        </div>
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="nb-badge bg-neo-black text-white text-[11px]">UNIKOM 2026</span>
+            <span class="nb-badge bg-neo-pink text-black text-[11px] rotate-[1deg]">EDGE AI LAB</span>
+            <h1 class="font-display font-black text-lg md:text-xl tracking-tight text-neo-black">
+              ESP32-S3 Multimodal Telemetry
+            </h1>
+          </div>
+          <p class="text-xs font-mono font-semibold text-neo-black/80 mt-0.5">
+            Keynote Masterclass: Anton Prafanto, S.Kom., M.T. · Dual-Core LX7
+          </p>
+        </div>
+      </div>
+
+      <!-- Action Buttons & Port Status -->
+      <div class="flex items-center flex-wrap gap-2.5">
+        
+        <!-- Status Indicator -->
+        <div id="connBadge" class="nb-badge bg-white text-neo-black flex items-center gap-2 text-xs py-1.5 px-3">
+          <span id="connDot" class="w-3 h-3 rounded-full bg-slate-400 border border-black inline-block"></span>
+          <span id="connLabel" class="font-mono">PORT: DISCONNECTED</span>
+        </div>
+
+        <!-- Sample Rate Counter -->
+        <div class="nb-badge bg-neo-cyan text-black text-xs py-1.5 px-3 hidden sm:flex items-center gap-1.5">
+          <span>FPS:</span>
+          <span id="rateLabel" class="font-black">0.0 Hz</span>
+        </div>
+
+        <!-- Connect USB (WebSerial) -->
+        <button id="btnConnect" onclick="toggleSerialConnection()" class="nb-button bg-neo-green text-black px-4 py-2 text-xs md:text-sm">
+          <i class="ph-bold ph-plugs text-base"></i>
+          <span id="btnConnectText">CONNECT USB</span>
+        </button>
+
+        <!-- Simulator Mode Toggle -->
+        <button id="btnSim" onclick="toggleSimulation()" class="nb-button bg-white text-black px-3 py-2 text-xs md:text-sm">
+          <i class="ph-bold ph-play text-base"></i>
+          <span id="simBtnText">SIMULATOR</span>
+        </button>
+
+        <!-- CSV Export -->
+        <button onclick="exportCSV()" class="nb-button bg-neo-purple text-white px-3 py-2 text-xs md:text-sm" title="Export CSV">
+          <i class="ph-bold ph-file-csv text-base"></i>
+          <span>CSV</span>
+        </button>
+
+        <!-- Audio Alert -->
+        <button onclick="toggleMute()" id="btnAudio" class="nb-button bg-white text-black p-2 text-xs md:text-sm" title="Toggle Alarm Tone">
+          <i id="audioIcon" class="ph-bold ph-speaker-simple-slash text-base"></i>
+        </button>
+
+        <!-- Fullscreen -->
+        <button onclick="toggleFullscreen()" class="nb-button bg-white text-black p-2 text-xs md:text-sm" title="Layar Penuh Proyektor">
+          <i class="ph-bold ph-corners-out text-base"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="flex-1 p-4 lg:p-6 max-w-[1720px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+    <!-- ================================================================== -->
+    <!-- ROW 1: PRIMARY INFERENCE OUTPUT & LATENCY BENCHMARK (12 COLS) -->
+    <!-- ================================================================== -->
+
+    <!-- CARD 1: ON-DEVICE EDGE AI CLASSIFICATION (4 COLS) -->
+    <div id="aiStateCard" class="nb-card p-5 lg:col-span-4 bg-white flex flex-col justify-between relative overflow-hidden">
+      <!-- Decorative Stripe Top -->
+      <div class="absolute top-0 left-0 right-0 h-2 bg-neo-green border-b-2 border-neo-black" id="aiTopStripe"></div>
+
+      <div>
+        <div class="flex items-center justify-between mt-1 mb-2">
+          <span class="nb-badge bg-neo-black text-white text-[10px]">ON-CHIP INFERENCE</span>
+          <span id="stateBadge" class="nb-badge bg-neo-green text-black text-[11px]">STABLE (INT8)</span>
+        </div>
+
+        <div class="my-2">
+          <span class="text-xs font-mono uppercase text-slate-500 font-bold block">CURRENT MACHINE STATE</span>
+          <h2 id="stateTitle" class="font-display font-black text-3xl md:text-4xl text-neo-black tracking-tight mt-0.5">
+            SYSTEM NOMINAL
+          </h2>
+        </div>
+
+        <!-- 4-Box Telemetry Matrix -->
+        <div class="grid grid-cols-2 gap-2.5 mt-4">
+          <div class="p-2.5 rounded border-2 border-neo-black bg-neo-yellow/30 shadow-brutal-sm">
+            <span class="text-[10px] font-mono font-bold text-slate-600 block">CONFIDENCE</span>
+            <span id="aiConf" class="font-mono font-black text-xl text-neo-black">98.0%</span>
+          </div>
+
+          <div class="p-2.5 rounded border-2 border-neo-black bg-neo-green/30 shadow-brutal-sm">
+            <span class="text-[10px] font-mono font-bold text-slate-600 block">INFERENCE LATENCY</span>
+            <span id="aiLatency" class="font-mono font-black text-xl text-neo-black">8.42 ms</span>
+          </div>
+
+          <div class="p-2.5 rounded border-2 border-neo-black bg-white shadow-brutal-sm">
+            <span class="text-[10px] font-mono font-bold text-slate-600 block">VIBRATION RMS</span>
+            <span id="aiRms" class="font-mono font-black text-lg text-neo-black">0.04 G</span>
+          </div>
+
+          <div class="p-2.5 rounded border-2 border-neo-black bg-white shadow-brutal-sm">
+            <span class="text-[10px] font-mono font-bold text-slate-600 block">PEAK DYNAMIC G</span>
+            <span id="aiPeak" class="font-mono font-black text-lg text-neo-black">0.08 G</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gesture Remote Hook -->
+      <div class="mt-4 pt-3 border-t-2 border-neo-black/20 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">🎮</span>
+          <div>
+            <span class="text-[10px] font-mono font-bold text-slate-500 uppercase block">Slide Remote Hook:</span>
+            <span id="gestureLabel" class="nb-badge bg-neo-black text-neo-yellow text-xs">IDLE</span>
+          </div>
+        </div>
+        <span class="text-[11px] font-mono text-slate-600">Tilt R: Next · Tilt L: Prev</span>
+      </div>
+    </div>
+
+    <!-- CARD 2: THE "CLOUD VS EDGE" LATENCY RACE (8 COLS) -->
+    <div class="nb-card p-5 lg:col-span-8 bg-white flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between flex-wrap gap-2 pb-3 border-b-2 border-neo-black">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🏁</span>
+            <div>
+              <h3 class="font-display font-black text-lg text-neo-black leading-tight">The Cloud vs Edge Latency Race</h3>
+              <p class="text-xs font-mono text-slate-600">Komparasi waktu inferensi lokal pada chip ESP32-S3 vs REST API Server Cloud</p>
+            </div>
+          </div>
+
+          <button id="btnCloudToggle" onclick="toggleCloudFailover()" class="nb-button bg-neo-pink text-white px-3 py-1.5 text-xs">
+            <i class="ph-bold ph-wifi-slash"></i>
+            <span>Simulasi Drop Internet</span>
+          </button>
+        </div>
+
+        <!-- Latency Visual Bars -->
+        <div class="space-y-4 my-4">
+          <!-- Edge Node -->
+          <div>
+            <div class="flex justify-between text-xs font-mono font-bold mb-1.5">
+              <span class="flex items-center gap-1.5 text-neo-black">
+                <span class="w-3 h-3 rounded-full bg-neo-green border-2 border-black inline-block"></span>
+                ESP32-S3 On-Device TinyML (INT8)
+              </span>
+              <span id="edgeLatencyLabel" class="nb-badge bg-neo-green text-black">8.42 ms (Instant)</span>
+            </div>
+            <div class="w-full h-6 rounded border-2 border-neo-black bg-slate-100 p-0.5 shadow-brutal-sm">
+              <div id="edgeLatencyBar" class="h-full bg-neo-green rounded-sm border border-black transition-all duration-150" style="width: 5%;"></div>
+            </div>
+          </div>
+
+          <!-- Cloud Server -->
+          <div>
+            <div class="flex justify-between text-xs font-mono font-bold mb-1.5">
+              <span id="cloudTitle" class="flex items-center gap-1.5 text-neo-black">
+                <span class="w-3 h-3 rounded-full bg-neo-cyan border-2 border-black inline-block"></span>
+                Server Cloud AI (REST API via 4G/WiFi)
+              </span>
+              <span id="cloudLatencyLabel" class="nb-badge bg-neo-cyan text-black">465.0 ms</span>
+            </div>
+            <div class="w-full h-6 rounded border-2 border-neo-black bg-slate-100 p-0.5 shadow-brutal-sm">
+              <div id="cloudLatencyBar" class="h-full bg-neo-cyan rounded-sm border border-black transition-all duration-300" style="width: 78%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Callout -->
+      <div class="pt-3 border-t-2 border-neo-black grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-mono font-bold">
+        <div class="p-1.5 bg-neo-yellow/40 rounded border border-black">
+          🚀 Speedup: <strong class="text-black font-extrabold">~55x Lebih Cepat</strong>
+        </div>
+        <div class="p-1.5 bg-neo-green/40 rounded border border-black">
+          🔒 Privasi: <strong class="text-black font-extrabold">100% Zero-Cloud Leak</strong>
+        </div>
+        <div class="p-1.5 bg-neo-cyan/40 rounded border border-black">
+          💰 Biaya: <strong class="text-black font-extrabold">Rp 0 / Tanpa Token API</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- ROW 2: OSCILLOSCOPE REAL-TIME WAVEFORM (12 COLS) -->
+    <!-- ================================================================== -->
+    <div class="nb-card lg:col-span-12 p-5 bg-white flex flex-col">
+      <div class="flex items-center justify-between flex-wrap gap-2 pb-3 border-b-2 border-neo-black">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">📈</span>
+          <div>
+            <h3 class="font-display font-black text-lg text-neo-black">
+              Oscilloscope: 3-Axis Vibration Waveform (MPU-6050)
+            </h3>
+            <p class="text-xs font-mono text-slate-600">Sampling Rate: 20 Hz Telemetry Stream via I2C (0x68)</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 flex-wrap">
+          <span class="nb-badge bg-neo-cyan text-black text-xs">CH1: X-Axis</span>
+          <span class="nb-badge bg-neo-yellow text-black text-xs">CH2: Y-Axis</span>
+          <span class="nb-badge bg-neo-purple text-white text-xs">CH3: Z-Axis</span>
+          <button onclick="tareSensor()" class="nb-button bg-white text-black px-2.5 py-1 text-xs">
+            <i class="ph-bold ph-crosshair"></i> TARE / ZERO
+          </button>
+        </div>
+      </div>
+
+      <!-- Canvas Chart Container -->
+      <div class="py-3 flex-1 min-h-[250px] relative">
+        <canvas id="oscilloscopeChart"></canvas>
+      </div>
+
+      <!-- Raw Instantaneous Readouts -->
+      <div class="pt-3 border-t-2 border-neo-black grid grid-cols-3 gap-3 text-center font-mono font-bold text-xs md:text-sm">
+        <div class="p-2 bg-neo-cyan/20 rounded border-2 border-neo-black shadow-brutal-sm">
+          <span class="text-slate-600 text-[10px] block">ACCELERATION X</span>
+          <span id="rawAx" class="text-black text-base md:text-lg font-black">0.00</span> <span class="text-xs">m/s²</span>
+        </div>
+        <div class="p-2 bg-neo-yellow/30 rounded border-2 border-neo-black shadow-brutal-sm">
+          <span class="text-slate-600 text-[10px] block">ACCELERATION Y</span>
+          <span id="rawAy" class="text-black text-base md:text-lg font-black">0.00</span> <span class="text-xs">m/s²</span>
+        </div>
+        <div class="p-2 bg-neo-purple/20 rounded border-2 border-neo-black shadow-brutal-sm">
+          <span class="text-slate-600 text-[10px] block">ACCELERATION Z</span>
+          <span id="rawAz" class="text-black text-base md:text-lg font-black">9.81</span> <span class="text-xs">m/s²</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- ROW 3: 3D ATTITUDE + ENVIRONMENTAL MATRIX + TERMINAL LOG (12 COLS) -->
+    <!-- ================================================================== -->
+
+    <!-- 3D ORIENTATION INSPECTOR (4 COLS) -->
+    <div class="nb-card p-4 lg:col-span-4 bg-white flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between pb-2 border-b-2 border-neo-black">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">📐</span>
+            <h4 class="font-display font-black text-base text-neo-black">3D Spatial Attitude</h4>
+          </div>
+          <span class="nb-badge bg-neo-yellow text-black text-[10px]">REAL-TIME</span>
+        </div>
+
+        <div id="cadContainer" class="w-full h-44 my-2 rounded border-2 border-neo-black bg-neo-black flex items-center justify-center relative overflow-hidden shadow-brutal-sm">
+          <!-- 3D Canvas -->
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 font-mono font-bold text-xs text-center">
+        <div class="p-2 rounded border-2 border-neo-black bg-slate-50 shadow-brutal-sm">
+          <span class="text-[10px] text-slate-500 block">PITCH ANGLE</span>
+          <span id="valPitch" class="text-base font-black text-neo-black">0.0°</span>
+        </div>
+        <div class="p-2 rounded border-2 border-neo-black bg-slate-50 shadow-brutal-sm">
+          <span class="text-[10px] text-slate-500 block">ROLL ANGLE</span>
+          <span id="valRoll" class="text-base font-black text-neo-black">0.0°</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BME-680 ENVIRONMENTAL 4-IN-1 ARRAY (4 COLS) -->
+    <div class="nb-card p-4 lg:col-span-4 bg-white flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between pb-2 border-b-2 border-neo-black">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🧪</span>
+            <h4 class="font-display font-black text-base text-neo-black">BME-680 Array</h4>
+          </div>
+          <span class="nb-badge bg-neo-cyan text-black text-[10px]">I2C 0x77</span>
+        </div>
+
+        <!-- 4 Environment Cards -->
+        <div class="grid grid-cols-2 gap-2 my-2 font-mono">
+          <div class="p-2.5 rounded border-2 border-neo-black bg-neo-orange/20 shadow-brutal-sm">
+            <span class="text-[10px] text-slate-600 font-bold block">SUHU (°C)</span>
+            <span id="envTemp" class="text-xl font-black text-neo-black">28.4</span>
+          </div>
+
+          <div class="p-2.5 rounded border-2 border-neo-black bg-neo-cyan/20 shadow-brutal-sm">
+            <span class="text-[10px] text-slate-600 font-bold block">LEMBAB (%RH)</span>
+            <span id="envHum" class="text-xl font-black text-neo-black">62.0</span>
+          </div>
+
+          <div class="p-2.5 rounded border-2 border-neo-black bg-neo-purple/20 shadow-brutal-sm">
+            <span class="text-[10px] text-slate-600 font-bold block">TEKANAN (hPa)</span>
+            <span id="envPress" class="text-xl font-black text-neo-black">1012</span>
+          </div>
+
+          <div id="gasCard" class="p-2.5 rounded border-2 border-neo-black bg-neo-green/30 shadow-brutal-sm transition-colors">
+            <span class="text-[10px] text-slate-600 font-bold block">GAS VOC (kΩ)</span>
+            <span id="envGas" class="text-xl font-black text-neo-black">85.4</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Test Injection Triggers -->
+      <div class="pt-2 border-t-2 border-neo-black flex items-center justify-between gap-2 text-xs font-mono">
+        <span class="text-slate-600 font-bold text-[11px]">Inject:</span>
+        <div class="flex gap-2">
+          <button onclick="injectVibrationShock()" class="nb-button bg-neo-yellow text-black px-2 py-1 text-[11px]">
+            💥 Shock
+          </button>
+          <button onclick="injectGasDrop()" class="nb-button bg-neo-pink text-white px-2 py-1 text-[11px]">
+            💨 Gas Drop
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RAW PACKET INSPECTOR (4 COLS) -->
+    <div class="nb-card p-4 lg:col-span-4 bg-white flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between pb-2 border-b-2 border-neo-black">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">📟</span>
+            <h4 class="font-display font-black text-base text-neo-black">JSON Stream Terminal</h4>
+          </div>
+          <button onclick="clearTerminal()" class="nb-badge bg-white text-black text-[10px] hover:bg-slate-100">
+            CLEAR
+          </button>
+        </div>
+
+        <div id="terminalLog" class="w-full h-44 my-2 p-2 rounded border-2 border-neo-black bg-neo-black text-neo-green font-mono text-[11px] overflow-y-auto custom-scroll leading-relaxed shadow-brutal-sm select-text">
+          <div class="text-slate-500">// WebSerial Interface Ready. Colok kabel USB ESP32-S3.</div>
+        </div>
+      </div>
+
+      <div class="pt-2 border-t-2 border-neo-black text-[11px] font-mono text-slate-600 flex justify-between">
+        <span>Baud: <strong>115200</strong></span>
+        <span>Format: <strong>JSON Lines</strong></span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- JAVASCRIPT APPLICATION LOGIC -->
+  <script>
+    // ========================================================================
+    // STATE & CONTROLS
+    // ========================================================================
+    let port = null;
+    let reader = null;
+    let keepReading = false;
+    let isSimulating = false;
+    let simTimer = null;
+    let isCloudOutage = false;
+    let audioMuted = true;
+    let audioCtx = null;
+
+    let packetCount = 0;
+    let lastRateCalc = Date.now();
+    let recordedData = [];
+
+    let tareAx = 0, tareAy = 0, tareAz = 0;
+
+    // BroadcastChannel for Slide Presentation Control
+    const slideChannel = new BroadcastChannel('unikom_slide_channel');
+
+    // ========================================================================
+    // INITIALIZE OSCILLOSCOPE CHART (CHART.JS)
+    // ========================================================================
+    const BUFFER_SIZE = 40;
+    let labels = Array(BUFFER_SIZE).fill('');
+    let streamX = Array(BUFFER_SIZE).fill(0);
+    let streamY = Array(BUFFER_SIZE).fill(0);
+    let streamZ = Array(BUFFER_SIZE).fill(9.81);
+
+    const ctx = document.getElementById('oscilloscopeChart').getContext('2d');
+    const oscChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          { label: 'Ax', data: streamX, borderColor: '#00F0FF', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.2, pointRadius: 0 },
+          { label: 'Ay', data: streamY, borderColor: '#FFE600', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.2, pointRadius: 0 },
+          { label: 'Az', data: streamZ, borderColor: '#B388FF', backgroundColor: 'transparent', borderWidth: 2.5, tension: 0.2, pointRadius: 0 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        scales: {
+          x: { display: false },
+          y: {
+            min: -16,
+            max: 20,
+            grid: { color: '#E2DCD2', lineWidth: 1.5 },
+            ticks: { color: '#121212', font: { family: 'JetBrains Mono', weight: 'bold', size: 10 } }
+          }
+        },
+        plugins: { legend: { display: false } }
+      }
+    });
+
+    // ========================================================================
+    // INITIALIZE 3D CAD INSPECTOR (THREE.JS)
+    // ========================================================================
+    let scene, camera, renderer, boardMesh;
+    function initCAD() {
+      const container = document.getElementById('cadContainer');
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      container.appendChild(renderer.domElement);
+
+      // Neo-Brutalist 3D Board (Bright Yellow PCB with Black Edges)
+      const pcbGeo = new THREE.BoxGeometry(2.3, 0.14, 3.5);
+      const pcbMat = new THREE.MeshStandardMaterial({ color: 0xFFE600, roughness: 0.3, metalness: 0.1 });
+      boardMesh = new THREE.Mesh(pcbGeo, pcbMat);
+      scene.add(boardMesh);
+
+      // Hard Black Wireframe
+      const wireGeo = new THREE.EdgesGeometry(pcbGeo);
+      const wireMat = new THREE.LineBasicMaterial({ color: 0x121212, linewidth: 2 });
+      const wireframe = new THREE.LineSegments(wireGeo, wireMat);
+      boardMesh.add(wireframe);
+
+      // Chip component (Black with Cyan core)
+      const chipGeo = new THREE.BoxGeometry(1.1, 0.1, 1.1);
+      const chipMat = new THREE.MeshStandardMaterial({ color: 0x00F0FF, metalness: 0.5, roughness: 0.2 });
+      const chip = new THREE.Mesh(chipGeo, chipMat);
+      chip.position.y = 0.1;
+      boardMesh.add(chip);
+
+      // Lights
+      const ambLight = new THREE.AmbientLight(0xffffff, 1.0);
+      scene.add(ambLight);
+      const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      dirLight.position.set(5, 10, 5);
+      scene.add(dirLight);
+
+      camera.position.set(0, 4.4, 5.2);
+      camera.lookAt(0, 0, 0);
+
+      window.addEventListener('resize', () => {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+
+      function renderLoop() {
+        requestAnimationFrame(renderLoop);
+        renderer.render(scene, camera);
+      }
+      renderLoop();
+    }
+    initCAD();
+
+    // ========================================================================
+    // TELEMETRY PACKET PROCESSOR
+    // ========================================================================
+    function processPacket(pkt) {
+      if (!pkt) return;
+
+      packetCount++;
+      const now = Date.now();
+      if (now - lastRateCalc >= 1000) {
+        const hz = (packetCount / ((now - lastRateCalc) / 1000)).toFixed(1);
+        document.getElementById('rateLabel').innerText = hz + ' Hz';
+        packetCount = 0;
+        lastRateCalc = now;
+      }
+
+      // Record CSV buffer
+      recordedData.push({
+        time: new Date().toISOString(),
+        ax: pkt.acc ? pkt.acc.x : 0,
+        ay: pkt.acc ? pkt.acc.y : 0,
+        az: pkt.acc ? pkt.acc.z : 0,
+        temp: pkt.env ? pkt.env.temp : 0,
+        gas: pkt.env ? pkt.env.gas : 0,
+        state: pkt.ai ? pkt.ai.state : 'NOMINAL'
+      });
+      if (recordedData.length > 500) recordedData.shift();
+
+      // Kinematics
+      if (pkt.acc) {
+        const ax = pkt.acc.x - tareAx;
+        const ay = pkt.acc.y - tareAy;
+        const az = pkt.acc.z - tareAz;
+
+        document.getElementById('rawAx').innerText = ax.toFixed(2);
+        document.getElementById('rawAy').innerText = ay.toFixed(2);
+        document.getElementById('rawAz').innerText = az.toFixed(2);
+
+        streamX.shift(); streamX.push(ax);
+        streamY.shift(); streamY.push(ay);
+        streamZ.shift(); streamZ.push(az);
+        oscChart.update('none');
+      }
+
+      // Orientation 3D
+      if (pkt.ori && boardMesh) {
+        const pitchRad = (pkt.ori.pitch * Math.PI) / 180.0;
+        const rollRad  = (pkt.ori.roll * Math.PI) / 180.0;
+        boardMesh.rotation.x = pitchRad;
+        boardMesh.rotation.z = rollRad;
+
+        document.getElementById('valPitch').innerText = pkt.ori.pitch.toFixed(1) + '°';
+        document.getElementById('valRoll').innerText  = pkt.ori.roll.toFixed(1) + '°';
+      }
+
+      // Environmental
+      if (pkt.env) {
+        document.getElementById('envTemp').innerText  = pkt.env.temp.toFixed(1);
+        document.getElementById('envHum').innerText   = pkt.env.hum.toFixed(1);
+        document.getElementById('envPress').innerText = Math.round(pkt.env.press);
+        document.getElementById('envGas').innerText   = pkt.env.gas.toFixed(1);
+      }
+
+      // Edge AI State
+      if (pkt.ai) {
+        const stateTitle = document.getElementById('stateTitle');
+        const stateBadge = document.getElementById('stateBadge');
+        const topStripe  = document.getElementById('aiTopStripe');
+
+        document.getElementById('aiConf').innerText    = pkt.ai.conf + '%';
+        document.getElementById('aiLatency').innerText = pkt.ai.latency_ms + ' ms';
+        document.getElementById('edgeLatencyLabel').innerText = pkt.ai.latency_ms + ' ms';
+        document.getElementById('aiRms').innerText     = (pkt.ai.rms_g || '0.00') + ' G';
+        document.getElementById('aiPeak').innerText    = (pkt.ai.peak_g || '0.00') + ' G';
+
+        const isAlert = pkt.ai.vib_alert || pkt.ai.gas_alert;
+
+        if (isAlert) {
+          stateTitle.innerText = pkt.ai.state;
+          stateTitle.className = 'font-display font-black text-3xl md:text-4xl text-neo-pink tracking-tight mt-0.5 animate-bounce';
+          stateBadge.innerText = 'ALERT HAZARD!';
+          stateBadge.className = 'nb-badge bg-neo-pink text-white text-[11px]';
+          topStripe.className  = 'absolute top-0 left-0 right-0 h-2 bg-neo-pink border-b-2 border-neo-black';
+          playAlertTone();
+        } else {
+          stateTitle.innerText = pkt.ai.state;
+          stateTitle.className = 'font-display font-black text-3xl md:text-4xl text-neo-black tracking-tight mt-0.5';
+          stateBadge.innerText = 'STABLE (INT8)';
+          stateBadge.className = 'nb-badge bg-neo-green text-black text-[11px]';
+          topStripe.className  = 'absolute top-0 left-0 right-0 h-2 bg-neo-green border-b-2 border-neo-black';
+        }
+
+        // Gesture Hook to Slide Presentation
+        if (pkt.ai.gesture && pkt.ai.gesture !== "NONE") {
+          document.getElementById('gestureLabel').innerText = pkt.ai.gesture;
+          document.getElementById('gestureLabel').className = 'nb-badge bg-neo-pink text-white text-xs animate-pulse';
+          slideChannel.postMessage({ type: 'GESTURE', action: pkt.ai.gesture });
+        } else {
+          document.getElementById('gestureLabel').innerText = 'IDLE';
+          document.getElementById('gestureLabel').className = 'nb-badge bg-neo-black text-neo-yellow text-xs';
+        }
+      }
+
+      // Cloud Latency Simulation
+      if (!isCloudOutage) {
+        const cloudMs = (420 + Math.random() * 120).toFixed(1);
+        document.getElementById('cloudLatencyLabel').innerText = cloudMs + ' ms';
+      }
+    }
+
+    function appendTerminal(raw) {
+      const term = document.getElementById('terminalLog');
+      const row = document.createElement('div');
+      row.className = 'truncate text-neo-green hover:text-white';
+      row.innerText = raw;
+      term.appendChild(row);
+      if (term.childElementCount > 40) term.removeChild(term.firstChild);
+      term.scrollTop = term.scrollHeight;
+    }
+
+    function clearTerminal() {
+      document.getElementById('terminalLog').innerHTML = '<div class="text-slate-500">// Buffer cleared.</div>';
+    }
+
+    function tareSensor() {
+      if (streamX.length > 0) {
+        tareAx = streamX[streamX.length - 1];
+        tareAy = streamY[streamY.length - 1];
+        tareAz = streamZ[streamZ.length - 1] - 9.81;
+      }
+    }
+
+    // ========================================================================
+    // WEB SERIAL API CONNECTION
+    // ========================================================================
+    async function toggleSerialConnection() {
+      if (!('serial' in navigator)) {
+        alert("Browser Anda belum mendukung Web Serial API. Gunakan Google Chrome atau Microsoft Edge terbaru.");
+        return;
+      }
+
+      if (port) {
+        keepReading = false;
+        if (reader) await reader.cancel();
+        await port.close();
+        port = null;
+        updateConnectionUI(false);
+        return;
+      }
+
+      try {
+        port = await navigator.serial.requestPort();
+        await port.open({ baudRate: 115200 });
+        updateConnectionUI(true);
+        keepReading = true;
+
+        if (isSimulating) toggleSimulation();
+
+        const textDecoder = new TextDecoderStream();
+        port.readable.pipeTo(textDecoder.writable);
+        reader = textDecoder.readable.getReader();
+
+        let buffer = '';
+        while (keepReading) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          if (value) {
+            buffer += value;
+            const lines = buffer.split('\n');
+            buffer = lines.pop();
+
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+                try {
+                  const data = JSON.parse(trimmed);
+                  processPacket(data);
+                  appendTerminal(trimmed);
+                } catch (e) {}
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Serial connection error:", err);
+        updateConnectionUI(false);
+      }
+    }
+
+    function updateConnectionUI(connected) {
+      const dot = document.getElementById('connDot');
+      const label = document.getElementById('connLabel');
+      const btn = document.getElementById('btnConnect');
+      const btnText = document.getElementById('btnConnectText');
+
+      if (connected) {
+        dot.className = 'w-3 h-3 rounded-full bg-neo-green border border-black inline-block';
+        label.innerText = 'PORT: CONNECTED (115200)';
+        btnText.innerText = 'DISCONNECT';
+        btn.className = 'nb-button bg-neo-pink text-white px-4 py-2 text-xs md:text-sm';
+      } else {
+        dot.className = 'w-3 h-3 rounded-full bg-slate-400 border border-black inline-block';
+        label.innerText = 'PORT: DISCONNECTED';
+        btnText.innerText = 'CONNECT USB';
+        btn.className = 'nb-button bg-neo-green text-black px-4 py-2 text-xs md:text-sm';
+      }
+    }
+
+    // ========================================================================
+    // SIMULATION ENGINE
+    // ========================================================================
+    let simShockUntil = 0;
+    let simGasUntil = 0;
+
+    function toggleSimulation() {
+      isSimulating = !isSimulating;
+      const btn = document.getElementById('btnSim');
+      const label = document.getElementById('simBtnText');
+
+      if (isSimulating) {
+        label.innerText = 'STOP SIM';
+        btn.className = 'nb-button bg-neo-yellow text-black px-3 py-2 text-xs md:text-sm';
+        startSimEngine();
+      } else {
+        label.innerText = 'SIMULATOR';
+        btn.className = 'nb-button bg-white text-black px-3 py-2 text-xs md:text-sm';
+        if (simTimer) clearInterval(simTimer);
+      }
+    }
+
+    function injectVibrationShock() {
+      if (!isSimulating) toggleSimulation();
+      simShockUntil = Date.now() + 1400;
+    }
+
+    function injectGasDrop() {
+      if (!isSimulating) toggleSimulation();
+      simGasUntil = Date.now() + 3000;
+    }
+
+    function startSimEngine() {
+      let t = 0;
+      simTimer = setInterval(() => {
+        t += 0.1;
+        const now = Date.now();
+        const shock = now < simShockUntil;
+        const gasLeak = now < simGasUntil;
+
+        const ax = shock ? (Math.random() * 14 - 7) : (Math.sin(t) * 0.35);
+        const ay = shock ? (Math.random() * 14 - 7) : (Math.cos(t) * 0.25);
+        const az = shock ? (9.81 + Math.random() * 16 - 8) : (9.81 + Math.sin(t * 1.5) * 0.15);
+
+        const pitch = Math.atan2(-ax, Math.sqrt(ay * ay + az * az)) * (180 / Math.PI);
+        const roll  = Math.atan2(ay, az) * (180 / Math.PI);
+        const gasVal = gasLeak ? (16.0 + Math.random() * 4) : (85.0 + Math.sin(t * 0.4) * 2);
+
+        let state = "SYSTEM NOMINAL";
+        let conf = 98;
+        if (shock && gasLeak) { state = "CRITICAL HAZARD"; conf = 99; }
+        else if (shock) { state = "VIB ANOMALY!"; conf = 96; }
+        else if (gasLeak) { state = "GAS HAZARD!"; conf = 95; }
+
+        let gesture = "NONE";
+        if (roll > 42) gesture = "NEXT_SLIDE";
+        else if (roll < -42) gesture = "PREV_SLIDE";
+
+        const packet = {
+          id: "SIM_NODE",
+          acc: { x: ax, y: ay, z: az },
+          ori: { pitch: pitch, roll: roll },
+          env: { temp: 28.4 + Math.sin(t * 0.1) * 0.4, hum: 62.0, press: 1012.4, gas: gasVal },
+          ai: {
+            state: state,
+            conf: conf,
+            vib_alert: shock,
+            gas_alert: gasLeak,
+            gesture: gesture,
+            peak_g: (shock ? 1.85 : 0.05).toFixed(2),
+            rms_g: (shock ? 0.62 : 0.03).toFixed(2),
+            latency_ms: (8.2 + Math.random() * 0.6).toFixed(2)
+          }
+        };
+
+        processPacket(packet);
+        appendTerminal(JSON.stringify(packet));
+      }, 50);
+    }
+
+    // ========================================================================
+    // LATENCY RACE & CLOUD FAILOVER SIMULATION
+    // ========================================================================
+    function toggleCloudFailover() {
+      isCloudOutage = !isCloudOutage;
+      const title = document.getElementById('cloudTitle');
+      const label = document.getElementById('cloudLatencyLabel');
+      const bar   = document.getElementById('cloudLatencyBar');
+      const btn   = document.getElementById('btnCloudToggle');
+
+      if (isCloudOutage) {
+        title.innerHTML = '<span class="w-3 h-3 rounded-full bg-neo-pink border-2 border-black inline-block"></span> <span class="text-neo-pink font-bold">Cloud Server (ERR_TIMEOUT)</span>';
+        label.innerText = 'TIMEOUT (>5000ms)';
+        label.className = 'nb-badge bg-neo-pink text-white animate-pulse';
+        bar.className = 'h-full bg-neo-pink rounded-sm border border-black w-full';
+        btn.innerHTML = '<i class="ph-bold ph-wifi-high"></i><span>Pulihkan Cloud</span>';
+        btn.className = 'nb-button bg-neo-green text-black px-3 py-1.5 text-xs';
+      } else {
+        title.innerHTML = '<span class="w-3 h-3 rounded-full bg-neo-cyan border-2 border-black inline-block"></span> Server Cloud AI (REST API via 4G/WiFi)';
+        label.className = 'nb-badge bg-neo-cyan text-black';
+        bar.className = 'h-full bg-neo-cyan rounded-sm border border-black transition-all duration-300';
+        bar.style.width = '78%';
+        btn.innerHTML = '<i class="ph-bold ph-wifi-slash"></i><span>Simulasi Drop Internet</span>';
+        btn.className = 'nb-button bg-neo-pink text-white px-3 py-1.5 text-xs';
+      }
+    }
+
+    // ========================================================================
+    // AUDIO TONE & UTILITIES
+    // ========================================================================
+    function playAlertTone() {
+      if (audioMuted) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.15);
+      } catch (e) {}
+    }
+
+    function toggleMute() {
+      audioMuted = !audioMuted;
+      const icon = document.getElementById('audioIcon');
+      if (!audioMuted) {
+        icon.className = 'ph-bold ph-speaker-high text-neo-pink';
+        playAlertTone();
+      } else {
+        icon.className = 'ph-bold ph-speaker-simple-slash text-black';
+      }
+    }
+
+    function exportCSV() {
+      if (recordedData.length === 0) {
+        alert("Belum ada data telemetri yang terekam.");
+        return;
+      }
+      let csv = "Timestamp,Ax,Ay,Az,Temp,GasResistance,State\n";
+      recordedData.forEach(r => {
+        csv += `${r.time},${r.ax},${r.ay},${r.az},${r.temp},${r.gas},${r.state}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.setAttribute('href', url);
+      a.setAttribute('download', `telemetry_unikom_edge_ai_${Date.now()}.csv`);
+      a.click();
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else if (document.exitFullscreen) document.exitFullscreen();
+    }
+  </script>
+</body>
+</html>

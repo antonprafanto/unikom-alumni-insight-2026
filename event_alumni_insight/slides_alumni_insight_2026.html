@@ -448,9 +448,12 @@
           </div>
         </div>
         <div class="fragment" style="margin-top:14px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
             <strong style="font-family:var(--font-display);font-size:19px;">Simulasi: Waktu Respons Pengambilan Keputusan</strong>
-            <button class="nav-btn" type="button" onclick="runRace()">Jalankan Simulasi</button>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button class="nav-btn" type="button" onclick="runRace()">Jalankan Simulasi</button>
+              <a href="../demo_edge_ai/dashboard_web/index.html" target="_blank" class="nav-btn primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;font-size:14px;">⚡ Buka Live Telemetry ESP32</a>
+            </div>
           </div>
           <div style="font-size:15px;margin-top:2px;">Cloud AI (Sensor → Internet → Server GPU → Aksi Aktuator)</div>
           <div class="track"><div class="packet" id="pkt-cloud"></div></div>
@@ -614,6 +617,9 @@
         </div>
         <div class="wobble blob-card hw-detail" id="hw-detail" style="margin-top:14px;padding:14px 16px;">
           Klik salah satu papan mikrokontroler di atas untuk melihat spesifikasi teknis dan use-case terbaiknya.
+        </div>
+        <div style="margin-top:10px;text-align:right;">
+          <a href="../demo_edge_ai/dashboard_web/index.html" target="_blank" class="nav-btn primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-size:14px;">⚡ Buka Hands-on Telemetry Workstation (ESP32-S3 Demo) →</a>
         </div>
       </div>
     </section>
@@ -991,6 +997,24 @@
     renderThesis();
     renderRefs();
     renderThumbs();
+
+    // ========================================================================
+    // ESP32-S3 EDGE AI GESTURE REMOTE BRIDGE (BROADCASTCHANNEL)
+    // ========================================================================
+    try {
+      const slideChannel = new BroadcastChannel('unikom_slide_channel');
+      slideChannel.onmessage = (e) => {
+        if (e.data && e.data.type === 'GESTURE') {
+          if (e.data.action === 'NEXT_SLIDE') {
+            nextSlide();
+          } else if (e.data.action === 'PREV_SLIDE') {
+            prevSlide();
+          }
+        }
+      };
+    } catch (err) {
+      console.warn("BroadcastChannel not supported", err);
+    }
 
     const hash = parseInt((location.hash.match(/\d+/) || [])[0], 10);
     showSlide(hash >= 1 && hash <= TOTAL ? hash : 1);

@@ -3,6 +3,10 @@ data_pribadi/
 audit_mahasiswa/
 scratch/
 *.pdf
+TODO*.md
+todo*.md
+TODO/
+todo/
 
 # Local documentation & reference files (kept locally only)
 event_alumni_insight/handout_mahasiswa_edge_ai.md
