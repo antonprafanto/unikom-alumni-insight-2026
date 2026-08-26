@@ -24,7 +24,7 @@
 
 Proyek ini membuktikan bahwa komputasi kecerdasan buatan (*Machine Learning / TinyML*) dapat dieksekusi secara mandiri pada mikrokontroler kelas terjangkau (**ESP32-S3**) dengan konsumsi daya di bawah 1 Watt dan latensi sub-10 milidetik.
 
-![Diagram Arsitektur Sistem Edge AI](arsitektur_edge_ai.svg)
+![Diagram Arsitektur Sistem Edge AI](arsitektur_edge_ai.svg?v=2)
 
 ### 🧠 1.1 Mengapa Proyek Ini Dikategorikan Sebagai "Edge AI"?
 
@@ -47,7 +47,7 @@ Sebuah sistem **bukan sekadar IoT biasa** melainkan sah disebut **Edge AI** apab
 
 Semua sensor dan display menggunakan **1 jalur bus I2C bersama (Shared Bus)**. Cukup hubungkan 4 kabel utama dari ESP32-S3 ke breadboard:
 
-![Skema Rangkaian I2C ESP32-S3](skema_rangkaian_edge_ai.svg)
+![Skema Rangkaian I2C ESP32-S3](skema_rangkaian_edge_ai.svg?v=2)
 
 ### Tabel Pinout Detail
 
@@ -78,7 +78,7 @@ Sebagian besar board ESP32-S3 DevKit memiliki **2 port USB Type-C**:
 
 Diagram alir di bawah ini memvisualisasikan eksekusi siklus program `firmware_esp32s3.ino` dari inisialisasi boot hingga *5-Layer On-Device Edge AI Engine* dan *dual-output dispatch* (OLED + WebSerial):
 
-![Diagram Alir Firmware ESP32-S3](flowchart_firmware_esp32s3.svg)
+![Diagram Alir Firmware ESP32-S3](flowchart_firmware_esp32s3.svg?v=2)
 
 ---
 
