@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 340" width="100%" height="100%">
+  <defs>
+    <pattern id="dot-pat" width="16" height="16" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#E2E8F0" />
+    </pattern>
+
+    <filter id="nb-shadow" x="0" y="0" width="200%" height="200%">
+      <feOffset result="offOut" in="SourceAlpha" dx="4" dy="4" />
+      <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0 0 0 0 0.07   0 0 0 0 0.07   0 0 0 0 0.07  0 0 0 1 0" />
+      <feBlend in="SourceGraphic" in2="matrixOut" mode="normal" />
+    </filter>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect width="880" height="340" fill="#FFFFFF" rx="10" />
+  <rect width="880" height="340" fill="url(#dot-pat)" rx="10" />
+  <rect width="880" height="340" fill="none" stroke="#1E293B" stroke-width="2.5" rx="10" />
+
+  <!-- ==================================================================== -->
+  <!-- 1. MAIN EDGE NODE BOX -->
+  <!-- ==================================================================== -->
+  <g transform="translate(30, 20)">
+    <rect x="0" y="0" width="540" height="230" rx="8" fill="#FFFDF9" stroke="#1E293B" stroke-width="3" filter="url(#nb-shadow)" />
+    
+    <!-- Node Header Badge -->
+    <rect x="16" y="12" width="220" height="26" rx="4" fill="#FFE600" stroke="#1E293B" stroke-width="1.5" />
+    <text x="126" y="29" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="12" fill="#0F172A" text-anchor="middle">
+      ESP32-S3 EDGE AI NODE (MCU)
+    </text>
+
+    <!-- LEFT: SENSORS & OLED STACK -->
+    <g transform="translate(20, 50)">
+      <!-- MPU6050 -->
+      <rect x="0" y="0" width="190" height="46" rx="6" fill="#0284C7" stroke="#1E293B" stroke-width="2" />
+      <text x="14" y="24" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="12" fill="#FFFFFF">MPU-6050</text>
+      <text x="14" y="38" font-family="'JetBrains Mono', monospace" font-size="9" fill="#E0F2FE">I2C: 0x68 · Vibration/IMU</text>
+
+      <!-- BME680 -->
+      <rect x="0" y="56" width="190" height="46" rx="6" fill="#7C3AED" stroke="#1E293B" stroke-width="2" />
+      <text x="14" y="80" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="12" fill="#FFFFFF">BME-680</text>
+      <text x="14" y="94" font-family="'JetBrains Mono', monospace" font-size="9" fill="#EDE9FE">I2C: 0x77 · VOC Gas/Env</text>
+
+      <!-- OLED 0.96 -->
+      <rect x="0" y="112" width="190" height="46" rx="6" fill="#0F172A" stroke="#1E293B" stroke-width="2" />
+      <text x="14" y="136" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="12" fill="#38BDF8">OLED 0.96" SSD1306</text>
+      <text x="14" y="150" font-family="'JetBrains Mono', monospace" font-size="9" fill="#94A3B8">I2C: 0x3C · Local HUD</text>
+    </g>
+
+    <!-- CENTER I2C CONNECTOR ARROWS -->
+    <path d="M 210 73 L 260 73 L 260 128 L 290 128" fill="none" stroke="#1E293B" stroke-width="2.5" />
+    <path d="M 210 128 L 290 128" fill="none" stroke="#1E293B" stroke-width="2.5" />
+    <path d="M 210 184 L 260 184 L 260 128" fill="none" stroke="#1E293B" stroke-width="2.5" />
+    <polygon points="290,123 300,128 290,133" fill="#1E293B" />
+
+    <rect x="225" y="105" width="46" height="18" rx="3" fill="#00F5A0" stroke="#1E293B" stroke-width="1.5" />
+    <text x="248" y="118" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#0F172A" text-anchor="middle">I2C</text>
+
+    <!-- RIGHT: CORE ON-CHIP ENGINE -->
+    <g transform="translate(300, 50)">
+      <rect x="0" y="0" width="215" height="158" rx="6" fill="#0F172A" stroke="#1E293B" stroke-width="2" />
+      
+      <!-- Core Title -->
+      <rect x="12" y="14" width="190" height="24" rx="4" fill="#38BDF8" />
+      <text x="107" y="30" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#0F172A" text-anchor="middle">
+        Xtensa LX7 @ 240MHz
+      </text>
+
+      <g transform="translate(14, 52)">
+        <text x="0" y="12" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="10" fill="#00F5A0">✓ AI Vector Extension</text>
+        <text x="0" y="28" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="10" fill="#F8FAFC">✓ Dynamic Accel RMS</text>
+        <text x="0" y="44" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="10" fill="#F8FAFC">✓ Gas VOC Baseline</text>
+        <text x="0" y="60" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="10" fill="#FFE600">✓ Tilt Gesture Engine</text>
+        <text x="0" y="78" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="10" fill="#38BDF8">⚡ Latency: &lt; 10 ms [INT8]</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ==================================================================== -->
+  <!-- 2. DOWNSTREAM USB CONNECTION & DESTINATION WORKSTATION -->
+  <!-- ==================================================================== -->
+  
+  <!-- Downward Arrow from ESP32 to Web Workstation -->
+  <g transform="translate(570, 70)">
+    <path d="M 0 65 L 50 65" fill="none" stroke="#1E293B" stroke-width="3" />
+    <polygon points="50,59 62,65 50,71" fill="#1E293B" />
+    
+    <rect x="6" y="38" width="40" height="18" rx="3" fill="#FFE600" stroke="#1E293B" stroke-width="1.5" />
+    <text x="26" y="51" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#0F172A" text-anchor="middle">USB</text>
+  </g>
+
+  <!-- RIGHT: WEB WORKSTATION CARD -->
+  <g transform="translate(630, 20)">
+    <rect x="0" y="0" width="220" height="230" rx="8" fill="#FFFDF9" stroke="#1E293B" stroke-width="3" filter="url(#nb-shadow)" />
+    
+    <rect x="14" y="12" width="192" height="26" rx="4" fill="#00F0FF" stroke="#1E293B" stroke-width="1.5" />
+    <text x="110" y="29" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#0F172A" text-anchor="middle">
+      WEB WORKSTATION &amp; SLIDES
+    </text>
+
+    <g transform="translate(14, 52)">
+      <rect x="0" y="0" width="192" height="42" rx="4" fill="#F1F5F9" stroke="#1E293B" stroke-width="1.5" />
+      <text x="8" y="18" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="11" fill="#0F172A">WebSerial Telemetry</text>
+      <text x="8" y="32" font-family="'JetBrains Mono', monospace" font-size="9" fill="#64748B">3D Attitude · Oscilloscope</text>
+
+      <rect x="0" y="50" width="192" height="42" rx="4" fill="#F1F5F9" stroke="#1E293B" stroke-width="1.5" />
+      <text x="8" y="68" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="11" fill="#0F172A">Slide Remote Bridge</text>
+      <text x="8" y="82" font-family="'JetBrains Mono', monospace" font-size="9" fill="#64748B">BroadcastChannel Hook</text>
+
+      <rect x="0" y="100" width="192" height="46" rx="4" fill="#FFE4E6" stroke="#E11D48" stroke-width="1.5" />
+      <text x="8" y="118" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="11" fill="#9F1239">Latency Race Panel</text>
+      <text x="8" y="134" font-family="'JetBrains Mono', monospace" font-size="9" fill="#E11D48">Edge 8ms vs Cloud 460ms</text>
+    </g>
+  </g>
+
+  <!-- ==================================================================== -->
+  <!-- 3. BOTTOM SUMMARY FOOTER -->
+  <!-- ==================================================================== -->
+  <g transform="translate(30, 275)">
+    <rect x="0" y="0" width="820" height="45" rx="6" fill="#0F172A" stroke="#1E293B" stroke-width="2" />
+    <text x="20" y="27" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="12" fill="#FFE600">
+      ⚡ KARAKTERISTIK EDGE AI:
+    </text>
+    <text x="210" y="27" font-family="'JetBrains Mono', monospace" font-size="11" fill="#F8FAFC">
+      Sub-10ms Latency · Zero Cloud Dependency · 100% Privacy-Preserving · Daya &lt; 1 Watt
+    </text>
+  </g>
+
+</svg>

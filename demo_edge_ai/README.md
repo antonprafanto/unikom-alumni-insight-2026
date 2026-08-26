@@ -23,19 +23,7 @@
 
 Proyek ini membuktikan bahwa komputasi kecerdasan buatan (*Machine Learning / TinyML*) dapat dieksekusi secara mandiri pada mikrokontroler kelas terjangkau (**ESP32-S3**) dengan konsumsi daya di bawah 1 Watt dan latensi sub-10 milidetik.
 
-```
-  ┌────────────────────────────────────────────────────────┐
-  │                 ESP32-S3 Edge AI Node                  │
-  │                                                        │
-  │  [ MPU-6050 ] ──(I2C: 0x68)──┐                         │
-  │  [ BME-680  ] ──(I2C: 0x77)──┼──> [ Xtensa LX7 Dual ]  │
-  │  [ OLED 0.96] ──(I2C: 0x3C)──┘    [ AI Vector Engine]  │
-  │                                           │            │
-  └───────────────────────────────────────────┼────────────┘
-                                              │ USB Serial (115200)
-                                              ▼
-                [ Web Telemetry Workstation & Slide Deck ]
-```
+![Diagram Arsitektur Sistem Edge AI](arsitektur_edge_ai.svg)
 
 ---
 
@@ -43,21 +31,9 @@ Proyek ini membuktikan bahwa komputasi kecerdasan buatan (*Machine Learning / Ti
 
 Semua sensor dan display menggunakan **1 jalur bus I2C bersama (Shared Bus)**. Cukup hubungkan 4 kabel utama dari ESP32-S3 ke breadboard:
 
-```text
-       ESP32-S3 DevKit
-       ┌─────────────┐
-       │     3.3V ───┼──────────┬──────────┬──────────┐ (Power Rail +3.3V)
-       │      GND ───┼──────────┼──────────┼──────────┤ (Ground Rail GND)
-       │   GPIO 8 ───┼──[SDA]───┼──[SDA]───┼──[SDA]───┤ (I2C Data)
-       │   GPIO 9 ───┼──[SCL]───┼──[SCL]───┼──[SCL]───┘ (I2C Clock)
-       └─────────────┘          │          │          │
-                            ┌───┴───┐  ┌───┴───┐  ┌───┴───┐
-                            │ OLED  │  │MPU6050│  │BME680 │
-                            │ 0x3C  │  │ 0x68  │  │ 0x77  │
-                            └───────┘  └───────┘  └───────┘
-```
+![Skema Rangkaian I2C ESP32-S3](skema_rangkaian_edge_ai.svg)
 
-### Tabel Pinout
+### Tabel Pinout Detail
 
 | Nama Modul | Pin Modul | Sambungkan ke ESP32-S3 | Keterangan |
 | :--- | :--- | :--- | :--- |
