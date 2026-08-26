@@ -10,12 +10,13 @@
 1. [Arsitektur & Konsep Proyek](#1-arsitektur--konsep-proyek)
 2. [Skema Rangkaian Hardware (Single I2C Bus)](#2-skema-rangkaian-hardware-single-i2c-bus)
 3. [Jebakan Port Ganda ESP32-S3 (Wajib Dibaca!)](#3-jebakan-port-ganda-esp32-s3-wajib-dibaca)
-4. [Panduan Lengkap Setup di Arduino IDE](#4-panduan-lengkap-setup-di-arduino-ide)
-5. [Menjalankan Web Telemetry Workstation](#5-menjalankan-web-telemetry-workstation)
-6. [Fitur Magic Gesture Remote (Mengontrol Slide Presentasi)](#6-fitur-magic-gesture-remote-mengontrol-slide-presentasi)
-7. [Simulasi Online Wokwi (Untuk Mahasiswa Tanpa Alat Fisik)](#7-simulasi-online-wokwi-untuk-mahasiswa-tanpa-alat-fisik)
-8. [Matriks Pemecahan Masalah (Troubleshooting Guide)](#8-matriks-pemecahan-masalah-troubleshooting-guide)
-9. [Inspirasi Topik Tugas Akhir / Skripsi 2026](#9-inspirasi-topik-tugas-akhir--skripsi-2026)
+4. [Diagram Alir & Arsitektur Firmware (Flowchart)](#4-diagram-alir--arsitektur-firmware-flowchart)
+5. [Panduan Lengkap Setup di Arduino IDE](#5-panduan-lengkap-setup-di-arduino-ide)
+6. [Menjalankan Web Telemetry Workstation](#6-menjalankan-web-telemetry-workstation)
+7. [Fitur Magic Gesture Remote (Mengontrol Slide Presentasi)](#7-fitur-magic-gesture-remote-mengontrol-slide-presentasi)
+8. [Simulasi Online Wokwi (Untuk Mahasiswa Tanpa Alat Fisik)](#8-simulasi-online-wokwi-untuk-mahasiswa-tanpa-alat-fisik)
+9. [Matriks Pemecahan Masalah (Troubleshooting Guide)](#9-matriks-pemecahan-masalah-troubleshooting-guide)
+10. [Inspirasi Topik Tugas Akhir / Skripsi 2026](#10-inspirasi-topik-tugas-akhir--skripsi-2026)
 
 ---
 
@@ -73,7 +74,15 @@ Sebagian besar board ESP32-S3 DevKit memiliki **2 port USB Type-C**:
 
 ---
 
-## 4. Panduan Lengkap Setup di Arduino IDE
+## 4. Diagram Alir & Arsitektur Firmware (Flowchart)
+
+Diagram alir di bawah ini memvisualisasikan eksekusi siklus program `firmware_esp32s3.ino` dari inisialisasi boot hingga *5-Layer On-Device Edge AI Engine* dan *dual-output dispatch* (OLED + WebSerial):
+
+![Diagram Alir Firmware ESP32-S3](flowchart_firmware_esp32s3.svg)
+
+---
+
+## 5. Panduan Lengkap Setup di Arduino IDE
 
 ### Langkah A: Daftarkan Board ESP32
 1. Buka Arduino IDE $\rightarrow$ **File** $\rightarrow$ **Preferences**.

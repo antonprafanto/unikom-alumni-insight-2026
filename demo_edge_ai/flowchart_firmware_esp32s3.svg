@@ -1,0 +1,274 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 760" width="100%" height="100%">
+  <defs>
+    <!-- Background Dot Grid -->
+    <pattern id="dotgrid-flow" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#CBD5E1" />
+    </pattern>
+
+    <!-- Neo-Brutalist Hard Drop Shadow Filter -->
+    <filter id="flow-shadow" x="0" y="0" width="200%" height="200%">
+      <feOffset result="offOut" in="SourceAlpha" dx="4" dy="4" />
+      <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0 0 0 0 0.07   0 0 0 0 0.07   0 0 0 0 0.07  0 0 0 1 0" />
+      <feBlend in="SourceGraphic" in2="matrixOut" mode="normal" />
+    </filter>
+
+    <filter id="flow-shadow-sm" x="0" y="0" width="200%" height="200%">
+      <feOffset result="offOut" in="SourceAlpha" dx="2.5" dy="2.5" />
+      <feColorMatrix result="matrixOut" in="offOut" type="matrix" values="0 0 0 0 0.07   0 0 0 0 0.07   0 0 0 0 0.07  0 0 0 1 0" />
+      <feBlend in="SourceGraphic" in2="matrixOut" mode="normal" />
+    </filter>
+
+    <!-- Marker Arrowhead -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#0F172A" />
+    </marker>
+  </defs>
+
+  <!-- Background Surface -->
+  <rect width="960" height="760" fill="#F8FAFC" rx="12" />
+  <rect width="960" height="760" fill="url(#dotgrid-flow)" rx="12" />
+  <rect width="960" height="760" fill="none" stroke="#0F172A" stroke-width="3" rx="12" />
+
+  <!-- ==================================================================== -->
+  <!-- HEADER BANNER -->
+  <!-- ==================================================================== -->
+  <g transform="translate(30, 20)">
+    <rect x="0" y="0" width="900" height="52" rx="8" fill="#FFE600" stroke="#0F172A" stroke-width="2.5" filter="url(#flow-shadow-sm)" />
+    <text x="20" y="33" font-family="'Space Grotesk', 'Inter', sans-serif" font-weight="800" font-size="17" fill="#0F172A">
+      🔄 DIAGRAM ALIR (FLOWCHART) FIRMWARE ESP32-S3 EDGE AI
+    </text>
+    <rect x="680" y="10" width="205" height="32" rx="6" fill="#0F172A" />
+    <text x="782" y="31" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="11" fill="#00F5A0" text-anchor="middle">
+      NON-BLOCKING RTOS TIMING
+    </text>
+  </g>
+
+  <!-- ==================================================================== -->
+  <!-- STEP 1: INITIALIZATION (setup) -->
+  <!-- ==================================================================== -->
+  <g transform="translate(40, 95)">
+    <!-- Box Container -->
+    <rect x="0" y="0" width="880" height="115" rx="8" fill="#FFFDF9" stroke="#0F172A" stroke-width="2.5" filter="url(#flow-shadow)" />
+    
+    <!-- Step Badge -->
+    <rect x="16" y="12" width="220" height="24" rx="4" fill="#FFE600" stroke="#0F172A" stroke-width="1.5" />
+    <text x="126" y="28" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#0F172A" text-anchor="middle">
+      FASE 1: INISIALISASI (setup)
+    </text>
+
+    <!-- 4 Sub-steps Cards in setup -->
+    <g transform="translate(16, 45)">
+      <!-- Card 1 -->
+      <rect x="0" y="0" width="200" height="55" rx="5" fill="#F1F5F9" stroke="#0F172A" stroke-width="1.5" />
+      <text x="10" y="20" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#0F172A">1. Serial USB CDC</text>
+      <text x="10" y="36" font-family="'JetBrains Mono', monospace" font-size="9" fill="#475569">Baud 115200</text>
+      <text x="10" y="48" font-family="'JetBrains Mono', monospace" font-size="8" fill="#059669">Handshake Auto-Wait (2s)</text>
+
+      <!-- Card 2 -->
+      <rect x="215" y="0" width="205" height="55" rx="5" fill="#F1F5F9" stroke="#0F172A" stroke-width="1.5" />
+      <text x="10" y="20" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#0F172A">2. I2C Bus &amp; Timeout</text>
+      <text x="10" y="36" font-family="'JetBrains Mono', monospace" font-size="9" fill="#475569">SDA=GPIO 8 · SCL=GPIO 9</text>
+      <text x="10" y="48" font-family="'JetBrains Mono', monospace" font-size="8" fill="#2563EB">Fast Mode 400kHz (3s Lockup Guard)</text>
+
+      <!-- Card 3 -->
+      <rect x="435" y="0" width="205" height="55" rx="5" fill="#F1F5F9" stroke="#0F172A" stroke-width="1.5" />
+      <text x="10" y="20" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#0F172A">3. I2C Diagnostic Scan</text>
+      <text x="10" y="36" font-family="'JetBrains Mono', monospace" font-size="9" fill="#475569">scanI2CBus() Routine</text>
+      <text x="10" y="48" font-family="'JetBrains Mono', monospace" font-size="8" fill="#D97706">Detect: 0x3C, 0x68, 0x77</text>
+
+      <!-- Card 4 -->
+      <rect x="655" y="0" width="195" height="55" rx="5" fill="#F1F5F9" stroke="#0F172A" stroke-width="1.5" />
+      <text x="10" y="20" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#0F172A">4. Sensor Boot &amp; OLED</text>
+      <text x="10" y="36" font-family="'JetBrains Mono', monospace" font-size="9" fill="#475569">MPU ±4G · BME Gas 320°C</text>
+      <text x="10" y="48" font-family="'JetBrains Mono', monospace" font-size="8" fill="#7C3AED">Animasi Bootscreen OLED</text>
+    </g>
+  </g>
+
+  <!-- Flow Arrow from setup to loop -->
+  <path d="M 480 210 L 480 238" stroke="#0F172A" stroke-width="3" fill="none" marker-end="url(#arrow)" />
+
+  <!-- ==================================================================== -->
+  <!-- STEP 2: DUAL SENSOR SAMPLING (Task in loop) -->
+  <!-- ==================================================================== -->
+  <g transform="translate(40, 245)">
+    <rect x="0" y="0" width="880" height="90" rx="8" fill="#FFFDF9" stroke="#0F172A" stroke-width="2.5" filter="url(#flow-shadow)" />
+
+    <!-- Step Badge -->
+    <rect x="16" y="10" width="270" height="22" rx="4" fill="#00F0FF" stroke="#0F172A" stroke-width="1.5" />
+    <text x="151" y="25" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#0F172A" text-anchor="middle">
+      FASE 2: AKUISISI DATA SENSOR MULTI-RATE
+    </text>
+
+    <!-- Sensor 1 (MPU6050) -->
+    <g transform="translate(16, 38)">
+      <rect x="0" y="0" width="415" height="42" rx="5" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.5" />
+      <text x="12" y="18" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#0369A1">
+        A. Sinyal Kinematik MPU-6050 (Setiap Siklus Loop ~20-50 Hz)
+      </text>
+      <text x="12" y="32" font-family="'JetBrains Mono', monospace" font-size="9" fill="#0F172A">
+        Baca: Ax, Ay, Az (m/s²) · Gx, Gy, Gz (rad/s) · Hitung Sudut Pitch &amp; Roll (Derajat)
+      </text>
+    </g>
+
+    <!-- Sensor 2 (BME680) -->
+    <g transform="translate(445, 38)">
+      <rect x="0" y="0" width="418" height="42" rx="5" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5" />
+      <text x="12" y="18" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#6D28D9">
+        B. Sinyal Lingkungan BME-680 (Non-Blocking ~180 ms Interval)
+      </text>
+      <text x="12" y="32" font-family="'JetBrains Mono', monospace" font-size="9" fill="#0F172A">
+        Baca: Suhu (°C), Lembab (%RH), Tekanan (hPa), Gas VOC (kΩ) + Moving Avg Baseline
+      </text>
+    </g>
+  </g>
+
+  <!-- Flow Arrow from Sampling to Edge AI Engine -->
+  <path d="M 480 335 L 480 360" stroke="#0F172A" stroke-width="3" fill="none" marker-end="url(#arrow)" />
+
+  <!-- ==================================================================== -->
+  <!-- STEP 3: THE 5-LAYER ON-DEVICE EDGE AI ENGINE -->
+  <!-- ==================================================================== -->
+  <g transform="translate(40, 368)">
+    <rect x="0" y="0" width="880" height="195" rx="8" fill="#FFFDF9" stroke="#0F172A" stroke-width="3" filter="url(#flow-shadow)" />
+    
+    <!-- Top Engine Header -->
+    <rect x="16" y="12" width="360" height="26" rx="4" fill="#00F5A0" stroke="#0F172A" stroke-width="2" />
+    <text x="196" y="29" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="12" fill="#0F172A" text-anchor="middle">
+      🧠 FASE 3: PIPELINE INFERENSI EDGE AI (ON-CHIP)
+    </text>
+
+    <text x="860" y="30" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#059669" text-anchor="end">
+      Eksekusi Lokal di SRAM · Latensi &lt; 10 ms
+    </text>
+
+    <!-- 5 Layers Grid -->
+    <g transform="translate(16, 48)">
+      
+      <!-- Layer 1: Feature Extraction -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="160" height="130" rx="6" fill="#F8FAFC" stroke="#0F172A" stroke-width="1.5" />
+        <rect x="6" y="6" width="148" height="20" rx="3" fill="#38BDF8" />
+        <text x="80" y="20" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="10" fill="#0F172A" text-anchor="middle">LAYER 1: DSP FEATURE</text>
+        <text x="8" y="42" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#0F172A">• Magnitudo Vektor |A|</text>
+        <text x="8" y="58" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#0F172A">• Eliminasi Gravitasi 1G</text>
+        <text x="8" y="74" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#0369A1">• Dynamic G-Force</text>
+        <text x="8" y="90" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#0F172A">• Sliding Window (N=16)</text>
+        <text x="8" y="106" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#0369A1">• Hitung RMS &amp; Peak G</text>
+      </g>
+
+      <!-- Arrow L1 to L2 -->
+      <path d="M 162 65 L 176 65" stroke="#0F172A" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+
+      <!-- Layer 2: Vibration Classifier -->
+      <g transform="translate(178, 0)">
+        <rect x="0" y="0" width="160" height="130" rx="6" fill="#F8FAFC" stroke="#0F172A" stroke-width="1.5" />
+        <rect x="6" y="6" width="148" height="20" rx="3" fill="#FFE600" />
+        <text x="80" y="20" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="10" fill="#0F172A" text-anchor="middle">LAYER 2: PRED. MAINT.</text>
+        <text x="8" y="42" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#0F172A">• Analisis Pola Getar</text>
+        <text x="8" y="60" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569">Threshold Evaluator:</text>
+        <text x="8" y="76" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#D97706">RMS &gt; 0.40G OR</text>
+        <text x="8" y="92" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#D97706">Peak &gt; 0.85G</text>
+        <text x="8" y="112" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="800" fill="#DC2626">→ VIB ANOMALY!</text>
+      </g>
+
+      <!-- Arrow L2 to L3 -->
+      <path d="M 340 65 L 354 65" stroke="#0F172A" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+
+      <!-- Layer 3: Adaptive Baseline Gas -->
+      <g transform="translate(356, 0)">
+        <rect x="0" y="0" width="160" height="130" rx="6" fill="#F8FAFC" stroke="#0F172A" stroke-width="1.5" />
+        <rect x="6" y="6" width="148" height="20" rx="3" fill="#B388FF" />
+        <text x="80" y="20" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="10" fill="#FFFFFF" text-anchor="middle">LAYER 3: BASELINE GAS</text>
+        <text x="8" y="42" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#0F172A">• Self-Learning Baseline</text>
+        <text x="8" y="58" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569">Moving Avg Tracker:</text>
+        <text x="8" y="74" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#7C3AED">Base=(Base*0.98)+0.02</text>
+        <text x="8" y="92" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569">Relative Delta Drop:</text>
+        <text x="8" y="112" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="800" fill="#DC2626">Ratio &lt; 0.60 → HAZARD</text>
+      </g>
+
+      <!-- Arrow L3 to L4 -->
+      <path d="M 518 65 L 532 65" stroke="#0F172A" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+
+      <!-- Layer 4: Gesture Intent -->
+      <g transform="translate(534, 0)">
+        <rect x="0" y="0" width="150" height="130" rx="6" fill="#F8FAFC" stroke="#0F172A" stroke-width="1.5" />
+        <rect x="6" y="6" width="138" height="20" rx="3" fill="#FF6B8B" />
+        <text x="75" y="20" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="10" fill="#FFFFFF" text-anchor="middle">LAYER 4: GESTURE</text>
+        <text x="8" y="42" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#0F172A">• Attitude Roll/Pitch</text>
+        <text x="8" y="58" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569">Intention Classifier:</text>
+        <text x="8" y="76" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#E11D48">Roll &gt; +42° → NEXT</text>
+        <text x="8" y="92" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#E11D48">Roll &lt; -42° → PREV</text>
+        <text x="8" y="110" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#475569">Cooldown Guard (900ms)</text>
+      </g>
+
+      <!-- Arrow L4 to L5 -->
+      <path d="M 686 65 L 700 65" stroke="#0F172A" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+
+      <!-- Layer 5: Decision Fusion -->
+      <g transform="translate(702, 0)">
+        <rect x="0" y="0" width="144" height="130" rx="6" fill="#F8FAFC" stroke="#0F172A" stroke-width="1.5" />
+        <rect x="6" y="6" width="132" height="20" rx="3" fill="#0F172A" />
+        <text x="72" y="20" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="10" fill="#00F5A0" text-anchor="middle">LAYER 5: FUSION</text>
+        <text x="6" y="42" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#0F172A">• Composite Fusion</text>
+        <text x="6" y="58" font-family="'JetBrains Mono', monospace" font-size="8" fill="#475569">Output States:</text>
+        <text x="6" y="74" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="800" fill="#059669">✓ NOMINAL (98%)</text>
+        <text x="6" y="88" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="800" fill="#D97706">⚠️ VIB ANOMALY</text>
+        <text x="6" y="102" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="800" fill="#DC2626">⚠️ GAS HAZARD</text>
+        <text x="6" y="116" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="800" fill="#991B1B">🚨 CRITICAL</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Flow Split to Dual Output -->
+  <path d="M 300 563 L 300 590" stroke="#0F172A" stroke-width="2.5" fill="none" marker-end="url(#arrow)" />
+  <path d="M 680 563 L 680 590" stroke="#0F172A" stroke-width="2.5" fill="none" marker-end="url(#arrow)" />
+
+  <!-- ==================================================================== -->
+  <!-- STEP 4: OUTPUT DISPATCH (OLED HUD & WEB SERIAL TELEMETRY) -->
+  <!-- ==================================================================== -->
+  
+  <!-- Output 1: Local OLED HUD -->
+  <g transform="translate(40, 595)">
+    <rect x="0" y="0" width="430" height="135" rx="8" fill="#FFFDF9" stroke="#0F172A" stroke-width="2.5" filter="url(#flow-shadow)" />
+    
+    <rect x="14" y="12" width="220" height="24" rx="4" fill="#FFE600" stroke="#0F172A" stroke-width="1.5" />
+    <text x="124" y="28" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#0F172A" text-anchor="middle">
+      OUTPUT 1: LOCAL OLED HUD (10 FPS)
+    </text>
+
+    <g transform="translate(14, 44)">
+      <rect x="0" y="0" width="402" height="75" rx="5" fill="#0284C7" stroke="#0F172A" stroke-width="1.5" />
+      <text x="12" y="20" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="800" fill="#38BDF8">EDGE-AI S3 [8.4ms]</text>
+      <text x="12" y="38" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="800" fill="#FFFFFF">&gt;&gt; STATE: SYSTEM NOMINAL [INT8]</text>
+      <text x="12" y="54" font-family="'JetBrains Mono', monospace" font-size="9" fill="#E0F2FE">Vib: 0.04G · GST: IDLE · Tmp: 28.4C · Gas: 85k</text>
+      <text x="12" y="68" font-family="'JetBrains Mono', monospace" font-size="8" fill="#BAE6FD">Non-blocking renderOLED() via I2C (0x3C) @ 100ms interval</text>
+    </g>
+  </g>
+
+  <!-- Output 2: WebSerial Stream & Slide Bridge -->
+  <g transform="translate(490, 595)">
+    <rect x="0" y="0" width="430" height="135" rx="8" fill="#FFFDF9" stroke="#0F172A" stroke-width="2.5" filter="url(#flow-shadow)" />
+    
+    <rect x="14" y="12" width="270" height="24" rx="4" fill="#00F0FF" stroke="#0F172A" stroke-width="1.5" />
+    <text x="149" y="28" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" fill="#0F172A" text-anchor="middle">
+      OUTPUT 2: SERIAL TELEMETRY (20 FPS)
+    </text>
+
+    <g transform="translate(14, 44)">
+      <rect x="0" y="0" width="402" height="75" rx="5" fill="#0F172A" stroke="#0F172A" stroke-width="1.5" />
+      <text x="10" y="18" font-family="'JetBrains Mono', monospace" font-size="9" fill="#00F5A0">
+        {"acc":{"x":0.0,"y":0.0,"z":9.8},"ori":{"pitch":0,"roll":0}...}
+      </text>
+      <text x="10" y="34" font-family="'JetBrains Mono', monospace" font-size="9" fill="#38BDF8">
+        • WebSerial USB Stream (115200 Baud) ke Dashboard
+      </text>
+      <text x="10" y="48" font-family="'JetBrains Mono', monospace" font-size="9" fill="#FFE600">
+        • BroadcastChannel('unikom_slide_channel') Remote Bridge
+      </text>
+      <text x="10" y="64" font-family="'JetBrains Mono', monospace" font-size="8" fill="#94A3B8">
+        Kirim data JSON teringkas (&lt;256 bytes) setiap 50ms (20 Hz)
+      </text>
+    </g>
+  </g>
+
+</svg>
