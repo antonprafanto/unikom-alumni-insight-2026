@@ -209,11 +209,11 @@ void runEdgeAIInference() {
   ai_result.gesture = "NONE";
   unsigned long now = millis();
   
-  if (now - last_gesture_time > 900) { // Cooldown 900ms agar slide tidak berpindah liar
-    if (current_sensor.roll > 40.0) {
+  if (now - last_gesture_time > 750) { // Cooldown 750ms agar responsif dan tidak berpindah liar
+    if (current_sensor.roll > 28.0) {
       ai_result.gesture = "NEXT_SLIDE";     // Miring Kanan -> Next Slide
       last_gesture_time = now;
-    } else if (current_sensor.roll < -40.0) {
+    } else if (current_sensor.roll < -28.0) {
       ai_result.gesture = "PREV_SLIDE";     // Miring Kiri -> Prev Slide
       last_gesture_time = now;
     } else if (max_peak > 1.8) {

@@ -133,6 +133,12 @@
       <!-- Action Buttons & Port Status -->
       <div class="flex items-center flex-wrap gap-2.5">
         
+        <!-- Back to Hub -->
+        <a href="../../index.html" class="nb-button bg-neo-yellow text-black px-3 py-2 text-xs md:text-sm" title="Kembali ke Beranda Portal Utama">
+          <i class="ph-bold ph-house text-base"></i>
+          <span>BERANDA</span>
+        </a>
+
         <!-- Status Indicator -->
         <div id="connBadge" class="nb-badge bg-white text-neo-black flex items-center gap-2 text-xs py-1.5 px-3">
           <span id="connDot" class="w-3 h-3 rounded-full bg-slate-400 border border-black inline-block"></span>
@@ -177,129 +183,229 @@
   </header>
 
   <!-- MAIN WORKSPACE -->
-  <main class="flex-1 p-4 lg:p-6 max-w-[1720px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5">
+  <main class="flex-1 p-4 lg:p-6 max-w-[1720px] w-full mx-auto space-y-5">
+
+    <!-- ================================================================== -->
+    <!-- 🎓 ONBOARDING QUICKSTART GUIDE: RAMAH MAHASISWA AWAM -->
+    <!-- ================================================================== -->
+    <div id="quickGuideBanner" class="nb-card p-4 bg-neo-yellow border-3 border-neo-black relative shadow-brutal transition-all">
+      <div class="flex items-start justify-between gap-3 flex-wrap">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">🎓</span>
+          <div>
+            <h2 class="font-display font-black text-base md:text-lg text-neo-black">
+              Panduan Eksplorasi Demo: 3 Langkah Coba Sendiri (Gratis di Browser!)
+            </h2>
+            <p class="text-xs font-mono text-neo-black/90 font-semibold">
+              Cocok untuk mahasiswa tingkat 1–8 yang ingin merasakan langsung keunggulan komputasi on-device Edge AI.
+            </p>
+          </div>
+        </div>
+        <button onclick="toggleQuickGuide()" class="nb-button bg-white text-black px-2.5 py-1 text-xs" title="Sembunyikan Panduan">
+          <i class="ph-bold ph-eye-slash"></i> Sembunyikan
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3 pt-3 border-t-2 border-neo-black/30 text-xs font-mono">
+        <div class="p-2.5 bg-white rounded border-2 border-neo-black shadow-brutal-sm">
+          <div class="font-black text-neo-black flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-full bg-neo-black text-white inline-flex items-center justify-center text-[11px]">1</span>
+            Mulai Simulasi
+          </div>
+          <p class="text-slate-600 mt-1 text-[11px]">
+            Klik tombol kuning <b>SIMULATOR</b> di pojok kanan atas (atau colokkan kabel USB ESP32-S3 jika punya board fisik).
+          </p>
+        </div>
+
+        <div class="p-2.5 bg-white rounded border-2 border-neo-black shadow-brutal-sm">
+          <div class="font-black text-neo-black flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-full bg-neo-black text-white inline-flex items-center justify-center text-[11px]">2</span>
+            Uji Skenario Kerusakan
+          </div>
+          <p class="text-slate-600 mt-1 text-[11px]">
+            Klik tombol <b>"⚠️ Laher Aus"</b> atau <b>"💥 Benturan"</b> di bawah untuk melihat model AI mendiagnosa kondisi fisik mesin seketika.
+          </p>
+        </div>
+
+        <div class="p-2.5 bg-white rounded border-2 border-neo-black shadow-brutal-sm">
+          <div class="font-black text-neo-black flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-full bg-neo-black text-white inline-flex items-center justify-center text-[11px]">3</span>
+            Uji Drop Internet
+          </div>
+          <p class="text-slate-600 mt-1 text-[11px]">
+            Klik tombol <b>"Simulasi Drop Internet"</b>. Perhatikan: Cloud AI macet (*Timeout*), tapi Edge AI di chip tetap 100% jalan instan!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- 🧪 INTERACTIVE SCENARIO TESTBENCH BAR (SATU-KLIK UJI KASUS) -->
+    <!-- ================================================================== -->
+    <div class="nb-card p-4 bg-white border-3 border-neo-black shadow-brutal">
+      <div class="flex items-center justify-between flex-wrap gap-2 pb-2.5 border-b-2 border-neo-black">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🧪</span>
+          <h3 class="font-display font-black text-sm md:text-base text-neo-black">
+            Laboratorium Pengujian Skenario Fisik (Interactive Playground)
+          </h3>
+        </div>
+        <span id="simExplainBadge" class="nb-badge bg-neo-green text-black text-xs font-mono">
+          STATUS: KONDISI NORMAL
+        </span>
+      </div>
+
+      <div id="scenarioBtns" class="flex items-center gap-2 flex-wrap mt-3">
+        <button onclick="setSimScenario('nominal')" class="nb-button bg-neo-green text-black px-3 py-1.5 text-xs">
+          🟢 1. Mesin Normal (Halus)
+        </button>
+        <button onclick="setSimScenario('bearing_fault')" class="nb-button bg-neo-yellow text-black px-3 py-1.5 text-xs">
+          ⚠️ 2. Laher/Bearing Aus (Klotok-Klotok)
+        </button>
+        <button onclick="setSimScenario('shock')" class="nb-button bg-neo-pink text-white px-3 py-1.5 text-xs">
+          💥 3. Benturan Keras (Jatuh/Shock)
+        </button>
+        <button onclick="setSimScenario('tilt_right')" class="nb-button bg-white text-black px-3 py-1.5 text-xs">
+          ➡️ 4. Miring Kanan (Next Slide)
+        </button>
+        <button onclick="setSimScenario('tilt_left')" class="nb-button bg-white text-black px-3 py-1.5 text-xs">
+          ⬅️ 5. Miring Kiri (Prev Slide)
+        </button>
+      </div>
+
+      <div id="simExplainText" class="mt-2.5 p-2 bg-slate-50 rounded border border-neo-black text-xs font-mono text-slate-700">
+        💡 <b>Analogi Montir Mesin:</b> Sensor membaca getaran motor stabil &lt; 0.1G. Model TinyML INT8 menyimpulkan kondisi mesin berputar sehat (Normal).
+      </div>
+    </div>
 
     <!-- ================================================================== -->
     <!-- ROW 1: PRIMARY INFERENCE OUTPUT & LATENCY BENCHMARK (12 COLS) -->
     <!-- ================================================================== -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
-    <!-- CARD 1: ON-DEVICE EDGE AI CLASSIFICATION (4 COLS) -->
-    <div id="aiStateCard" class="nb-card p-5 lg:col-span-4 bg-white flex flex-col justify-between relative overflow-hidden">
-      <!-- Decorative Stripe Top -->
-      <div class="absolute top-0 left-0 right-0 h-2 bg-neo-green border-b-2 border-neo-black" id="aiTopStripe"></div>
+      <!-- CARD 1: ON-DEVICE EDGE AI CLASSIFICATION (4 COLS) -->
+      <div id="aiStateCard" class="nb-card p-5 lg:col-span-4 bg-white flex flex-col justify-between relative overflow-hidden">
+        <!-- Decorative Stripe Top -->
+        <div class="absolute top-0 left-0 right-0 h-2 bg-neo-green border-b-2 border-neo-black" id="aiTopStripe"></div>
 
-      <div>
-        <div class="flex items-center justify-between mt-1 mb-2">
-          <span class="nb-badge bg-neo-black text-white text-[10px]">ON-CHIP INFERENCE</span>
-          <span id="stateBadge" class="nb-badge bg-neo-green text-black text-[11px]">STABLE (INT8)</span>
-        </div>
-
-        <div class="my-2">
-          <span class="text-xs font-mono uppercase text-slate-500 font-bold block">CURRENT MACHINE STATE</span>
-          <h2 id="stateTitle" class="font-display font-black text-3xl md:text-4xl text-neo-black tracking-tight mt-0.5">
-            SYSTEM NOMINAL
-          </h2>
-        </div>
-
-        <!-- 4-Box Telemetry Matrix -->
-        <div class="grid grid-cols-2 gap-2.5 mt-4">
-          <div class="p-2.5 rounded border-2 border-neo-black bg-neo-yellow/30 shadow-brutal-sm">
-            <span class="text-[10px] font-mono font-bold text-slate-600 block">CONFIDENCE</span>
-            <span id="aiConf" class="font-mono font-black text-xl text-neo-black">98.0%</span>
+        <div>
+          <div class="flex items-center justify-between mt-1 mb-2">
+            <span class="nb-badge bg-neo-black text-white text-[10px]">ON-CHIP INFERENCE</span>
+            <span id="stateBadge" class="nb-badge bg-neo-green text-black text-[11px]">STABLE (INT8)</span>
           </div>
 
-          <div class="p-2.5 rounded border-2 border-neo-black bg-neo-green/30 shadow-brutal-sm">
-            <span class="text-[10px] font-mono font-bold text-slate-600 block">INFERENCE LATENCY</span>
-            <span id="aiLatency" class="font-mono font-black text-xl text-neo-black">8.42 ms</span>
+          <div class="my-2">
+            <span class="text-xs font-mono uppercase text-slate-500 font-bold block">STATUS DIAGNOSA MESIN (AI INT8)</span>
+            <h2 id="stateTitle" class="font-display font-black text-3xl md:text-4xl text-neo-black tracking-tight mt-0.5">
+              SYSTEM NOMINAL
+            </h2>
           </div>
 
-          <div class="p-2.5 rounded border-2 border-neo-black bg-white shadow-brutal-sm">
-            <span class="text-[10px] font-mono font-bold text-slate-600 block">VIBRATION RMS</span>
-            <span id="aiRms" class="font-mono font-black text-lg text-neo-black">0.04 G</span>
-          </div>
+          <!-- 4-Box Telemetry Matrix -->
+          <div class="grid grid-cols-2 gap-2.5 mt-4">
+            <div class="p-2.5 rounded border-2 border-neo-black bg-neo-yellow/30 shadow-brutal-sm">
+              <span class="text-[10px] font-mono font-bold text-slate-600 block">TINGKAT KEYAKINAN</span>
+              <span id="aiConf" class="font-mono font-black text-xl text-neo-black">98.0%</span>
+              <span class="text-[9px] font-mono text-slate-500 block mt-0.5">Skor Akurasi Prediksi</span>
+            </div>
 
-          <div class="p-2.5 rounded border-2 border-neo-black bg-white shadow-brutal-sm">
-            <span class="text-[10px] font-mono font-bold text-slate-600 block">PEAK DYNAMIC G</span>
-            <span id="aiPeak" class="font-mono font-black text-lg text-neo-black">0.08 G</span>
-          </div>
-        </div>
-      </div>
+            <div class="p-2.5 rounded border-2 border-neo-black bg-neo-green/30 shadow-brutal-sm">
+              <span class="text-[10px] font-mono font-bold text-slate-600 block">WAKTU BERPIKIR CHIP</span>
+              <span id="aiLatency" class="font-mono font-black text-xl text-neo-black">8.42 ms</span>
+              <span class="text-[9px] font-mono text-slate-500 block mt-0.5">Eksekusi Kilat di SRAM</span>
+            </div>
 
-      <!-- Gesture Remote Hook -->
-      <div class="mt-4 pt-3 border-t-2 border-neo-black/20 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <span class="text-lg">🎮</span>
-          <div>
-            <span class="text-[10px] font-mono font-bold text-slate-500 uppercase block">Slide Remote Hook:</span>
-            <span id="gestureLabel" class="nb-badge bg-neo-black text-neo-yellow text-xs">IDLE</span>
+            <div class="p-2.5 rounded border-2 border-neo-black bg-white shadow-brutal-sm">
+              <span class="text-[10px] font-mono font-bold text-slate-600 block">KEKASARAN GETARAN (RMS)</span>
+              <span id="aiRms" class="font-mono font-black text-lg text-neo-black">0.04 G</span>
+              <span class="text-[9px] font-mono text-slate-500 block mt-0.5">Root Mean Square Energy</span>
+            </div>
+
+            <div class="p-2.5 rounded border-2 border-neo-black bg-white shadow-brutal-sm">
+              <span class="text-[10px] font-mono font-bold text-slate-600 block">GUNCANGAN PUNCAK</span>
+              <span id="aiPeak" class="font-mono font-black text-lg text-neo-black">0.08 G</span>
+              <span class="text-[9px] font-mono text-slate-500 block mt-0.5">Max Dynamic G-Force</span>
+            </div>
           </div>
         </div>
-        <span class="text-[11px] font-mono text-slate-600">Tilt R: Next · Tilt L: Prev</span>
-      </div>
-    </div>
 
-    <!-- CARD 2: THE "CLOUD VS EDGE" LATENCY RACE (8 COLS) -->
-    <div class="nb-card p-5 lg:col-span-8 bg-white flex flex-col justify-between">
-      <div>
-        <div class="flex items-center justify-between flex-wrap gap-2 pb-3 border-b-2 border-neo-black">
+        <!-- Gesture Remote Hook -->
+        <div class="mt-4 pt-3 border-t-2 border-neo-black/20 flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <span class="text-2xl">🏁</span>
+            <span class="text-lg">🎮</span>
             <div>
-              <h3 class="font-display font-black text-lg text-neo-black leading-tight">The Cloud vs Edge Latency Race</h3>
-              <p class="text-xs font-mono text-slate-600">Komparasi waktu inferensi lokal pada chip ESP32-S3 vs REST API Server Cloud</p>
+              <span class="text-[10px] font-mono font-bold text-slate-500 uppercase block">Gesture Slide Remote:</span>
+              <span id="gestureLabel" class="nb-badge bg-neo-black text-neo-yellow text-xs">IDLE</span>
             </div>
           </div>
+          <span class="text-[11px] font-mono text-slate-600">Miring Kanan: Next · Kiri: Prev</span>
+        </div>
+      </div>
 
-          <button id="btnCloudToggle" onclick="toggleCloudFailover()" class="nb-button bg-neo-pink text-white px-3 py-1.5 text-xs">
-            <i class="ph-bold ph-wifi-slash"></i>
-            <span>Simulasi Drop Internet</span>
-          </button>
+      <!-- CARD 2: THE "CLOUD VS EDGE" LATENCY RACE (8 COLS) -->
+      <div class="nb-card p-5 lg:col-span-8 bg-white flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between flex-wrap gap-2 pb-3 border-b-2 border-neo-black">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">🏁</span>
+              <div>
+                <h3 class="font-display font-black text-lg text-neo-black leading-tight">The Cloud vs Edge Latency Race</h3>
+                <p class="text-xs font-mono text-slate-600">Komparasi waktu inferensi lokal pada chip ESP32-S3 vs REST API Server Cloud</p>
+              </div>
+            </div>
+
+            <button id="btnCloudToggle" onclick="toggleCloudFailover()" class="nb-button bg-neo-pink text-white px-3 py-1.5 text-xs">
+              <i class="ph-bold ph-wifi-slash"></i>
+              <span>Simulasi Drop Internet</span>
+            </button>
+          </div>
+
+          <!-- Latency Visual Bars -->
+          <div class="space-y-4 my-4">
+            <!-- Edge Node -->
+            <div>
+              <div class="flex justify-between text-xs font-mono font-bold mb-1.5">
+                <span class="flex items-center gap-1.5 text-neo-black">
+                  <span class="w-3 h-3 rounded-full bg-neo-green border-2 border-black inline-block"></span>
+                  🧠 Refleks Lokal: ESP32-S3 On-Device TinyML (INT8)
+                </span>
+                <span id="edgeLatencyLabel" class="nb-badge bg-neo-green text-black">8.42 ms (Instant)</span>
+              </div>
+              <div class="w-full h-6 rounded border-2 border-neo-black bg-slate-100 p-0.5 shadow-brutal-sm">
+                <div id="edgeLatencyBar" class="h-full bg-neo-green rounded-sm border border-black transition-all duration-150" style="width: 5%;"></div>
+              </div>
+            </div>
+
+            <!-- Cloud Server -->
+            <div>
+              <div class="flex justify-between text-xs font-mono font-bold mb-1.5">
+                <span id="cloudTitle" class="flex items-center gap-1.5 text-neo-black">
+                  <span class="w-3 h-3 rounded-full bg-neo-cyan border-2 border-black inline-block"></span>
+                  ☁️ Telepon Server Cloud AI (REST API via 4G/WiFi)
+                </span>
+                <span id="cloudLatencyLabel" class="nb-badge bg-neo-cyan text-black">465.0 ms</span>
+              </div>
+              <div class="w-full h-6 rounded border-2 border-neo-black bg-slate-100 p-0.5 shadow-brutal-sm">
+                <div id="cloudLatencyBar" class="h-full bg-neo-cyan rounded-sm border border-black transition-all duration-300" style="width: 78%;"></div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Latency Visual Bars -->
-        <div class="space-y-4 my-4">
-          <!-- Edge Node -->
-          <div>
-            <div class="flex justify-between text-xs font-mono font-bold mb-1.5">
-              <span class="flex items-center gap-1.5 text-neo-black">
-                <span class="w-3 h-3 rounded-full bg-neo-green border-2 border-black inline-block"></span>
-                ESP32-S3 On-Device TinyML (INT8)
-              </span>
-              <span id="edgeLatencyLabel" class="nb-badge bg-neo-green text-black">8.42 ms (Instant)</span>
-            </div>
-            <div class="w-full h-6 rounded border-2 border-neo-black bg-slate-100 p-0.5 shadow-brutal-sm">
-              <div id="edgeLatencyBar" class="h-full bg-neo-green rounded-sm border border-black transition-all duration-150" style="width: 5%;"></div>
-            </div>
+        <!-- Footer Callout -->
+        <div class="pt-3 border-t-2 border-neo-black grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-mono font-bold">
+          <div class="p-1.5 bg-neo-yellow/40 rounded border border-black">
+            🚀 Speedup: <strong class="text-black font-extrabold">~55x Lebih Cepat</strong>
           </div>
-
-          <!-- Cloud Server -->
-          <div>
-            <div class="flex justify-between text-xs font-mono font-bold mb-1.5">
-              <span id="cloudTitle" class="flex items-center gap-1.5 text-neo-black">
-                <span class="w-3 h-3 rounded-full bg-neo-cyan border-2 border-black inline-block"></span>
-                Server Cloud AI (REST API via 4G/WiFi)
-              </span>
-              <span id="cloudLatencyLabel" class="nb-badge bg-neo-cyan text-black">465.0 ms</span>
-            </div>
-            <div class="w-full h-6 rounded border-2 border-neo-black bg-slate-100 p-0.5 shadow-brutal-sm">
-              <div id="cloudLatencyBar" class="h-full bg-neo-cyan rounded-sm border border-black transition-all duration-300" style="width: 78%;"></div>
-            </div>
+          <div class="p-1.5 bg-neo-green/40 rounded border border-black">
+            🔒 Privasi: <strong class="text-black font-extrabold">100% Zero-Cloud Leak</strong>
+          </div>
+          <div class="p-1.5 bg-neo-cyan/40 rounded border border-black">
+            💰 Biaya: <strong class="text-black font-extrabold">Rp 0 / Tanpa Kuota API</strong>
           </div>
         </div>
       </div>
 
-      <!-- Footer Callout -->
-      <div class="pt-3 border-t-2 border-neo-black grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-mono font-bold">
-        <div class="p-1.5 bg-neo-yellow/40 rounded border border-black">
-          🚀 Speedup: <strong class="text-black font-extrabold">~55x Lebih Cepat</strong>
-        </div>
-        <div class="p-1.5 bg-neo-green/40 rounded border border-black">
-          🔒 Privasi: <strong class="text-black font-extrabold">100% Zero-Cloud Leak</strong>
-        </div>
-        <div class="p-1.5 bg-neo-cyan/40 rounded border border-black">
-          💰 Biaya: <strong class="text-black font-extrabold">Rp 0 / Tanpa Token API</strong>
-        </div>
-      </div>
     </div>
 
     <!-- ================================================================== -->
@@ -676,11 +782,28 @@
           topStripe.className  = 'absolute top-0 left-0 right-0 h-2 bg-neo-green border-b-2 border-neo-black';
         }
 
-        // Gesture Hook to Slide Presentation
-        if (pkt.ai.gesture && pkt.ai.gesture !== "NONE") {
-          document.getElementById('gestureLabel').innerText = pkt.ai.gesture;
+        // Gesture Hook to Slide Presentation (Dual Channel: BroadcastChannel + localStorage)
+        let activeGesture = pkt.ai ? pkt.ai.gesture : "NONE";
+
+        // Client-side tilt fallback detection if roll angle exceeds ±28°
+        if (pkt.ori && pkt.ori.roll !== undefined) {
+          const roll = parseFloat(pkt.ori.roll);
+          const now = Date.now();
+          if (now - lastClientGestureTime > 800) {
+            if (roll > 28.0) {
+              activeGesture = "NEXT_SLIDE";
+              lastClientGestureTime = now;
+            } else if (roll < -28.0) {
+              activeGesture = "PREV_SLIDE";
+              lastClientGestureTime = now;
+            }
+          }
+        }
+
+        if (activeGesture && activeGesture !== "NONE") {
+          document.getElementById('gestureLabel').innerText = activeGesture;
           document.getElementById('gestureLabel').className = 'nb-badge bg-neo-pink text-white text-xs animate-pulse';
-          slideChannel.postMessage({ type: 'GESTURE', action: pkt.ai.gesture });
+          sendSlideCommand(activeGesture);
         } else {
           document.getElementById('gestureLabel').innerText = 'IDLE';
           document.getElementById('gestureLabel').className = 'nb-badge bg-neo-black text-neo-yellow text-xs';
@@ -692,6 +815,21 @@
         const cloudMs = (420 + Math.random() * 120).toFixed(1);
         document.getElementById('cloudLatencyLabel').innerText = cloudMs + ' ms';
       }
+    }
+
+    let lastClientGestureTime = 0;
+
+    function sendSlideCommand(action) {
+      if (!action || action === "NONE") return;
+      // 1. BroadcastChannel (Seketika antar-tab modern)
+      try {
+        slideChannel.postMessage({ type: 'GESTURE', action: action, timestamp: Date.now() });
+      } catch (e) {}
+
+      // 2. localStorage Event (Pasti tembus antar-window / tab file://)
+      try {
+        localStorage.setItem('unikom_slide_cmd', JSON.stringify({ action: action, ts: Date.now(), rand: Math.random() }));
+      } catch (e) {}
     }
 
     function appendTerminal(raw) {
@@ -740,8 +878,6 @@
         updateConnectionUI(true);
         keepReading = true;
 
-        if (isSimulating) toggleSimulation();
-
         const textDecoder = new TextDecoderStream();
         port.readable.pipeTo(textDecoder.writable);
         reader = textDecoder.readable.getReader();
@@ -778,28 +914,84 @@
       const label = document.getElementById('connLabel');
       const btn = document.getElementById('btnConnect');
       const btnText = document.getElementById('btnConnectText');
+      const simBtn = document.getElementById('btnSim');
+      const simBtnText = document.getElementById('simBtnText');
+      const scenarioContainer = document.getElementById('scenarioBtns');
+      const badge = document.getElementById('simExplainBadge');
+      const text = document.getElementById('simExplainText');
 
       if (connected) {
+        // Matikan simulasi jika sedang jalan
+        if (isSimulating) {
+          isSimulating = false;
+          if (simTimer) clearInterval(simTimer);
+        }
+
         dot.className = 'w-3 h-3 rounded-full bg-neo-green border border-black inline-block';
         label.innerText = 'PORT: CONNECTED (115200)';
         btnText.innerText = 'DISCONNECT';
         btn.className = 'nb-button bg-neo-pink text-white px-4 py-2 text-xs md:text-sm';
+
+        // Kunci tombol Simulator
+        simBtn.disabled = true;
+        simBtnText.innerText = 'SIMULATOR (LOCKED)';
+        simBtn.className = 'nb-button bg-slate-200 text-slate-400 px-3 py-2 text-xs md:text-sm opacity-50 cursor-not-allowed';
+        simBtn.title = "Mode simulator dikunci saat port USB hardware terhubung";
+
+        // Kunci tombol skenario simulasi
+        if (scenarioContainer) {
+          scenarioContainer.querySelectorAll('button').forEach(b => {
+            b.disabled = true;
+            b.classList.add('opacity-40', 'cursor-not-allowed');
+          });
+        }
+
+        badge.className = 'nb-badge bg-neo-cyan text-black text-xs font-mono animate-pulse';
+        badge.innerText = '⚡ HARDWARE FISIK AKTIF (ESP32-S3)';
+        text.innerHTML = '🚀 <b>Hardware Terhubung:</b> Data sensor sedang dialirkan langsung dari ESP32-S3 fisik. Mode simulator otomatis dikunci agar data asli tidak terdistorsi.';
       } else {
         dot.className = 'w-3 h-3 rounded-full bg-slate-400 border border-black inline-block';
         label.innerText = 'PORT: DISCONNECTED';
         btnText.innerText = 'CONNECT USB';
         btn.className = 'nb-button bg-neo-green text-black px-4 py-2 text-xs md:text-sm';
+
+        // Buka kunci tombol Simulator
+        simBtn.disabled = false;
+        simBtnText.innerText = 'SIMULATOR';
+        simBtn.className = 'nb-button bg-white text-black px-3 py-2 text-xs md:text-sm';
+        simBtn.title = "Jalankan Mode Simulator";
+
+        // Buka kunci tombol skenario
+        if (scenarioContainer) {
+          scenarioContainer.querySelectorAll('button').forEach(b => {
+            b.disabled = false;
+            b.classList.remove('opacity-40', 'cursor-not-allowed');
+          });
+        }
+
+        badge.className = 'nb-badge bg-neo-green text-black text-xs font-mono';
+        badge.innerText = 'STATUS: KONDISI NORMAL';
+        text.innerHTML = '💡 <b>Analogi Montir Mesin:</b> Sensor membaca getaran motor stabil &lt; 0.1G. Model TinyML INT8 menyimpulkan kondisi motor berputar sehat (Normal).';
       }
     }
 
     // ========================================================================
-    // SIMULATION ENGINE
+    // SIMULATION ENGINE & SCENARIO PLAYGROUND
     // ========================================================================
-    let simShockUntil = 0;
-    let simTiltRightUntil = 0;
-    let simTiltLeftUntil = 0;
+    let currentScenario = 'nominal';
+    let scenarioUntil = 0;
+
+    function toggleQuickGuide() {
+      const banner = document.getElementById('quickGuideBanner');
+      banner.classList.toggle('hidden');
+    }
 
     function toggleSimulation() {
+      if (port) {
+        alert("Port USB sedang terhubung dengan ESP32-S3 fisik. Putuskan koneksi USB terlebih dahulu jika ingin menggunakan mode simulator.");
+        return;
+      }
+
       isSimulating = !isSimulating;
       const btn = document.getElementById('btnSim');
       const label = document.getElementById('simBtnText');
@@ -815,73 +1007,130 @@
       }
     }
 
-    function injectVibrationShock() {
+    function setSimScenario(mode) {
+      if (port) {
+        alert("Perangkat fisik ESP32-S3 sedang aktif! Goyangkan atau miringkan board fisik Anda secara langsung untuk menguji sensor.");
+        return;
+      }
+
       if (!isSimulating) toggleSimulation();
-      simShockUntil = Date.now() + 1500;
+      currentScenario = mode;
+      scenarioUntil = Date.now() + (mode === 'nominal' ? 9999999 : 3000);
+
+      const badge = document.getElementById('simExplainBadge');
+      const text = document.getElementById('simExplainText');
+
+      if (mode === 'nominal') {
+        badge.className = 'nb-badge bg-neo-green text-black text-xs font-mono';
+        badge.innerText = 'STATUS: KONDISI NORMAL';
+        text.innerHTML = '💡 <b>Analogi Montir Mesin:</b> Sensor membaca getaran stabil &lt; 0.1G. Model TinyML INT8 menyimpulkan kondisi motor berputar sehat (Normal).';
+      } else if (mode === 'bearing_fault') {
+        badge.className = 'nb-badge bg-neo-yellow text-black text-xs font-mono animate-pulse';
+        badge.innerText = 'STATUS: ANOMALI LAHER AUS (BEARING)';
+        text.innerHTML = '⚠️ <b>Analogi Montir Mesin:</b> Sensor membaca ketukan frekuensi tinggi (RMS &gt; 0.45G). Model AI di chip langsung mendeteksi anomali bearing dalam <b>8.4 ms</b> secara mandiri!';
+      } else if (mode === 'shock') {
+        badge.className = 'nb-badge bg-neo-pink text-white text-xs font-mono animate-bounce';
+        badge.innerText = 'STATUS: BENTURAN KERAS (HARSH IMPACT)';
+        text.innerHTML = '💥 <b>Analogi G-Force:</b> Terjadi lonjakan akselerasi tajam &gt; 2.5G (alat terjatuh / mesin macet). Sistem on-device langsung membunyikan alarm seketika!';
+      } else if (mode === 'tilt_right') {
+        badge.className = 'nb-badge bg-neo-cyan text-black text-xs font-mono';
+        badge.innerText = 'GESTURE: MIRING KANAN (NEXT SLIDE)';
+        text.innerHTML = '➡️ <b>Magic Gesture Remote:</b> Sudut Roll &gt; +40°. Sinyal <code>NEXT_SLIDE</code> dikirimkan ke slide keynote!';
+      } else if (mode === 'tilt_left') {
+        badge.className = 'nb-badge bg-neo-cyan text-black text-xs font-mono';
+        badge.innerText = 'GESTURE: MIRING KIRI (PREV SLIDE)';
+        text.innerHTML = '⬅️ <b>Magic Gesture Remote:</b> Sudut Roll &lt; -40°. Sinyal <code>PREV_SLIDE</code> dikirimkan ke slide keynote!';
+      }
     }
 
-    function injectTiltRight() {
-      if (!isSimulating) toggleSimulation();
-      simTiltRightUntil = Date.now() + 1800;
-    }
-
-    function injectTiltLeft() {
-      if (!isSimulating) toggleSimulation();
-      simTiltLeftUntil = Date.now() + 1800;
-    }
+    function injectVibrationShock() { setSimScenario('shock'); }
+    function injectTiltRight() { setSimScenario('tilt_right'); }
+    function injectTiltLeft() { setSimScenario('tilt_left'); }
 
     function startSimEngine() {
       let t = 0;
       simTimer = setInterval(() => {
         t += 0.1;
         const now = Date.now();
-        const shock = now < simShockUntil;
-        const tiltRight = now < simTiltRightUntil;
-        const tiltLeft = now < simTiltLeftUntil;
+        const activeMode = (now < scenarioUntil) ? currentScenario : 'nominal';
 
-        let ax = shock ? (Math.random() * 16 - 8) : (Math.sin(t) * 0.35);
-        let ay = shock ? (Math.random() * 16 - 8) : (Math.cos(t) * 0.25);
-        let az = shock ? (9.81 + Math.random() * 18 - 9) : (9.81 + Math.sin(t * 1.5) * 0.15);
+        let ax = 0, ay = 0, az = 9.81;
+        let gx = 0, gy = 0, gz = 0.02;
+        let pitch = 0, roll = 0;
+        let state = "SYSTEM NOMINAL";
+        let conf = 98;
+        let isAnomaly = false;
+        let gesture = "NONE";
+        let rms = 0.04;
+        let peakG = 0.08;
 
-        let pitch = Math.atan2(-ax, Math.sqrt(ay * ay + az * az)) * (180 / Math.PI);
-        let roll  = Math.atan2(ay, az) * (180 / Math.PI);
-
-        if (tiltRight) {
+        if (activeMode === 'nominal') {
+          ax = Math.sin(t) * 0.35;
+          ay = Math.cos(t) * 0.25;
+          az = 9.81 + Math.sin(t * 1.5) * 0.15;
+          gx = Math.sin(t) * 0.08;
+          gy = Math.cos(t) * 0.08;
+          state = "SYSTEM NOMINAL";
+          conf = 98;
+          rms = (0.03 + Math.random() * 0.02).toFixed(2);
+          peakG = (0.07 + Math.random() * 0.03).toFixed(2);
+        } else if (activeMode === 'bearing_fault') {
+          const jitter = (Math.random() * 8 - 4);
+          ax = Math.sin(t * 3) * 1.8 + jitter * 0.8;
+          ay = Math.cos(t * 3) * 1.5 + jitter * 0.6;
+          az = 9.81 + Math.sin(t * 5) * 2.2 + jitter * 0.7;
+          gx = Math.random() * 2 - 1;
+          gy = Math.random() * 2 - 1;
+          state = "BEARING FAULT (VIB ALERT!)";
+          conf = 95;
+          isAnomaly = true;
+          rms = (0.45 + Math.random() * 0.15).toFixed(2);
+          peakG = (1.25 + Math.random() * 0.35).toFixed(2);
+        } else if (activeMode === 'shock') {
+          ax = (Math.random() * 20 - 10);
+          ay = (Math.random() * 20 - 10);
+          az = 9.81 + (Math.random() * 24 - 12);
+          gx = (Math.random() * 6 - 3);
+          gy = (Math.random() * 6 - 3);
+          state = "HARSH IMPACT!";
+          conf = 99;
+          isAnomaly = true;
+          rms = (0.85 + Math.random() * 0.2).toFixed(2);
+          peakG = (3.40 + Math.random() * 0.8).toFixed(2);
+        } else if (activeMode === 'tilt_right') {
           roll = 48.0;
           ay = 7.2;
           az = 6.4;
-        } else if (tiltLeft) {
+          gesture = "NEXT_SLIDE";
+          state = "SYSTEM NOMINAL";
+          conf = 97;
+        } else if (activeMode === 'tilt_left') {
           roll = -48.0;
           ay = -7.2;
           az = 6.4;
+          gesture = "PREV_SLIDE";
+          state = "SYSTEM NOMINAL";
+          conf = 97;
         }
 
-        let state = "NOMINAL";
-        let conf = 98;
-        if (shock) {
-          state = "VIB ANOMALY!";
-          conf = 96;
-        }
-
-        let gesture = "NONE";
-        if (roll > 40) gesture = "NEXT_SLIDE";
-        else if (roll < -40) gesture = "PREV_SLIDE";
+        pitch = Math.atan2(-ax, Math.sqrt(ay * ay + az * az)) * (180 / Math.PI);
+        if (roll === 0) roll = Math.atan2(ay, az) * (180 / Math.PI);
 
         const packet = {
           acc: { x: ax, y: ay, z: az },
-          gyro: { x: shock ? (Math.random()*4-2) : (Math.sin(t)*0.08), y: shock ? (Math.random()*4-2) : (Math.cos(t)*0.08), z: shock ? (Math.random()*4-2) : 0.02 },
+          gyro: { x: gx, y: gy, z: gz },
           ori: { pitch: pitch, roll: roll },
           ai: {
             state: state,
             conf: conf,
-            vib_alert: shock,
+            vib_alert: isAnomaly,
             gesture: gesture,
-            peak_g: (shock ? 1.85 : 0.05).toFixed(2),
-            rms_vib: (shock ? 0.62 : 0.03).toFixed(2),
-            latency_ms: (8.2 + Math.random() * 0.6).toFixed(2),
-            is_anomaly: shock
+            peak_g: peakG,
+            rms_vib: rms,
+            latency_ms: (8.2 + Math.random() * 0.5).toFixed(2),
+            is_anomaly: isAnomaly
           },
-          temp: 28.4 + Math.sin(t * 0.1) * 0.4
+          temp: (28.4 + Math.sin(t * 0.1) * 0.4).toFixed(1)
         };
 
         processPacket(packet);

@@ -122,18 +122,23 @@ Buka **Sketch** $\rightarrow$ **Include Library** $\rightarrow$ **Manage Librari
 
 ## 6. Menjalankan Web Telemetry Workstation
 
-Dashboard dirancang menggunakan tampilan instrumen laboratorium teknik (*Engineering SCADA / Oscilloscope UI*) tanpa perlu meng-install server, Node.js, atau Python.
+Dashboard dirancang menggunakan tampilan instrumen laboratorium teknik (*Engineering Neo-Brutalist SCADA*) tanpa perlu meng-install server, Node.js, atau Python.
 
-1. Buka folder `dashboard_web/`.
-2. Buka berkas `index.html` menggunakan browser **Google Chrome** atau **Microsoft Edge**.
-3. Klik tombol hijau **"CONNECT USB"**.
-4. Pilih port USB ESP32-S3 Anda, lalu klik **Connect**.
-5. Dashboard langsung aktif menampilkan:
-   * 📊 **Oscilloscope Waveform:** Grafik getaran 3-sumbu real-time (20 Hz).
-   * 📐 **3D CAD Attitude:** Objek 3D berputar mengikuti pitch & roll board.
-   * 🔄 **Gyro & Kinematic Matrix:** Vektor sudut putar 3-sumbu (Gx, Gy, Gz) dan suhu sensor.
-   * ⚡ **The Latency Race:** Perbandingan kecepatan inferensi lokal (~8 ms) vs Cloud (~450 ms).
-   * 📥 **Export CSV:** Unduh riwayat telemetri untuk analisis laporan praktikum.
+### 🧪 Opsi 1: Mode Simulator (Untuk Mahasiswa Tanpa Alat Fisik / Uji Cepat)
+1. Buka berkas `dashboard_web/index.html` di Google Chrome atau Microsoft Edge.
+2. Klik tombol kuning **"SIMULATOR"** di pojok kanan atas.
+3. Gunakan tombol **Laboratorium Pengujian Skenario Fisik**:
+   * 🟢 **Mesin Normal:** Getaran halus teratur (< 0.1G).
+   * ⚠️ **Laher/Bearing Aus:** Simulasi ketukan anomali mekanis (RMS > 0.45G).
+   * 💥 **Benturan Keras:** Simulasi lonjakan G-Force tajam (> 2.5G).
+   * ➡️ **Miring Kanan / ⬅️ Kiri:** Mengirimkan gesture untuk memindahkan slide keynote!
+4. Klik tombol **"Simulasi Drop Internet"** untuk melihat keunggulan Edge AI saat Cloud mengalami timeout (>5000 ms).
+
+### 🔌 Opsi 2: Hubungkan Board Fisik (ESP32-S3 Asli)
+1. Colokkan kabel USB ESP32-S3 ke laptop.
+2. Klik tombol hijau **"CONNECT USB"** di dashboard.
+3. Pilih port COM ESP32-S3 Anda, lalu klik **Connect**.
+4. Dashboard langsung aktif menampilkan telemetri sensor 6-sumbu dan hasil inferensi AI secara real-time.
 
 ---
 

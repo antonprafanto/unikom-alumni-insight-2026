@@ -199,6 +199,7 @@
 <body>
   <header class="bar">
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <a href="../index.html" class="nav-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;padding:3px 10px;font-size:14px;" title="Kembali ke Beranda Hub">🏠 <span class="hide-mobile">Beranda Hub</span></a>
       <span class="pill red">📘 Handout Mahasiswa</span>
       <span class="kicker hide-mobile">Sistem Komputer UNIKOM</span>
     </div>
@@ -471,6 +472,7 @@ void loop() {
 
   <footer class="bar no-print">
     <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;">
+      <a href="../index.html" class="icon-btn" title="Kembali ke Beranda Utama (H)" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">🏠</a>
       <button type="button" class="icon-btn" title="Peta Bagian (O)" onclick="toggleOverlay('overview')">▦</button>
       <button type="button" class="icon-btn" title="Daftar Sitasi (C)" onclick="toggleOverlay('cites')">[*]</button>
       <button type="button" class="icon-btn hide-mobile" title="Bantuan Pintasan Keyboard (?)" onclick="toggleOverlay('help')">?</button>
@@ -486,12 +488,12 @@ void loop() {
     </div>
   </footer>
 
-  <div class="overlay" id="overview"><div class="panel"><h2>Lompat ke Bagian Handout</h2><div class="overview-grid" id="thumbs" style="margin-top:12px;"></div></div></div>
+  <div class="overlay" id="overview"><div class="panel"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;"><h2>Lompat ke Bagian Handout</h2><a href="../index.html" class="nav-btn primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;">🏠 Kembali ke Beranda Hub</a></div><div class="overview-grid" id="thumbs"></div></div></div>
   <div class="overlay" id="cites"><div class="panel"><h2>Daftar Referensi &amp; Sitasi Ilmiah</h2><div id="cite-panel"></div></div></div>
   <div class="overlay" id="help"><div class="panel">
     <h2>Pintasan Navigasi Keyboard</h2>
-    <p style="margin-top:10px;"><kbd>→</kbd> <kbd>Space</kbd> : Maju ke bagian berikutnya · <kbd>←</kbd> : Kembali ke bagian sebelumnya · <kbd>O</kbd> : Peta bagian · <kbd>C</kbd> : Panel sitasi · <kbd>Esc</kbd> : Tutup panel popup</p>
-    <p class="kicker" style="margin-top:8px;">Gunakan tombol <b>Mode Tampilan</b> untuk beralih antara mode satu-per-layar (slide) dan mode gulir penuh (dokumen/cetak).</p>
+    <p style="margin-top:10px;"><kbd>→</kbd> <kbd>Space</kbd> : Maju ke bagian berikutnya · <kbd>←</kbd> : Kembali ke bagian sebelumnya · <kbd>H</kbd> : Beranda Hub · <kbd>O</kbd> : Peta bagian · <kbd>C</kbd> : Panel sitasi · <kbd>Esc</kbd> : Tutup panel popup</p>
+    <p class="kicker" style="margin-top:8px;">Gunakan tombol <b>Mode Dokumen</b> untuk beralih antara mode satu-per-layar (slide) dan mode gulir penuh (dokumen/cetak).</p>
   </div></div>
 
   <script>
@@ -667,6 +669,7 @@ void loop() {
       if (e.key === "Escape") { closeOverlays(); return; }
       if (shouldIgnoreKeys(e)) return;
       if (e.key === "?" || (e.shiftKey && e.key === "/")) { e.preventDefault(); toggleOverlay("help"); return; }
+      if (e.key === "h" || e.key === "H") { window.location.href = "../index.html"; return; }
       if (e.key === "o" || e.key === "O") { toggleOverlay("overview"); return; }
       if (e.key === "c" || e.key === "C") { toggleOverlay("cites"); return; }
       if (isDoc()) return;
