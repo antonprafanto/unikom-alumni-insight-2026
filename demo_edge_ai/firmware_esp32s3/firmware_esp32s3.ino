@@ -314,33 +314,41 @@ void streamTelemetryJSON() {
     StaticJsonDocument<512> doc;
   #endif
 
+  // Proteksi nilai NaN dari I2C bus jitter
+  if (isnan(current_sensor.ax)) current_sensor.ax = 0.0;
+  if (isnan(current_sensor.ay)) current_sensor.ay = 0.0;
+  if (isnan(current_sensor.az)) current_sensor.az = 9.81;
+  if (isnan(current_sensor.pitch)) current_sensor.pitch = 0.0;
+  if (isnan(current_sensor.roll)) current_sensor.roll = 0.0;
+  if (isnan(current_sensor.temp_c)) current_sensor.temp_c = 25.0;
+
   // Data Percepatan & Giroskop
   JsonObject acc = doc.createNestedObject("acc");
-  acc["x"] = serialized(String(current_sensor.ax, 2));
-  acc["y"] = serialized(String(current_sensor.ay, 2));
-  acc["z"] = serialized(String(current_sensor.az, 2));
+  acc["x"] = round(current_sensor.ax * 100.0) / 100.0;
+  acc["y"] = round(current_sensor.ay * 100.0) / 100.0;
+  acc["z"] = round(current_sensor.az * 100.0) / 100.0;
 
   JsonObject gyro = doc.createNestedObject("gyro");
-  gyro["x"] = serialized(String(current_sensor.gx, 2));
-  gyro["y"] = serialized(String(current_sensor.gy, 2));
-  gyro["z"] = serialized(String(current_sensor.gz, 2));
+  gyro["x"] = round(current_sensor.gx * 100.0) / 100.0;
+  gyro["y"] = round(current_sensor.gy * 100.0) / 100.0;
+  gyro["z"] = round(current_sensor.gz * 100.0) / 100.0;
 
   // Sudut Orientasi Sikap 3D
   JsonObject ori = doc.createNestedObject("ori");
-  ori["pitch"] = serialized(String(current_sensor.pitch, 1));
-  ori["roll"]  = serialized(String(current_sensor.roll, 1));
+  ori["pitch"] = round(current_sensor.pitch * 10.0) / 10.0;
+  ori["roll"]  = round(current_sensor.roll * 10.0) / 10.0;
 
   // Hasil Inferensi On-Device Edge AI
   JsonObject ai = doc.createNestedObject("ai");
   ai["state"]       = ai_result.state_label;
   ai["conf"]        = ai_result.confidence;
-  ai["dyn_g"]       = serialized(String(ai_result.dynamic_accel_g, 2));
-  ai["rms_vib"]     = serialized(String(ai_result.rms_vibration, 3));
+  ai["dyn_g"]       = round(ai_result.dynamic_accel_g * 100.0) / 100.0;
+  ai["rms_vib"]     = round(ai_result.rms_vibration * 1000.0) / 1000.0;
   ai["gesture"]     = ai_result.gesture;
-  ai["latency_ms"]  = serialized(String(ai_result.latency_ms, 3));
+  ai["latency_ms"]  = round(ai_result.latency_ms * 1000.0) / 1000.0;
   ai["is_anomaly"]  = ai_result.is_vibration_anomaly;
 
-  doc["temp"] = serialized(String(current_sensor.temp_c, 1));
+  doc["temp"] = round(current_sensor.temp_c * 10.0) / 10.0;
 
   serializeJson(doc, Serial);
   Serial.println();

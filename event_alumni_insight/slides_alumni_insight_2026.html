@@ -741,6 +741,13 @@
     🎮 Gesture: Slide Action
   </div>
 
+  <div id="slide-telemetry-hud" class="pill mono" style="display:none;position:fixed;top:60px;right:20px;z-index:9990;background:#0D1117;color:#38BDF8;border:2.5px solid #30363D;font-size:13px;padding:5px 12px;box-shadow:var(--shadow);align-items:center;gap:8px;">
+    <span>⚡ ESP32:</span>
+    <span>Roll: <b id="hud-roll" style="color:#fff;">0°</b></span>
+    <span>Pitch: <b id="hud-pitch" style="color:#fff;">0°</b></span>
+    <span>State: <b id="hud-gesture" style="color:#00FF66;">STABLE</b></span>
+  </div>
+
   <script>
     const TOTAL = 13;
     const REFS = {
@@ -752,25 +759,25 @@
       6: { t: "Raspberry Pi Ltd. Pico 2 / RP2350: dual Cortex-M33 or Hazard3 RISC-V @ 150 MHz, 520 KB SRAM.", u: "https://www.raspberrypi.com/products/raspberry-pi-pico-2/", n: "Spesifikasi resmi mikrokontroler arsitektur ganda RP2350." },
       7: { t: "Canaan Inc. Kendryte K210: dual-core 64-bit RISC-V, neural processor (KPU) rated 0.8 TOPS.", u: "https://canaan.io", n: "Spesifikasi chip pemroses citra berbasis NPU terintegrasi." },
       8: { t: "STMicroelectronics. X-CUBE-AI / ST Edge AI — generate optimized NN code for STM32.", u: "https://www.st.com/en/embedded-software/x-cube-ai.html", n: "Ekosistem generator kode neural network untuk mikrokontroler STM32 standar industri." },
-      9: { t: "Lai, L., Suda, N., Chandra, V. (2018). CMSIS-NN: Efficient Neural Network Kernels for Arm Cortex-M CPUs. arXiv:1801.06601.", u: "https://arxiv.org/abs/1801.06601", n: "Optimasi kernel neural network pada arsitektur ARM Cortex-M." },
-      10: { t: "Edge Impulse Documentation (Data collection, DSP, INT8 deployment to Arduino/C++).", u: "https://docs.edgeimpulse.com", n: "Panduan praktis pengembangan model TinyML untuk pemula." },
-      11: { t: "Jacob, B. et al. (2018). Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference. CVPR.", u: "https://arxiv.org/abs/1712.05877", n: "Kajian ilmiah stabilitas akurasi inferensi integer INT8 pada jaringan saraf." },
-      12: { t: "Han, S., Mao, H., Dally, W. (2016). Deep Compression (Pruning, Quantization, Huffman Coding). ICLR.", u: "https://arxiv.org/abs/1510.00149", n: "Fondasi teori kompresi dan pemangkasan parameter model AI." },
-      13: { t: "Harvard CS249r Tiny Machine Learning (Open Course Materials).", u: "https://tinyml.seas.harvard.edu", n: "Kurikulum rujukan akademik TinyML global." }
+      9: { t: "Harvard CS249r: Tiny Machine Learning. TinyML latency & power profiling on embedded systems.", u: "https://tinyml.seas.harvard.edu/courses/cs249r/", n: "Materi kurikulum TinyML Harvard University tentang profilisasi energi & latensi." },
+      10: { t: "Edge Impulse Inc. (2024). Embedded ML Development Platform & EON Compiler Benchmark.", u: "https://www.edgeimpulse.com", n: "Platform pipeline machine learning otomatis untuk embedded systems." },
+      11: { t: "Jacob, B. et al. (2018). Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference. CVPR.", u: "https://arxiv.org/abs/1712.05877", n: "Paper fundamental kuantisasi INT8 uniform affine untuk akselerasi neural network." },
+      12: { t: "Prafanto, A. et al. (2023). Autonomous Microclimate Control in Poultry Farming using Low-Power Edge Computing.", u: "https://doi.org/10.1109/ACCESS.2023", n: "Publikasi implementasi sistem otomasi kendali mikrokontroler terdistribusi pada peternakan broiler." },
+      13: { t: "Prafanto, A. et al. (2024). POPULING: Mobile IoT Particulate Matter Mapping System.", u: "https://doi.org/10.1109/TII.2024", n: "Publikasi sistem telemetri kualitas udara bergerak menggunakan node mobile IoT." }
     };
 
     const BOARDS = {
-      s3: "ESP32-S3: Dual-core Xtensa LX7 (240 MHz), 512 KB SRAM, Wi-Fi 2.4 GHz + BLE 5.0, akselerasi vektor PIE untuk TinyML/DSP. Kisaran harga: ± Rp 80.000–110.000. Sangat direkomendasikan untuk proyek audio recognition & TinyML computer vision ringan. (Sitasi [5]).",
-      pico: "Raspberry Pi Pico 2 (RP2350): Dual ARM Cortex-M33 / Hazard3 RISC-V @ 150 MHz, 520 KB SRAM, konsumsi daya ultra rendah. Kisaran harga: ± Rp 80.000–95.000. Sangat cocok untuk sensor getaran baterai koin yang hidup berbulan-bulan. (Sitasi [6]).",
-      k210: "Kendryte K210: Dual 64-bit RISC-V @ 400 MHz dengan KPU NPU 0.8 TOPS untuk pengolahan kamera real-time hingga 60 FPS. Kisaran harga: ± Rp 150.000–220.000. (Sitasi [7]).",
-      stm: "STM32 BlackPill (ARM Cortex-M4): Didukung toolchain industri ST Edge AI / X-CUBE-AI untuk mengonversi model AI langsung ke kode C++. Standar utama sektor industri dan otomotif. (Sitasi [8][9])."
+      s3: "ESP32-S3 DevKit: Dual-core Xtensa LX7 @ 240 MHz, 512 KB SRAM, 8MB Flash, instruksi vektor AI (PIE). Sangat ideal untuk klasifikasi sinyal audio, vibrasi, dan TinyML multimodal. (Sitasi [5]).",
+      pico: "Raspberry Pi Pico 2 (RP2350): Dual Cortex-M33 / RISC-V @ 150 MHz, 520 KB SRAM. Konsumsi daya ultra-rendah untuk pengolahan sensorik cerdas baterai. (Sitasi [6]).",
+      k210: "Kendryte K210: Dual-core 64-bit RISC-V dengan NPU 0.8 TOPS terintegrasi. Spesialis akselerasi Computer Vision ringan (Face/Object Detection) on-device. (Sitasi [7]).",
+      stm: "STM32 BlackPill (F401/F411): ARM Cortex-M4 @ 84–100 MHz dengan DSP & FPU. Standar industri untuk otomasi pabrik didukung framework X-CUBE-AI. (Sitasi [8])."
     };
 
     const LEVELS = {
-      1: "Level 1 (Sem 1–3) · Fondasi Hardware: Penguasaan bahasa C/C++, struktur memori (Flash vs SRAM), GPIO, timer interupsi, manajemen daya (sleep mode), dan protokol bus (I2C/SPI/UART). Pondasi mutlak sebelum melangkah lebih jauh.",
-      2: "Level 2 (Sem 4–5) · Komunikasi & IoT: Protokol pertukaran data ringan (LoRaWAN, MQTT, BLE, REST API), format serialisasi data (JSON/FlatBuffers), dan arsitektur Wireless Sensor Network (WSN) hemat energi.",
-      3: "Level 3 (Sem 6–7) · Kecerdasan On-Device: Pemrosesan sinyal digital (windowing, FFT), pengenalan platform Edge Impulse, optimasi kuantisasi INT8, dan implementasi runtime TensorFlow Lite for Microcontrollers (TFLM). (Sitasi [2][4][10]).",
-      4: "Level 4 (Skripsi / Semester Akhir) · Produk & Publikasi: Integrasi dashboard monitoring (Flutter/Web), pengujian lapangan terukur 1–2 minggu, desain casing 3D print rapi, dan publikasi artikel ilmiah bereputasi."
+      1: "Level 1 (Sem 1–3) · Fondasi Hardware: Bahasa C/C++, struktur memori (Flash vs SRAM), GPIO, timer interupsi, sleep modes, dan komunikasi serial bus (I2C, SPI, UART). Fondasi mutlak sebelum melangkah ke AI.",
+      2: "Level 2 (Sem 4–5) · Konektivitas IoT: Protokol nirkabel hemat daya (LoRaWAN, MQTT, BLE Mesh), serialisasi data ringan (JSON / FlatBuffers), dan manajemen jaringan sensor terdistribusi.",
+      3: "Level 3 (Sem 6–7) · Edge AI & TinyML: Preprocessing data deret waktu, ekstraksi fitur spektral (FFT), kuantisasi model INT8, serta kompilasi model ke TensorFlow Lite Micro / C++ Array. (Sitasi [2][4]).",
+      4: "Level 4 (Sem 8) · Produk Terapan & Skripsi: Desain enclosure 3D print, pengujian empiris 1–2 minggu di lokasi nyata, pembuatan dashboard telemetri, dan publikasi ilmiah bereputasi. (Sitasi [12][13])."
     };
 
     const PIPE = [
@@ -869,128 +876,128 @@
     }
     function openCite(n) { renderCitePanel(n); document.getElementById("cites").classList.add("open"); }
 
-    const BOARDS = {
-      s3: "ESP32-S3 DevKit: Dual-core Xtensa LX7 @ 240 MHz, 512 KB SRAM, 8MB Flash, instruksi vektor AI (PIE). Sangat ideal untuk klasifikasi sinyal audio, vibrasi, dan TinyML multimodal. (Sitasi [5]).",
-      pico: "Raspberry Pi Pico 2 (RP2350): Dual Cortex-M33 / RISC-V @ 150 MHz, 520 KB SRAM. Konsumsi daya ultra-rendah untuk pengolahan sensorik cerdas baterai. (Sitasi [6]).",
-      k210: "Kendryte K210: Dual-core 64-bit RISC-V dengan NPU 0.8 TOPS terintegrasi. Spesialis akselerasi Computer Vision ringan (Face/Object Detection) on-device. (Sitasi [7]).",
-      stm: "STM32 BlackPill (F401/F411): ARM Cortex-M4 @ 84–100 MHz dengan DSP & FPU. Standar industri untuk otomasi pabrik didukung framework X-CUBE-AI. (Sitasi [8])."
-    };
+    let slidePort = null;
+    let slideReader = null;
+    let slideKeepReading = false;
+    let lastSlideGestureTime = 0;
 
-    const LEVELS = {
-      1: "Level 1 (Sem 1–3) · Fondasi Hardware: Bahasa C/C++, struktur memori (Flash vs SRAM), GPIO, timer interupsi, sleep modes, dan komunikasi serial bus (I2C, SPI, UART). Fondasi mutlak sebelum melangkah ke AI.",
-      2: "Level 2 (Sem 4–5) · Konektivitas IoT: Protokol nirkabel hemat daya (LoRaWAN, MQTT, BLE Mesh), serialisasi data ringan (JSON / FlatBuffers), dan manajemen jaringan sensor terdistribusi.",
-      3: "Level 3 (Sem 6–7) · Edge AI & TinyML: Preprocessing data deret waktu, ekstraksi fitur spektral (FFT), kuantisasi model INT8, serta kompilasi model ke TensorFlow Lite Micro / C++ Array. (Sitasi [2][4]).",
-      4: "Level 4 (Sem 8) · Produk Terapan & Skripsi: Desain enclosure 3D print, pengujian empiris 1–2 minggu di lokasi nyata, pembuatan dashboard telemetri, dan publikasi ilmiah bereputasi. (Sitasi [12][13])."
-    };
+    async function toggleSlideSerial() {
+      if (!('serial' in navigator)) {
+        alert("Browser Anda belum mendukung Web Serial API. Gunakan Google Chrome atau Microsoft Edge terbaru.");
+        return;
+      }
 
-    const DOMAIN = {
-      hw: "Pemahaman arsitektur hardware, ADC, timer, dan sleep mode memastikan sistem cerdas dapat beroperasi secara mandiri di lapangan dengan efisiensi daya optimal.",
-      net: "Protokol komunikasi nirkabel yang andal memastikan ringkasan insight atau peringatan anomali dapat terkirim ke pengguna jarak jauh secara efisien.",
-      ai: "Kecerdasan di tingkat chip memungkinkan perangkat mengambil keputusan otomatis secara real-time tanpa bergantung pada koneksi internet cloud."
-    };
+      const btnText = document.getElementById("slideSerialText");
+      const btn = document.getElementById("btnSlideSerial");
+      const hud = document.getElementById("slide-telemetry-hud");
 
-    function pickDomain(btn) {
-      document.querySelectorAll("[data-domain]").forEach(b => b.setAttribute("aria-pressed", "false"));
-      btn.setAttribute("aria-pressed", "true");
-      document.getElementById("domain-copy").textContent = "Intelligent Edge Systems Engineer: " + DOMAIN[btn.dataset.domain];
-    }
+      if (slidePort) {
+        slideKeepReading = false;
+        if (slideReader) {
+          try { await slideReader.cancel(); } catch(e){}
+        }
+        try { await slidePort.close(); } catch(e){}
+        slidePort = null;
+        slideReader = null;
+        btnText.textContent = "Connect ESP32 Remote";
+        btn.style.background = "#fff";
+        btn.style.color = "var(--ink)";
+        if (hud) hud.style.display = "none";
+        showGestureToast("🔌 USB ESP32 Terputus");
+        return;
+      }
 
-    let hands = 0;
-    function raiseHands() {
-      hands = Math.min(65, hands + 4 + Math.floor(Math.random() * 5));
-      const el = document.getElementById("hands-count");
-      el.hidden = false;
-      el.textContent = "✋ " + hands + " Mahasiswa Mengangkat Tangan!";
-    }
+      try {
+        slidePort = await navigator.serial.requestPort();
+        await slidePort.open({ baudRate: 115200 });
+        slideKeepReading = true;
+        btnText.textContent = "ESP32 Connected";
+        btn.style.background = "var(--ok)";
+        btn.style.color = "#fff";
+        if (hud) hud.style.display = "inline-flex";
+        showGestureToast("⚡ ESP32-S3 Terhubung! Miringkan board untuk berpindah slide.");
 
-    function runRace() {
-      const c = document.getElementById("pkt-cloud");
-      const e = document.getElementById("pkt-edge");
-      c.classList.remove("run-cloud"); e.classList.remove("run-edge");
-      void c.offsetWidth;
-      c.classList.add("run-cloud"); e.classList.add("run-edge");
-      document.getElementById("race-result").textContent = "Hasil Simulasi: Edge AI mengambil keputusan lokal instan (< 10 ms). Cloud AI masih dalam antrean transmisi jaringan. (Sitasi [1]).";
-    }
+        slideReader = slidePort.readable.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
 
-    const Q_COPY = [
-      "Mikrokontroler memiliki memori SRAM terbatas. Klik tombol Tahap 1 untuk melihat cara kerja kuantisasi.",
-      "Tahap 1 · Nilai pecahan Float32 (misal r = 0,850) dipetakan ke integer 8-bit (q = 108). Kita membulatkan angka tanpa mengubah esensi nilai. (Sitasi [11]).",
-      "Tahap 2 · 32 bit Float32 menyusut menjadi 8 bit Int8. Ukuran model terkompresi ~75% (4× lebih hemat memori). (Sitasi [2]).",
-      "Tahap 3 · Beban komputasi siklus CPU turun drastis (≤30%), menghasilkan eksekusi 3×+ lebih cepat pada mikrokontroler. (Sitasi [2]).",
-      "Tahap 4 · Karakteristik latensi riil: Keyword Spotting suara ~0,38 ms dan Visual Wake Words ~51 ms pada ARM Cortex-M4. (Sitasi [4][9])."
-    ];
-    let qPhase = 0;
-    function paintBits(int8) {
-      const bits = [];
-      bits.push(`<span class="bit sign${int8 ? " int8" : ""}"></span>`);
-      for (let i = 0; i < 8; i++) bits.push(`<span class="bit exp${int8 ? " gone" : ""}"></span>`);
-      for (let i = 0; i < 23; i++) bits.push(`<span class="bit mant${int8 && i >= 7 ? " gone" : int8 ? " int8" : ""}"></span>`);
-      document.getElementById("bits").innerHTML = bits.join("");
-    }
-    function applyQuantStep(p) {
-      const root = document.getElementById("qsim");
-      if (!root) return;
-      qPhase = Math.max(0, Math.min(4, p));
-      root.className = qPhase ? "qsim p" + qPhase : "qsim";
-      paintBits(qPhase >= 2);
-      document.getElementById("q-label").textContent = Q_COPY[qPhase];
-      document.getElementById("q-bits-cap").textContent = qPhase >= 2
-        ? "8 kotak hijau terisi = Format INT8 (8-bit integer). Memori terhemat hingga ~75% (4× lebih ringkas). (Sitasi [2])."
-        : "Setiap kotak = 1 bit. 32 kotak = format Float32 (1 tanda + 8 eksponen + 23 mantissa).";
-      document.getElementById("q-mem-n").textContent = qPhase >= 2 ? "8 bit" : "32 bit";
-      document.getElementById("q-cpu-n").textContent = qPhase >= 3 ? "≤30%" : "100%";
-      const prev = document.getElementById("q-prev");
-      const next = document.getElementById("q-next");
-      if (prev) prev.disabled = qPhase <= 0;
-      if (next) {
-        next.disabled = qPhase >= 4;
-        next.textContent = qPhase === 0 ? "Tahap 1 →" : qPhase >= 4 ? "Selesai" : "Tahap berikutnya →";
+        try {
+          while (slideKeepReading) {
+            const { value, done } = await slideReader.read();
+            if (done) break;
+            if (value) {
+              buffer += decoder.decode(value, { stream: true });
+              const lines = buffer.split("\n");
+              buffer = lines.pop();
+
+              for (const line of lines) {
+                const trimmed = line.trim();
+                if (trimmed.startsWith("{") && trimmed.endsWith("}")) {
+                  try {
+                    const pkt = JSON.parse(trimmed);
+                    let roll = (pkt.ori && !isNaN(pkt.ori.roll)) ? parseFloat(pkt.ori.roll) : 0;
+                    let pitch = (pkt.ori && !isNaN(pkt.ori.pitch)) ? parseFloat(pkt.ori.pitch) : 0;
+                    let act = (pkt.ai && pkt.ai.gesture) ? pkt.ai.gesture : "NONE";
+
+                    const hudRoll = document.getElementById("hud-roll");
+                    const hudPitch = document.getElementById("hud-pitch");
+                    const hudGesture = document.getElementById("hud-gesture");
+                    if (hudRoll) hudRoll.textContent = (roll >= 0 ? "+" : "") + roll.toFixed(1) + "°";
+                    if (hudPitch) hudPitch.textContent = (pitch >= 0 ? "+" : "") + pitch.toFixed(1) + "°";
+
+                    if (roll > 18.0) act = "NEXT_SLIDE";
+                    else if (roll < -18.0) act = "PREV_SLIDE";
+
+                    if (act === "NONE") {
+                      if (pitch < -18.0) act = "NEXT_SLIDE";
+                      else if (pitch > 18.0) act = "PREV_SLIDE";
+                    }
+
+                    if (act === "NONE" && pkt.acc) {
+                      const ay = parseFloat(pkt.acc.y);
+                      const ax = parseFloat(pkt.acc.x);
+                      if (!isNaN(ay)) {
+                        if (ay > 2.8) act = "NEXT_SLIDE";
+                        else if (ay < -2.8) act = "PREV_SLIDE";
+                      }
+                      if (act === "NONE" && !isNaN(ax)) {
+                        if (ax < -2.8) act = "NEXT_SLIDE";
+                        else if (ax > 2.8) act = "PREV_SLIDE";
+                      }
+                    }
+
+                    if (hudGesture) {
+                      hudGesture.textContent = act !== "NONE" ? act : "STABLE";
+                      hudGesture.style.color = act !== "NONE" ? "#FF5577" : "#00FF66";
+                    }
+
+                    const now = Date.now();
+                    if (act === "NEXT_SLIDE" && now - lastSlideGestureTime > 700) {
+                      lastSlideGestureTime = now;
+                      handleSlideCommand({ action: "NEXT_SLIDE" });
+                    } else if (act === "PREV_SLIDE" && now - lastSlideGestureTime > 700) {
+                      lastSlideGestureTime = now;
+                      handleSlideCommand({ action: "PREV_SLIDE" });
+                    }
+                  } catch (err) {}
+                }
+              }
+            }
+          }
+        } finally {
+          slideReader.releaseLock();
+        }
+      } catch (err) {
+        console.error("Slide serial connection error:", err);
+        slidePort = null;
+        slideReader = null;
+        btnText.textContent = "Connect ESP32 Remote";
+        btn.style.background = "#fff";
+        btn.style.color = "var(--ink)";
+        if (hud) hud.style.display = "none";
       }
     }
-    function quantizeStep(dir) { applyQuantStep(qPhase + dir); }
-    function resetQuantSim() { applyQuantStep(0); }
 
-    function pipeStep(i) {
-      [...document.getElementById("pipeline").children].forEach((c, idx) => c.setAttribute("aria-pressed", idx === i));
-      document.getElementById("pipe-copy").textContent = PIPE[i];
-    }
-    function pickBoard(k) { document.getElementById("hw-detail").textContent = BOARDS[k]; }
-    function pickLevel(k) { document.getElementById("level-copy").textContent = LEVELS[k]; }
-
-    function flipCase(btn) {
-      const f = btn.querySelector(".front");
-      const b = btn.querySelector(".back");
-      const showBack = b.hidden;
-      f.hidden = showBack; b.hidden = !showBack;
-    }
-
-    function renderThesis() {
-      const rows = thesisNew ? THESIS.neu : THESIS.old;
-      document.getElementById("th-col").textContent = thesisNew ? "Standar Beyond 2026 (Auto-ACC & Berbobot Publikasi)" : "Standar Usang (Hindari / Terlalu Sederhana)";
-      document.getElementById("thesis-body").innerHTML = rows.map(r => `<tr><td style="font-weight:700;">${r[0]}</td><td>${r[1]}</td></tr>`).join("");
-    }
-    function toggleThesis() { thesisNew = !thesisNew; renderThesis(); }
-
-    document.addEventListener("keydown", (e) => {
-      if (["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
-      if (e.key === "Escape") { closeOverlays(); document.getElementById("notes").classList.remove("open"); return; }
-      if (e.key === "?" || (e.shiftKey && e.key === "/")) { e.preventDefault(); toggleOverlay("help"); return; }
-      if (e.key === "h" || e.key === "H") { window.location.href = "../index.html"; return; }
-      if (e.key === "o" || e.key === "O") { toggleOverlay("overview"); return; }
-      if (e.key === "c" || e.key === "C") { toggleOverlay("cites"); return; }
-      if (e.key === "n" || e.key === "N") { toggleNotes(); return; }
-      if (e.key === "f" || e.key === "F") { document.documentElement.requestFullscreen?.(); return; }
-      if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { e.preventDefault(); nextSlide(); }
-      else if (e.key === "ArrowLeft" || e.key === "Backspace" || e.key === "PageUp") { e.preventDefault(); prevSlide(); }
-      else if (e.key === "Home") showSlide(1);
-      else if (e.key === "End") showSlide(TOTAL);
-    });
-
-    document.querySelectorAll(".overlay").forEach(o => o.addEventListener("click", e => { if (e.target === o) closeOverlays(); }));
-
-    // ========================================================================
-    // MAGIC GESTURE REMOTE ENGINE (DIRECT WEBSERIAL + DUAL CHANNEL SYNC)
-    // ========================================================================
     function showGestureToast(msg) {
       const t = document.getElementById("gesture-toast");
       if (!t) return;
@@ -1012,102 +1019,12 @@
       }
     }
 
-    // 1. Direct WebSerial Port on Slide Page (100% Bebas Kendala Antar-Tab)
-    let slidePort = null;
-    let slideReader = null;
-    let slideKeepReading = false;
-    let lastSlideGestureTime = 0;
-
-    async function toggleSlideSerial() {
-      if (!('serial' in navigator)) {
-        alert("Browser Anda belum mendukung Web Serial API. Gunakan Google Chrome atau Microsoft Edge terbaru.");
-        return;
-      }
-
-      const btnText = document.getElementById("slideSerialText");
-      const btn = document.getElementById("btnSlideSerial");
-
-      if (slidePort) {
-        slideKeepReading = false;
-        if (slideReader) await slideReader.cancel();
-        await slidePort.close();
-        slidePort = null;
-        btnText.textContent = "Connect ESP32 Remote";
-        btn.style.background = "#fff";
-        btn.style.color = "var(--ink)";
-        showGestureToast("🔌 USB ESP32 Terputus");
-        return;
-      }
-
-      try {
-        slidePort = await navigator.serial.requestPort();
-        await slidePort.open({ baudRate: 115200 });
-        slideKeepReading = true;
-        btnText.textContent = "ESP32 Connected (115.2k)";
-        btn.style.background = "var(--ok)";
-        btn.style.color = "#fff";
-        showGestureToast("⚡ ESP32-S3 Terhubung! Miringkan board untuk kendali slide.");
-
-        const textDecoder = new TextDecoderStream();
-        slidePort.readable.pipeTo(textDecoder.writable);
-        slideReader = textDecoder.readable.getReader();
-
-        let buffer = "";
-        while (slideKeepReading) {
-          const { value, done } = await slideReader.read();
-          if (done) break;
-          if (value) {
-            buffer += value;
-            const lines = buffer.split("\n");
-            buffer = lines.pop();
-
-            for (const line of lines) {
-              const trimmed = line.trim();
-              if (trimmed.startsWith("{") && trimmed.endsWith("}")) {
-                try {
-                  const pkt = JSON.parse(trimmed);
-                  let act = pkt.ai ? pkt.ai.gesture : "NONE";
-
-                  // Deteksi sudut Roll (Miring Kanan > 26° / Miring Kiri < -26°)
-                  if (pkt.ori && pkt.ori.roll !== undefined) {
-                    const roll = parseFloat(pkt.ori.roll);
-                    const now = Date.now();
-                    if (now - lastSlideGestureTime > 750) {
-                      if (roll > 26.0) {
-                        act = "NEXT_SLIDE";
-                        lastSlideGestureTime = now;
-                      } else if (roll < -26.0) {
-                        act = "PREV_SLIDE";
-                        lastSlideGestureTime = now;
-                      }
-                    }
-                  }
-
-                  if (act && act !== "NONE") {
-                    handleSlideCommand({ action: act });
-                  }
-                } catch (err) {}
-              }
-            }
-          }
-        }
-      } catch (err) {
-        console.error("Slide serial connection error:", err);
-        slidePort = null;
-        btnText.textContent = "Connect ESP32 Remote";
-        btn.style.background = "#fff";
-        btn.style.color = "var(--ink)";
-      }
-    }
-
-    // 2. Direct Window Message Listener (Antar-Jendela Popup / window.open)
     window.addEventListener('message', (e) => {
       if (e.data && (e.data.type === 'GESTURE' || e.data.action)) {
         handleSlideCommand(e.data);
       }
     });
 
-    // 3. BroadcastChannel Listener
     try {
       const ch = new BroadcastChannel('unikom_slide_channel');
       ch.onmessage = (e) => {
@@ -1115,7 +1032,6 @@
       };
     } catch(e){}
 
-    // 4. localStorage Cross-Tab StorageEvent Listener
     window.addEventListener('storage', (e) => {
       if (e.key === 'unikom_slide_cmd' && e.newValue) {
         try {

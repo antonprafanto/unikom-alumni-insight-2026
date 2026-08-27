@@ -788,29 +788,41 @@
           topStripe.className  = 'absolute top-0 left-0 right-0 h-2 bg-neo-green border-b-2 border-neo-black';
         }
 
-        // Gesture Hook to Slide Presentation (Dual Channel: BroadcastChannel + localStorage)
-        let activeGesture = pkt.ai ? pkt.ai.gesture : "NONE";
+        // Gesture Hook to Slide Presentation (Dual Channel: Direct Window + BroadcastChannel + localStorage)
+        let activeGesture = (pkt.ai && pkt.ai.gesture) ? pkt.ai.gesture : "NONE";
 
-        // Client-side tilt fallback detection if roll angle exceeds ±28°
-        if (pkt.ori && pkt.ori.roll !== undefined) {
-          const roll = parseFloat(pkt.ori.roll);
-          const now = Date.now();
-          if (now - lastClientGestureTime > 800) {
-            if (roll > 28.0) {
-              activeGesture = "NEXT_SLIDE";
-              lastClientGestureTime = now;
-            } else if (roll < -28.0) {
-              activeGesture = "PREV_SLIDE";
-              lastClientGestureTime = now;
-            }
+        // Multi-Axis Tilt Fallback Detection
+        let rollVal = (pkt.ori && !isNaN(pkt.ori.roll)) ? parseFloat(pkt.ori.roll) : 0;
+        let pitchVal = (pkt.ori && !isNaN(pkt.ori.pitch)) ? parseFloat(pkt.ori.pitch) : 0;
+
+        if (rollVal > 18.0) activeGesture = "NEXT_SLIDE";
+        else if (rollVal < -18.0) activeGesture = "PREV_SLIDE";
+
+        if (activeGesture === "NONE") {
+          if (pitchVal < -18.0) activeGesture = "NEXT_SLIDE";
+          else if (pitchVal > 18.0) activeGesture = "PREV_SLIDE";
+        }
+
+        if (activeGesture === "NONE" && pkt.acc) {
+          const ay = parseFloat(pkt.acc.y);
+          const ax = parseFloat(pkt.acc.x);
+          if (!isNaN(ay)) {
+            if (ay > 2.8) activeGesture = "NEXT_SLIDE";
+            else if (ay < -2.8) activeGesture = "PREV_SLIDE";
+          }
+          if (activeGesture === "NONE" && !isNaN(ax)) {
+            if (ax < -2.8) activeGesture = "NEXT_SLIDE";
+            else if (ax > 2.8) activeGesture = "PREV_SLIDE";
           }
         }
 
-        if (activeGesture && activeGesture !== "NONE") {
+        const now = Date.now();
+        if (activeGesture !== "NONE" && now - lastClientGestureTime > 700) {
+          lastClientGestureTime = now;
           document.getElementById('gestureLabel').innerText = activeGesture;
           document.getElementById('gestureLabel').className = 'nb-badge bg-neo-pink text-white text-xs animate-pulse';
           sendSlideCommand(activeGesture);
-        } else {
+        } else if (activeGesture === "NONE") {
           document.getElementById('gestureLabel').innerText = 'IDLE';
           document.getElementById('gestureLabel').className = 'nb-badge bg-neo-black text-neo-yellow text-xs';
         }
@@ -892,9 +904,12 @@
 
       if (port) {
         keepReading = false;
-        if (reader) await reader.cancel();
-        await port.close();
+        if (reader) {
+          try { await reader.cancel(); } catch(e){}
+        }
+        try { await port.close(); } catch(e){}
         port = null;
+        reader = null;
         updateConnectionUI(false);
         return;
       }
@@ -905,33 +920,38 @@
         updateConnectionUI(true);
         keepReading = true;
 
-        const textDecoder = new TextDecoderStream();
-        port.readable.pipeTo(textDecoder.writable);
-        reader = textDecoder.readable.getReader();
-
+        reader = port.readable.getReader();
+        const decoder = new TextDecoder();
         let buffer = '';
-        while (keepReading) {
-          const { value, done } = await reader.read();
-          if (done) break;
-          if (value) {
-            buffer += value;
-            const lines = buffer.split('\n');
-            buffer = lines.pop();
 
-            for (const line of lines) {
-              const trimmed = line.trim();
-              if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
-                try {
-                  const data = JSON.parse(trimmed);
-                  processPacket(data);
-                  appendTerminal(trimmed);
-                } catch (e) {}
+        try {
+          while (keepReading) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            if (value) {
+              buffer += decoder.decode(value, { stream: true });
+              const lines = buffer.split('\n');
+              buffer = lines.pop();
+
+              for (const line of lines) {
+                const trimmed = line.trim();
+                if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+                  try {
+                    const data = JSON.parse(trimmed);
+                    processPacket(data);
+                    appendTerminal(trimmed);
+                  } catch (e) {}
+                }
               }
             }
           }
+        } finally {
+          reader.releaseLock();
         }
       } catch (err) {
         console.error("Serial connection error:", err);
+        port = null;
+        reader = null;
         updateConnectionUI(false);
       }
     }
