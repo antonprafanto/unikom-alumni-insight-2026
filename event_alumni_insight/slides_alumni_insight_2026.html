@@ -303,6 +303,7 @@
       <span class="kicker hide-mobile" style="display:inline;">Prodi Sistem Komputer</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
+      <button id="btnSlideSerial" onclick="toggleSlideSerial()" class="pill mono" style="cursor:pointer;background:#fff;border:2px solid var(--ink);display:inline-flex;align-items:center;gap:6px;font-size:13px;padding:3px 10px;" title="Hubungkan ESP32-S3 langsung ke slide untuk kendali gesture">🔌 <span id="slideSerialText">Connect ESP32 Remote</span></button>
       <span class="kicker hide-mobile">Anton Prafanto, S.Kom., M.T.</span>
       <span class="pill mono" id="slide-number">1 / 13</span>
     </div>
@@ -987,28 +988,140 @@
 
     document.querySelectorAll(".overlay").forEach(o => o.addEventListener("click", e => { if (e.target === o) closeOverlays(); }));
 
-    // GESTURE RECEIVER
+    // ========================================================================
+    // MAGIC GESTURE REMOTE ENGINE (DIRECT WEBSERIAL + DUAL CHANNEL SYNC)
+    // ========================================================================
     function showGestureToast(msg) {
       const t = document.getElementById("gesture-toast");
+      if (!t) return;
       t.textContent = msg;
       t.style.display = "inline-flex";
       clearTimeout(window._toast);
-      window._toast = setTimeout(() => t.style.display = "none", 1500);
+      window._toast = setTimeout(() => { t.style.display = "none"; }, 1500);
     }
 
+    function handleSlideCommand(data) {
+      if (!data) return;
+      const action = typeof data === 'string' ? data : (data.action || data.type);
+      if (action === 'NEXT_SLIDE') {
+        nextSlide();
+        showGestureToast('🎮 ESP32: ➡️ Slide Berikutnya');
+      } else if (action === 'PREV_SLIDE') {
+        prevSlide();
+        showGestureToast('🎮 ESP32: ⬅️ Slide Sebelumnya');
+      }
+    }
+
+    // 1. Direct WebSerial Port on Slide Page (100% Bebas Kendala Antar-Tab)
+    let slidePort = null;
+    let slideReader = null;
+    let slideKeepReading = false;
+    let lastSlideGestureTime = 0;
+
+    async function toggleSlideSerial() {
+      if (!('serial' in navigator)) {
+        alert("Browser Anda belum mendukung Web Serial API. Gunakan Google Chrome atau Microsoft Edge terbaru.");
+        return;
+      }
+
+      const btnText = document.getElementById("slideSerialText");
+      const btn = document.getElementById("btnSlideSerial");
+
+      if (slidePort) {
+        slideKeepReading = false;
+        if (slideReader) await slideReader.cancel();
+        await slidePort.close();
+        slidePort = null;
+        btnText.textContent = "Connect ESP32 Remote";
+        btn.style.background = "#fff";
+        btn.style.color = "var(--ink)";
+        showGestureToast("🔌 USB ESP32 Terputus");
+        return;
+      }
+
+      try {
+        slidePort = await navigator.serial.requestPort();
+        await slidePort.open({ baudRate: 115200 });
+        slideKeepReading = true;
+        btnText.textContent = "ESP32 Connected (115.2k)";
+        btn.style.background = "var(--ok)";
+        btn.style.color = "#fff";
+        showGestureToast("⚡ ESP32-S3 Terhubung! Miringkan board untuk kendali slide.");
+
+        const textDecoder = new TextDecoderStream();
+        slidePort.readable.pipeTo(textDecoder.writable);
+        slideReader = textDecoder.readable.getReader();
+
+        let buffer = "";
+        while (slideKeepReading) {
+          const { value, done } = await slideReader.read();
+          if (done) break;
+          if (value) {
+            buffer += value;
+            const lines = buffer.split("\n");
+            buffer = lines.pop();
+
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (trimmed.startsWith("{") && trimmed.endsWith("}")) {
+                try {
+                  const pkt = JSON.parse(trimmed);
+                  let act = pkt.ai ? pkt.ai.gesture : "NONE";
+
+                  // Deteksi sudut Roll (Miring Kanan > 26° / Miring Kiri < -26°)
+                  if (pkt.ori && pkt.ori.roll !== undefined) {
+                    const roll = parseFloat(pkt.ori.roll);
+                    const now = Date.now();
+                    if (now - lastSlideGestureTime > 750) {
+                      if (roll > 26.0) {
+                        act = "NEXT_SLIDE";
+                        lastSlideGestureTime = now;
+                      } else if (roll < -26.0) {
+                        act = "PREV_SLIDE";
+                        lastSlideGestureTime = now;
+                      }
+                    }
+                  }
+
+                  if (act && act !== "NONE") {
+                    handleSlideCommand({ action: act });
+                  }
+                } catch (err) {}
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Slide serial connection error:", err);
+        slidePort = null;
+        btnText.textContent = "Connect ESP32 Remote";
+        btn.style.background = "#fff";
+        btn.style.color = "var(--ink)";
+      }
+    }
+
+    // 2. Direct Window Message Listener (Antar-Jendela Popup / window.open)
+    window.addEventListener('message', (e) => {
+      if (e.data && (e.data.type === 'GESTURE' || e.data.action)) {
+        handleSlideCommand(e.data);
+      }
+    });
+
+    // 3. BroadcastChannel Listener
     try {
       const ch = new BroadcastChannel('unikom_slide_channel');
       ch.onmessage = (e) => {
-        if (e.data.action === 'NEXT_SLIDE') { nextSlide(); showGestureToast('➡️ Berikutnya'); }
-        if (e.data.action === 'PREV_SLIDE') { prevSlide(); showGestureToast('⬅️ Sebelumnya'); }
+        if (e.data) handleSlideCommand(e.data);
       };
     } catch(e){}
 
+    // 4. localStorage Cross-Tab StorageEvent Listener
     window.addEventListener('storage', (e) => {
-      if (e.key === 'unikom_slide_cmd') {
-        const cmd = JSON.parse(e.newValue);
-        if (cmd.action === 'NEXT_SLIDE') { nextSlide(); showGestureToast('➡️ Berikutnya'); }
-        if (cmd.action === 'PREV_SLIDE') { prevSlide(); showGestureToast('⬅️ Sebelumnya'); }
+      if (e.key === 'unikom_slide_cmd' && e.newValue) {
+        try {
+          const cmd = JSON.parse(e.newValue);
+          handleSlideCommand(cmd);
+        } catch(err){}
       }
     });
 

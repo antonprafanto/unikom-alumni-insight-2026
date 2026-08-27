@@ -139,6 +139,12 @@
           <span>BERANDA</span>
         </a>
 
+        <!-- Open Synced Slides -->
+        <button onclick="openSyncedSlides()" class="nb-button bg-indigo-600 text-white px-3 py-2 text-xs md:text-sm font-bold" title="Buka dan hubungkan slide presentasi secara langsung (Window Sync)">
+          <i class="ph-bold ph-presentation text-base"></i>
+          <span>BUKA SLIDE (SYNC)</span>
+        </button>
+
         <!-- Status Indicator -->
         <div id="connBadge" class="nb-badge bg-white text-neo-black flex items-center gap-2 text-xs py-1.5 px-3">
           <span id="connDot" class="w-3 h-3 rounded-full bg-slate-400 border border-black inline-block"></span>
@@ -818,15 +824,36 @@
     }
 
     let lastClientGestureTime = 0;
+    let slideWindow = null;
+
+    function openSyncedSlides() {
+      slideWindow = window.open('../../event_alumni_insight/slides_alumni_insight_2026.html', 'unikom_slides');
+      if (slideWindow) {
+        slideWindow.focus();
+      }
+    }
 
     function sendSlideCommand(action) {
       if (!action || action === "NONE") return;
-      // 1. BroadcastChannel (Seketika antar-tab modern)
+
+      // 1. Direct Window Reference (Tembus 100% pada protokol file://)
+      try {
+        if (slideWindow && !slideWindow.closed) {
+          slideWindow.postMessage({ type: 'GESTURE', action: action, timestamp: Date.now() }, '*');
+        }
+      } catch (e) {}
+      try {
+        if (window.opener && !window.opener.closed) {
+          window.opener.postMessage({ type: 'GESTURE', action: action, timestamp: Date.now() }, '*');
+        }
+      } catch (e) {}
+
+      // 2. BroadcastChannel (Seketika antar-tab modern)
       try {
         slideChannel.postMessage({ type: 'GESTURE', action: action, timestamp: Date.now() });
       } catch (e) {}
 
-      // 2. localStorage Event (Pasti tembus antar-window / tab file://)
+      // 3. localStorage Event (Pasti tembus antar-window / tab file://)
       try {
         localStorage.setItem('unikom_slide_cmd', JSON.stringify({ action: action, ts: Date.now(), rand: Math.random() }));
       } catch (e) {}
