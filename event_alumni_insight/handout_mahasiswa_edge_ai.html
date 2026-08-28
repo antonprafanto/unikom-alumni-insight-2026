@@ -424,7 +424,7 @@ void loop() {
           </div>
           <div class="wobble blob-alt" style="padding:12px 14px;background:var(--note);">
             <h3>Kiat Menembus Publikasi Ilmiah Bereputasi</h3>
-            <p>Reviewer jurnal ilmiah sangat mengutamakan validasi empiris lapangan: metrik latensi inferensi (ms), konsumsi arus listrik (mA), akurasi model terukur, dan pengujian berkelanjutan di lingkungan operasional nyata.</p>
+            <p>Reviewer jurnal ilmiah sangat mengutamakan validasi empiris lapangan: metrik latensi inferensi (ms), konsumsi arus listrik (mA), akurasi model terukur, dan pengujian berkelanjutan di lingkungan operasional nyata. <button type="button" class="cite" onclick="openCite(9)">9</button><button type="button" class="cite" onclick="openCite(14)">14</button></p>
           </div>
         </div>
       </div>
@@ -522,10 +522,10 @@ void loop() {
       18: { t: "TensorFlow Lite Micro Source Code Repository.", u: "https://github.com/tensorflow/tflite-micro", n: "Repositori resmi Google TFLite Micro." }
     };
     const LEVELS = {
-      1: { t: "Level 1 · Fondasi Hardware & Embedded: Penguasaan C/C++, struktur memori (Flash vs SRAM), GPIO, timer interupsi, mode hemat daya (sleep), komunikasi bus (I2C/SPI/UART/ADC), dan perancangan sirkuit pada breadboard. Merupakan pondasi mutlak sebelum mempelajari AI.", cites: [] },
-      2: { t: "Level 2 · Konektivitas & Jaringan IoT: Penguasaan protokol transmisi data ringan (MQTT, LoRaWAN, BLE Mesh, REST API), serialisasi data (JSON/FlatBuffers), dan arsitektur Wireless Sensor Network (WSN) hemat daya yang dilengkapi buffer lokal saat koneksi terputus.", cites: [] },
+      1: { t: "Level 1 · Fondasi Hardware & Embedded: Penguasaan C/C++, struktur memori (Flash vs SRAM), GPIO, timer interupsi, mode hemat daya (sleep), komunikasi bus (I2C/SPI/UART/ADC), dan perancangan sirkuit pada breadboard. Merupakan pondasi mutlak sebelum mempelajari AI.", cites: [5] },
+      2: { t: "Level 2 · Konektivitas & Jaringan IoT: Penguasaan protokol transmisi data ringan (MQTT, LoRaWAN, BLE Mesh, REST API), serialisasi data (JSON/FlatBuffers), dan arsitektur Wireless Sensor Network (WSN) hemat daya yang dilengkapi buffer lokal saat koneksi terputus.", cites: [17] },
       3: { t: "Level 3 · Kecerdasan On-Device (TinyML): Pengolahan sinyal digital (windowing, FFT), pelatihan model pada platform Edge Impulse, optimasi kompresi model Post-Training Quantization (INT8), dan eksekusi inferensi lokal menggunakan TensorFlow Lite for Microcontrollers (TFLM).", cites: [2, 4, 10] },
-      4: { t: "Level 4 · Hilirisasi & Produk Siap Pakai: Pembuatan dashboard visualisasi mobile/web (Flutter/React), pembaruan firmware nirkabel (OTA), desain casing 3D print, pengujian empiris di lapangan, perlindungan karya cipta, dan penulisan artikel ilmiah bereputasi.", cites: [] }
+      4: { t: "Level 4 · Hilirisasi & Produk Siap Pakai: Pembuatan dashboard visualisasi mobile/web (Flutter/React), pembaruan firmware nirkabel (OTA), desain casing 3D print, pengujian empiris di lapangan, perlindungan karya cipta, dan penulisan artikel ilmiah bereputasi.", cites: [9, 14] }
     };
     const TERMS = {
       edge: "Edge AI: Penerapan model Machine Learning yang dieksekusi langsung pada perangkat lokal (mikrokontroler/edge device) di dekat sumber sensor, meminimalkan latensi, menghemat bandwidth, dan menjaga privasi data tanpa ketergantungan wajib pada server cloud. ",
@@ -533,15 +533,15 @@ void loop() {
       ptq: "Post-Training Quantization (PTQ): Setelah model selesai dilatih, angkanya dikecilkan dari 32 bit (Float32) ke tiket 8 bit (Int8). Analoginya: 0,850 tidak disimpan utuh — chip cukup mengingat 108. Google: model ~4× lebih ringkas dan CPU 3×+ lebih cepat pada full integer PTQ. Bukan jaminan ‘selalu 4× di ESP32’, dan penurunan akurasi harus diukur sendiri. ",
       arena: "Tensor Arena: Alokasi ruang memori RAM (SRAM) internal pada mikrokontroler yang disiapkan khusus oleh interpreter TensorFlow Lite Micro untuk menampung data input, output, dan memori kerja sementara selama proses inferensi. ",
       train: "Training vs Inference: Training adalah proses pembelajaran model AI dengan dataset besar yang membutuhkan komputasi berat (PC/GPU), sedangkan Inference adalah proses menjalankan model yang sudah jadi untuk mengenali data sensor baru secara real-time pada mikrokontroler. ",
-      fft: "Fast Fourier Transform (FFT): Algoritma matematika untuk mentransformasi sinyal dari domain waktu (misal: getaran accelerometer atau sinyal audio) menjadi domain frekuensi guna mengekstrak pola spektral anomali kerusakan mesin atau suara."
+      fft: "Fast Fourier Transform (FFT): Algoritma matematika untuk mentransformasi sinyal dari domain waktu (misal: getaran accelerometer atau sinyal audio) menjadi domain frekuensi guna mengekstrak pola spektral anomali kerusakan mesin atau suara. "
     };
-    const TERM_CITE = { edge: 1, tiny: 3, ptq: 2, arena: 4 };
+    const TERM_CITE = { edge: 1, tiny: 3, ptq: 2, arena: 4, train: 14, fft: 10 };
     const STEPS = [
       { t: "Langkah 1: Kunjungi edgeimpulse.com dan buat akun gratis untuk memulai proyek TinyML pertama Anda.", cites: [10] },
-      { t: "Langkah 2: Hubungkan smartphone Anda sebagai sensor akselerometer via browser. Rekam 2 kelas data gerakan: 'Gerakan Normal (Jalan)' vs 'Gerakan Anomali (Jatuh/Guncangan)' sebanyak ±50 sampel per kelas (durasi 2 detik per sampel).", cites: [] },
-      { t: "Langkah 3: Rancang Impulse (Pipeline) dengan memilih Time Series Data → Blok Pemrosesan Spectral Analysis (FFT) → Blok Pembelajaran Klasifikasi (Keras Neural Network).", cites: [] },
-      { t: "Langkah 4: Jalankan proses Model Training dan evaluasi matriks akurasi pada Confusion Matrix (target akurasi > 90%). Platform akan secara otomatis mengoptimasi model ke format kuantisasi INT8.", cites: [2, 10] },
-      { t: "Langkah 5: Buka menu Deployment, pilih opsi 'Arduino Library' atau 'C++ Library', lalu unduh berkas .ZIP hasil kompilasi model Anda.", cites: [] },
+      { t: "Langkah 2: Hubungkan smartphone Anda sebagai sensor akselerometer via browser. Rekam 2 kelas data gerakan: 'Gerakan Normal (Jalan)' vs 'Gerakan Anomali (Jatuh/Guncangan)' sebanyak ±50 sampel per kelas (durasi 2 detik per sampel).", cites: [16] },
+      { t: "Langkah 3: Rancang Impulse (Pipeline) dengan memilih Time Series Data → Blok Pemrosesan Spectral Analysis (FFT) → Blok Pembelajaran Klasifikasi (Keras Neural Network).", cites: [10] },
+      { t: "Langkah 4: Jalankan proses Model Training dan evaluasi matriks akurasi pada Confusion Matrix (target akurasi > 90%). Platform akan secara otomatis mengoptimasi model ke format kuantisasi INT8.", cites: [2, 11] },
+      { t: "Langkah 5: Buka menu Deployment, pilih opsi 'Arduino Library' atau 'C++ Library', lalu unduh berkas .ZIP hasil kompilasi model Anda.", cites: [18] },
       { t: "Langkah 6: Buka simulator online wokwi.com, buat proyek ESP32 baru, tambahkan library Edge Impulse yang telah diunduh, lalu amati hasil klasifikasi real-time pada Serial Monitor tanpa memerlukan perangkat fisik.", cites: [15] }
     ];
 

@@ -360,12 +360,12 @@
           <button class="card wobble blob-alt" onclick="goTo(8)" style="text-align:left;background:var(--note-mint);transform:rotate(1deg);">
             <div class="kicker">04 Bukti Nyata</div>
             <h3>Studi Kasus & Demo</h3>
-            <p>Kandang ayam broiler & motor POPULING.</p>
+            <p>Kandang ayam broiler &amp; riset kualitas udara.<button class="cite" data-cite="12" onclick="event.stopPropagation();openCite(12)">12</button></p>
           </button>
           <button class="card wobble blob-card" onclick="goTo(10)" style="text-align:left;background:var(--note-pink);transform:rotate(-0.8deg);">
             <div class="kicker">05 Aksi</div>
             <h3>Roadmap & Skripsi</h3>
-            <p>Starter kit murah & resep judul auto-ACC dosen.</p>
+            <p>Starter kit murah &amp; resep judul skripsi terapan.<button class="cite" data-cite="13" onclick="event.stopPropagation();openCite(13)">13</button></p>
           </button>
         </div>
       </div>
@@ -452,12 +452,12 @@
           <button class="card wobble blob-card" data-domain="hw" onclick="pickDomain(this)" style="text-align:left;">
             <div class="kicker">Pilar 1</div>
             <h3>Hardware &amp; Embedded</h3>
-            <p>Mikrokontroler, ADC, manajemen daya (sleep mode), bus I2C/SPI/UART, dan RTOS.</p>
+            <p>Mikrokontroler, ADC, manajemen daya (sleep mode), bus I2C/SPI/UART, dan RTOS. <button class="cite" data-cite="5" onclick="event.stopPropagation();openCite(5)">5</button></p>
           </button>
           <button class="card wobble blob-alt" data-domain="net" onclick="pickDomain(this)" style="text-align:left;background:var(--note-blue);">
             <div class="kicker">Pilar 2</div>
             <h3>Jaringan &amp; IoT</h3>
-            <p>Protokol LoRaWAN, MQTT, BLE Mesh, Wireless Sensor Network (WSN) hemat daya.</p>
+            <p>Protokol LoRaWAN, MQTT, BLE Mesh, Wireless Sensor Network (WSN) hemat daya. <button class="cite" data-cite="13" onclick="event.stopPropagation();openCite(13)">13</button></p>
           </button>
           <button class="card wobble blob-card" data-domain="ai" onclick="pickDomain(this)" style="text-align:left;background:var(--note-mint);">
             <div class="kicker">Pilar 3</div>
@@ -546,10 +546,10 @@
           🩺 <b>Analogi Dokter / Montir Ahli:</b> Seperti dokter dengan stetoskop (atau montir meraba getaran mesin motor) selama 2 detik untuk tahu laher mana yang aus, mikrokontroler mengekstrak pola getaran unik dari sensor fisik untuk mendeteksi bahaya seketika.
         </div>
         <div class="grid-4" style="margin-top:14px;" id="pipeline">
-          <button class="card wobble blob-card" onclick="pipeStep(0)" style="text-align:left;">1. Baca Sensor<br><span class="kicker">Sampling 100 Hz</span></button>
+          <button class="card wobble blob-card" onclick="pipeStep(0)" style="text-align:left;">1. Baca Sensor <button class="cite" data-cite="10" onclick="event.stopPropagation();openCite(10)">10</button><br><span class="kicker">Sampling 100 Hz</span></button>
           <button class="card wobble blob-alt" onclick="pipeStep(1)" style="text-align:left;">2. Kumpulkan Sampel<br><span class="kicker">Windowing 1–2 Dtk</span></button>
-          <button class="card wobble blob-card" onclick="pipeStep(2)" style="text-align:left;background:var(--note);">3. Ekstrak Ciri Pola<br><span class="kicker">FFT / Spektrum</span></button>
-          <button class="card wobble blob-alt" onclick="pipeStep(3)" style="text-align:left;background:var(--note-mint);">4. Diagnosa &amp; Aksi<br><span class="kicker">TFLite Micro (INT8)</span></button>
+          <button class="card wobble blob-card" onclick="pipeStep(2)" style="text-align:left;background:var(--note);">3. Ekstrak Ciri Pola <button class="cite" data-cite="10" onclick="event.stopPropagation();openCite(10)">10</button><br><span class="kicker">FFT / Spektrum</span></button>
+          <button class="card wobble blob-alt" onclick="pipeStep(3)" style="text-align:left;background:var(--note-mint);">4. Diagnosa &amp; Aksi <button class="cite" data-cite="4" onclick="event.stopPropagation();openCite(4)">4</button><br><span class="kicker">TFLite Micro (INT8)</span></button>
         </div>
         <div class="wobble blob-card" id="pipe-copy" style="margin-top:14px;padding:14px 18px;min-height:80px;background:#fff;">
           Klik salah satu tahapan pipeline di atas untuk melihat rincian proses komputasinya.
@@ -573,13 +573,13 @@
             <svg width="64" height="40" viewBox="0 0 64 40" aria-hidden="true"><rect x="12" y="8" width="40" height="24" rx="4" fill="#fff" stroke="#2D2D2D" stroke-width="2"/><circle cx="24" cy="20" r="5" fill="#E63946"/><path d="M34 16h10M34 22h6" stroke="#2D2D2D" stroke-width="2"/></svg>
             <h3>POPULING (Polusi Keliling)</h3>
             <p class="front">Sistem pemantauan kualitas udara bergerak (Mobile IoT): Node laser PM2.5/PM10 + GPS dipasang di sepeda motor untuk pemetaan dinamis di 862 titik kota.</p>
-            <p class="back" hidden><b>Prinsip Solusi:</b> Menggantikan stasiun uji polusi konvensional berbiaya ratusan juta dengan node mobile murah yang memetakan polusi jalanan secara presisi.</p>
+            <p class="back" hidden><b>Prinsip Solusi:</b> Menggantikan stasiun uji polusi konvensional berbiaya ratusan juta dengan node mobile murah yang memetakan polusi jalanan secara presisi. <button class="cite" data-cite="12" onclick="event.stopPropagation();openCite(12)">12</button></p>
           </div>
           <div class="card wobble-thick blob-card" role="button" tabindex="0" onclick="flipCase(this)" onkeydown="if(event.key==='Enter'||event.key===' ')flipCase(this)" style="text-align:left;background:var(--note-mint);transform:rotate(-0.5deg);cursor:pointer;">
             <svg width="64" height="40" viewBox="0 0 64 40" aria-hidden="true"><circle cx="32" cy="20" r="12" fill="#fff" stroke="#2D2D2D" stroke-width="2"/><circle cx="32" cy="20" r="4" fill="#E63946"/><path d="M32 6 v-4 M32 34 v4 M16 20 h-4 M48 20 h4" stroke="#2D2D2D" stroke-width="2"/></svg>
             <h3>Predictive Maintenance</h3>
             <p class="front">Pemeliharaan prediktif motor industri: Analisis spektral getaran (IMU + FFT) dan klasifikasi anomali on-device untuk deteksi dini kerusakan bearing mesin.</p>
-            <p class="back" hidden><b>Prinsip Solusi:</b> Sensor getaran otonom memantau mesin 24/7 dan memberikan peringatan sebelum terjadi patah mekanis yang melumpuhkan pabrik. <button class="cite" data-cite="4" onclick="event.stopPropagation();openCite(4)">4</button></p>
+            <p class="back" hidden><b>Prinsip Solusi:</b> Sensor getaran otonom memantau mesin 24/7 dan memberikan peringatan sebelum terjadi patah mekanis yang melumpuhkan pabrik. <button class="cite" data-cite="4" onclick="event.stopPropagation();openCite(4)">4</button><button class="cite" data-cite="13" onclick="event.stopPropagation();openCite(13)">13</button></p>
           </div>
         </div>
         <div class="wobble blob-note" style="margin-top:12px;padding:10px 16px;background:var(--note);font-size:16px;">
@@ -594,16 +594,16 @@
         <p class="kicker">07 / Starter Kit Mahasiswa · Modal Terjangkau Mahasiswa</p>
         <h2>Pilihan Perangkat Keras Edge AI 2026 (&lt; Rp 100.000)</h2>
         <div class="grid-4" style="margin-top:12px;">
-          <button class="card wobble blob-card" onclick="pickBoard('s3')" style="text-align:left;">ESP32-S3 DevKit<br><span class="kicker">± Rp 75.000–120.000</span></button>
-          <button class="card wobble blob-alt" onclick="pickBoard('pico')" style="text-align:left;background:var(--note-blue);">Raspberry Pi Pico<br><span class="kicker">± Rp 50.000–85.000</span></button>
-          <button class="card wobble blob-card" onclick="pickBoard('cam')" style="text-align:left;background:var(--note);">ESP32-CAM (Vision)<br><span class="kicker">± Rp 50.000–85.000</span></button>
-          <button class="card wobble blob-alt" onclick="pickBoard('stm')" style="text-align:left;background:var(--note-mint);">STM32 BlackPill<br><span class="kicker">± Rp 50.000–80.000</span></button>
+          <button class="card wobble blob-card" onclick="pickBoard('s3')" style="text-align:left;">ESP32-S3 DevKit <button class="cite" data-cite="5" onclick="event.stopPropagation();openCite(5)">5</button><br><span class="kicker">± Rp 75.000–120.000</span></button>
+          <button class="card wobble blob-alt" onclick="pickBoard('pico')" style="text-align:left;background:var(--note-blue);">Raspberry Pi Pico <button class="cite" data-cite="6" onclick="event.stopPropagation();openCite(6)">6</button><br><span class="kicker">± Rp 50.000–85.000</span></button>
+          <button class="card wobble blob-card" onclick="pickBoard('cam')" style="text-align:left;background:var(--note);">ESP32-CAM (Vision) <button class="cite" data-cite="7" onclick="event.stopPropagation();openCite(7)">7</button><br><span class="kicker">± Rp 50.000–85.000</span></button>
+          <button class="card wobble blob-alt" onclick="pickBoard('stm')" style="text-align:left;background:var(--note-mint);">STM32 BlackPill <button class="cite" data-cite="8" onclick="event.stopPropagation();openCite(8)">8</button><br><span class="kicker">± Rp 50.000–80.000</span></button>
         </div>
         <div class="wobble blob-card hw-detail" id="hw-detail" style="margin-top:12px;padding:12px 16px;background:#fff;">
           Klik salah satu papan mikrokontroler di atas untuk melihat spesifikasi teknis dan use-case terbaiknya.
         </div>
         <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-          <span class="pill" style="background:var(--note);">🌐 100% Gratis di Browser: Simulator Wokwi + Edge Impulse Studio</span>
+          <span class="pill" style="background:var(--note);">🌐 100% Gratis di Browser: Simulator Wokwi + Edge Impulse Studio <button class="cite" data-cite="10" onclick="openCite(10)">10</button></span>
           <a href="../demo_edge_ai/dashboard_web/index.html" target="_blank" class="nav-btn primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-size:14px;">⚡ Buka Hands-on Telemetry Workstation (ESP32-S3 Demo) →</a>
         </div>
       </div>
@@ -616,9 +616,9 @@
         <h2>Roadmap 4 Level: Mahasiswa Menuju Edge AI Engineer</h2>
         <div class="grid-4" style="margin-top:14px;">
           <button class="card wobble blob-card" onclick="pickLevel(1)" style="text-align:left;border-top:8px solid var(--ink);"><b>Level 1 (Sem 1–3)</b><br>Hardware Core</button>
-          <button class="card wobble blob-alt" onclick="pickLevel(2)" style="text-align:left;background:var(--note-blue);border-top:8px solid var(--ink);"><b>Level 2 (Sem 4–5)</b><br>Konektivitas IoT</button>
-          <button class="card wobble blob-card" onclick="pickLevel(3)" style="text-align:left;background:var(--note);border-top:8px solid var(--ink);"><b>Level 3 (Sem 6–7)</b><br>Edge AI &amp; TinyML</button>
-          <button class="card wobble blob-alt" onclick="pickLevel(4)" style="text-align:left;background:var(--note-mint);border-top:8px solid var(--ink);"><b>Level 4 (Skripsi)</b><br>Produk &amp; Publikasi</button>
+          <button class="card wobble blob-alt" onclick="pickLevel(2)" style="text-align:left;background:var(--note-blue);border-top:8px solid var(--ink);"><b>Level 2 (Sem 4–5)</b> <button class="cite" data-cite="13" onclick="event.stopPropagation();openCite(13)">13</button><br>Konektivitas IoT</button>
+          <button class="card wobble blob-card" onclick="pickLevel(3)" style="text-align:left;background:var(--note);border-top:8px solid var(--ink);"><b>Level 3 (Sem 6–7)</b> <button class="cite" data-cite="4" onclick="event.stopPropagation();openCite(4)">4</button><br>Edge AI &amp; TinyML</button>
+          <button class="card wobble blob-alt" onclick="pickLevel(4)" style="text-align:left;background:var(--note-mint);border-top:8px solid var(--ink);"><b>Level 4 (Skripsi)</b> <button class="cite" data-cite="12" onclick="event.stopPropagation();openCite(12)">12</button><br>Produk &amp; Publikasi</button>
         </div>
         <div class="wobble blob-note" id="level-copy" style="margin-top:16px;padding:16px 18px;min-height:86px;">
           Level 1 · Fondasi Hardware: Penguasaan bahasa C/C++, struktur memori (Flash vs SRAM), GPIO, timer interupsi, manajemen daya (sleep mode), dan protokol bus (I2C/SPI/UART). Pondasi mutlak sebelum melangkah lebih jauh.
@@ -641,7 +641,7 @@
           </table>
         </div>
         <div class="wobble blob-note" style="margin-top:10px;padding:10px 16px;background:var(--note);font-size:15px;">
-          💡 <b>Kunci Sukses Skripsi:</b> Gunakan metode pengujian empiris (uji konsumsi arus mA, latensi ms, akurasi INT8 di lapangan selama 1–2 minggu). Dosen pembimbing akan langsung menyetujui!
+          💡 <b>Kunci Sukses Skripsi:</b> Gunakan metode pengujian empiris (uji konsumsi arus mA, latensi ms, akurasi INT8 di lapangan selama 1–2 minggu). Dosen pembimbing akan langsung menyetujui! <button class="cite" data-cite="12" onclick="openCite(12)">12</button>
         </div>
       </div>
     </section>
@@ -678,7 +678,7 @@
           <summary style="font-size:17px;font-weight:700;">Panduan Tanya Jawab Populer (Q&A Anticipation - Klik untuk membuka)</summary>
           <details class="qa"><summary>1. Saya mahasiswa semester awal (2/4), dari mana langkah pertama saya malam ini?</summary><p>Mulai secara praktis melalui platform gratis <b>Edge Impulse (edgeimpulse.com)</b>. Rekam data sensor accelerometer dari HP Anda, buat model klasifikasi gerakan sederhana, dan ekspor langsung ke kode Arduino C++ tanpa perlu pusing matematika AI dari nol. <button class="cite" data-cite="10" onclick="openCite(10)">10</button></p></details>
           <details class="qa"><summary>2. Apakah model INT8 di chip kecil itu akurat dibanding AI di laptop/server?</summary><p>Sangat akurat! Hasil benchmark resmi menunjukkan selisih penurunan akurasi INT8 pada data sensor hanya &lt; 1–2%, namun modelnya 4× lebih kecil, komputasi 3× lebih cepat, dan 100% mandiri offline tanpa internet. <button class="cite" data-cite="11" onclick="openCite(11)">11</button></p></details>
-          <details class="qa"><summary>3. Bagaimana resep agar skripsi Edge AI cepat di-ACC dosen dan tembus jurnal ilmiah?</summary><p>Lakukan <b>pengujian empiris lapangan</b> selama 1–2 minggu di tempat nyata (kandang peternak, bengkel motor, bantaran sungai). Sajikan tabel perbandingan: konsumsi arus (mA), latensi inferensi (ms), efisiensi kuota, dan matriks akurasi (F1-score). Data lapangan inilah yang disukai penguji.</p></details>
+          <details class="qa"><summary>3. Bagaimana resep agar skripsi Edge AI cepat di-ACC dosen dan tembus jurnal ilmiah?</summary><p>Lakukan <b>pengujian empiris lapangan</b> selama 1–2 minggu di tempat nyata (kandang peternak, bengkel motor, bantaran sungai). Sajikan tabel perbandingan: konsumsi arus (mA), latensi inferensi (ms), efisiensi kuota, dan matriks akurasi (F1-score). Data lapangan inilah yang disukai penguji. <button class="cite" data-cite="12" onclick="openCite(12)">12</button></p></details>
           <details class="qa"><summary>4. Apakah prospek karir insinyur Hardware + Edge AI menjanjikan di masa depan?</summary><p>Sangat langka dan bergaji tinggi. Pasar programmer software web/mobile saat ini sangat padat, sedangkan industri kendaraan listrik (EV), robotika, IoT industri, dan alutsista mengalami kelangkaan tenaga ahli yang memahami sirkuit fisik sekaligus logika AI.</p></details>
         </details>
       </div>
