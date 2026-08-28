@@ -29,7 +29,7 @@ Materi ini dirancang khusus untuk membedah arah transformasi keilmuan **Teknik/S
 
 ### 🎯 5 Babak Perjalanan Materi:
 1. **01 Identitas & Akar Lab UNIKOM:** Menghubungkan penguasaan dasar perangkat keras (*register, timer, interrupt, low-level C/C++*) dengan keunggulan langka anak Sistem Komputer di industri AI modern.
-2. **02 Problem Lapangan (Cloud AI Bottleneck):** Membedah kelemahan latensi, bandwidth, privasi, dan keandalan offline pada arsitektur terpusat lewat analogi *Refleks Tubuh vs Telepon Dokter*.
+2. **02 Problem Lapangan (Cloud AI Bottleneck):** Membedah kelemahan latensi, bandwidth, privasi, dan keandalan offline pada arsitektur server terpusat.
 3. **03 Dapur Pacu Edge AI & TinyML:** Menjelaskan kuantisasi model INT8 (*analogi membulatkan uang belanjaan*) dan ekstraksi frekuensi sinyal (*analogi montir/stetoskop dokter mesin*).
 4. **04 Bukti Terapan Lapangan:** Studi kasus nyata sistem kendali mandiri *Smart Poultry Farming* dan pemantauan kualitas udara bergerak *POPULING (Mobile IoT)*.
 5. **05 Blueprint Mahasiswa & Transformasi Skripsi:** 4 level peta jalan belajar mahasiswa serta klinik judul tugas akhir standar usang vs standar *Beyond 2026* berbobot publikasi ilmiah.
