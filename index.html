@@ -53,7 +53,9 @@
       padding: 4px 14px; border: 2px solid var(--ink);
       border-radius: 255px 15px 225px / 15px 225px 15px 255px;
       background: #fff; font-size: 15px; font-weight: 600;
+      text-decoration: none; color: inherit; transition: transform 0.15s ease, background 0.15s ease;
     }
+    a.pill:hover { background: #f0ede6; transform: translateY(-1px); }
     .pill.red { background: var(--red); color: #fff; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
@@ -92,6 +94,7 @@
       <div style="display:flex;gap:8px;justify-content:center;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
         <span class="pill red">UNIKOM Alumni Insight 2026</span>
         <span class="pill">Program Studi Sistem Komputer</span>
+        <a href="https://github.com/antonprafanto/unikom-alumni-insight-2026/blob/main/README.md" target="_blank" rel="noopener noreferrer" class="pill">📦 GitHub README.md ↗</a>
       </div>
       <h1>Computer Engineering <span style="text-decoration:underline;text-decoration-color:var(--red);">Beyond 2026</span></h1>
       <p style="font-size:22px;max-width:38ch;margin:12px auto 0;">IoT, Edge AI, and The Future of Connected Systems</p>
@@ -177,15 +180,27 @@
         <div>
           <h3 style="font-size:20px;">Narasumber: Anton Prafanto, S.Kom., M.T.</h3>
           <p style="font-size:16px;margin-top:4px;">Dosen &amp; Peneliti Program Studi S1 Informatika, Fakultas Teknik, Universitas Mulawarman (UNMUL)<br>Email: <span class="mono">antonprafanto@unmul.ac.id</span></p>
+          <div style="margin-top:12px;">
+            <a href="https://github.com/antonprafanto/unikom-alumni-insight-2026/blob/main/README.md" target="_blank" rel="noopener noreferrer" class="btn-action" style="font-size:15px;padding:6px 14px;margin-top:4px;text-decoration:none;">
+              📖 Dokumentasi Repositori (README.md) ↗
+            </a>
+          </div>
         </div>
         <div style="text-align:center;">
-          <img src="qr_github.svg" alt="QR GitHub Portofolio" width="80" height="80" style="display:block;margin:0 auto;">
-          <span class="kicker" style="font-size:12px;">Portofolio GitHub</span>
+          <a href="https://github.com/antonprafanto/unikom-alumni-insight-2026/blob/main/README.md" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
+            <img src="qr_github.svg" alt="QR GitHub Portofolio" width="80" height="80" style="display:block;margin:0 auto;">
+            <span class="kicker" style="font-size:12px;text-decoration:underline;">README &amp; Portofolio ↗</span>
+          </a>
         </div>
       </div>
     </div>
 
     <footer style="margin-top:40px;text-align:center;">
+      <p style="margin-bottom:8px;">
+        <a href="https://github.com/antonprafanto/unikom-alumni-insight-2026/blob/main/README.md" target="_blank" rel="noopener noreferrer" class="pill" style="font-size:14px;">
+          🔗 github.com/antonprafanto/unikom-alumni-insight-2026/blob/main/README.md ↗
+        </a>
+      </p>
       <p class="kicker">© 2026 Anton Prafanto, S.Kom., M.T. · Didedikasikan untuk Almamater tercinta Program Studi Sistem Komputer UNIKOM Bandung.</p>
     </footer>
   </div>
