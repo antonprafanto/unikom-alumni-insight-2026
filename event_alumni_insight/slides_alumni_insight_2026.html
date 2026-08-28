@@ -452,7 +452,7 @@
           <div class="card wobble blob-card" role="button" tabindex="0" data-domain="hw" onclick="pickDomain(this)" onkeydown="if(event.key==='Enter'||event.key===' ')pickDomain(this)" style="text-align:left;">
             <div class="kicker">Pilar 1</div>
             <h3>Hardware &amp; Embedded</h3>
-            <p>Mikrokontroler, ADC, manajemen daya (sleep mode), bus I2C/SPI/UART, dan RTOS. <button class="cite" data-cite="5" onclick="event.stopPropagation();openCite(5)">5</button></p>
+            <p>Mikrokontroler, ADC, manajemen daya (sleep mode), bus I2C/SPI/UART, dan RTOS.</p>
           </div>
           <div class="card wobble blob-alt" role="button" tabindex="0" data-domain="net" onclick="pickDomain(this)" onkeydown="if(event.key==='Enter'||event.key===' ')pickDomain(this)" style="text-align:left;background:var(--note-blue);">
             <div class="kicker">Pilar 2</div>
@@ -462,7 +462,7 @@
           <div class="card wobble blob-card" role="button" tabindex="0" data-domain="ai" onclick="pickDomain(this)" onkeydown="if(event.key==='Enter'||event.key===' ')pickDomain(this)" style="text-align:left;background:var(--note-mint);">
             <div class="kicker">Pilar 3</div>
             <h3>Kecerdasan Buatan (AI)</h3>
-            <p>TinyML, ekstraksi fitur spektral (FFT), kuantisasi model INT8, dan klasifikasi pola. <button class="cite" data-cite="4" onclick="event.stopPropagation();openCite(4)">4</button></p>
+            <p>TinyML, ekstraksi fitur spektral (FFT), kuantisasi model INT8, dan klasifikasi pola.</p>
           </div>
         </div>
         <div class="wobble blob-card" style="margin-top:12px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff;">
@@ -546,10 +546,10 @@
           🩺 <b>Analogi Dokter / Montir Ahli:</b> Seperti dokter dengan stetoskop (atau montir meraba getaran mesin motor) selama 2 detik untuk tahu laher mana yang aus, mikrokontroler mengekstrak pola getaran unik dari sensor fisik untuk mendeteksi bahaya seketika.
         </div>
         <div class="grid-4" style="margin-top:14px;" id="pipeline">
-          <div class="card wobble blob-card" role="button" tabindex="0" onclick="pipeStep(0)" onkeydown="if(event.key==='Enter'||event.key===' ')pipeStep(0)" style="text-align:left;">1. Baca Sensor <button class="cite" data-cite="10" onclick="event.stopPropagation();openCite(10)">10</button><br><span class="kicker">Sampling 100 Hz</span></div>
+          <div class="card wobble blob-card" role="button" tabindex="0" onclick="pipeStep(0)" onkeydown="if(event.key==='Enter'||event.key===' ')pipeStep(0)" style="text-align:left;">1. Baca Sensor<br><span class="kicker">Sampling 100 Hz</span></div>
           <div class="card wobble blob-alt" role="button" tabindex="0" onclick="pipeStep(1)" onkeydown="if(event.key==='Enter'||event.key===' ')pipeStep(1)" style="text-align:left;">2. Kumpulkan Sampel<br><span class="kicker">Windowing 1–2 Dtk</span></div>
-          <div class="card wobble blob-card" role="button" tabindex="0" onclick="pipeStep(2)" onkeydown="if(event.key==='Enter'||event.key===' ')pipeStep(2)" style="text-align:left;background:var(--note);">3. Ekstrak Ciri Pola <button class="cite" data-cite="10" onclick="event.stopPropagation();openCite(10)">10</button><br><span class="kicker">FFT / Spektrum</span></div>
-          <div class="card wobble blob-alt" role="button" tabindex="0" onclick="pipeStep(3)" onkeydown="if(event.key==='Enter'||event.key===' ')pipeStep(3)" style="text-align:left;background:var(--note-mint);">4. Diagnosa &amp; Aksi <button class="cite" data-cite="4" onclick="event.stopPropagation();openCite(4)">4</button><br><span class="kicker">TFLite Micro (INT8)</span></div>
+          <div class="card wobble blob-card" role="button" tabindex="0" onclick="pipeStep(2)" onkeydown="if(event.key==='Enter'||event.key===' ')pipeStep(2)" style="text-align:left;background:var(--note);">3. Ekstrak Ciri Pola<br><span class="kicker">FFT / Spektrum</span></div>
+          <div class="card wobble blob-alt" role="button" tabindex="0" onclick="pipeStep(3)" onkeydown="if(event.key==='Enter'||event.key===' ')pipeStep(3)" style="text-align:left;background:var(--note-mint);">4. Diagnosa &amp; Aksi<br><span class="kicker">TFLite Micro (INT8)</span></div>
         </div>
         <div class="wobble blob-card" id="pipe-copy" style="margin-top:14px;padding:14px 18px;min-height:80px;background:#fff;">
           Klik salah satu tahapan pipeline di atas untuk melihat rincian proses komputasinya.
@@ -594,10 +594,10 @@
         <p class="kicker">07 / Starter Kit Mahasiswa · Modal Terjangkau Mahasiswa</p>
         <h2>Pilihan Perangkat Keras Edge AI 2026 (&lt; Rp 100.000)</h2>
         <div class="grid-4" style="margin-top:12px;">
-          <div class="card wobble blob-card" role="button" tabindex="0" onclick="pickBoard('s3')" onkeydown="if(event.key==='Enter'||event.key===' ')pickBoard('s3')" style="text-align:left;">ESP32-S3 DevKit <button class="cite" data-cite="5" onclick="event.stopPropagation();openCite(5)">5</button><br><span class="kicker">± Rp 75.000–120.000</span></div>
-          <div class="card wobble blob-alt" role="button" tabindex="0" onclick="pickBoard('pico')" onkeydown="if(event.key==='Enter'||event.key===' ')pickBoard('pico')" style="text-align:left;background:var(--note-blue);">Raspberry Pi Pico <button class="cite" data-cite="6" onclick="event.stopPropagation();openCite(6)">6</button><br><span class="kicker">± Rp 50.000–85.000</span></div>
-          <div class="card wobble blob-card" role="button" tabindex="0" onclick="pickBoard('cam')" onkeydown="if(event.key==='Enter'||event.key===' ')pickBoard('cam')" style="text-align:left;background:var(--note);">ESP32-CAM (Vision) <button class="cite" data-cite="7" onclick="event.stopPropagation();openCite(7)">7</button><br><span class="kicker">± Rp 50.000–85.000</span></div>
-          <div class="card wobble blob-alt" role="button" tabindex="0" onclick="pickBoard('stm')" onkeydown="if(event.key==='Enter'||event.key===' ')pickBoard('stm')" style="text-align:left;background:var(--note-mint);">STM32 BlackPill <button class="cite" data-cite="8" onclick="event.stopPropagation();openCite(8)">8</button><br><span class="kicker">± Rp 50.000–80.000</span></div>
+          <div class="card wobble blob-card" role="button" tabindex="0" onclick="pickBoard('s3')" onkeydown="if(event.key==='Enter'||event.key===' ')pickBoard('s3')" style="text-align:left;">ESP32-S3 DevKit<br><span class="kicker">± Rp 75.000–120.000</span></div>
+          <div class="card wobble blob-alt" role="button" tabindex="0" onclick="pickBoard('pico')" onkeydown="if(event.key==='Enter'||event.key===' ')pickBoard('pico')" style="text-align:left;background:var(--note-blue);">Raspberry Pi Pico<br><span class="kicker">± Rp 50.000–85.000</span></div>
+          <div class="card wobble blob-card" role="button" tabindex="0" onclick="pickBoard('cam')" onkeydown="if(event.key==='Enter'||event.key===' ')pickBoard('cam')" style="text-align:left;background:var(--note);">ESP32-CAM (Vision)<br><span class="kicker">± Rp 50.000–85.000</span></div>
+          <div class="card wobble blob-alt" role="button" tabindex="0" onclick="pickBoard('stm')" onkeydown="if(event.key==='Enter'||event.key===' ')pickBoard('stm')" style="text-align:left;background:var(--note-mint);">STM32 BlackPill<br><span class="kicker">± Rp 50.000–80.000</span></div>
         </div>
         <div class="wobble blob-card hw-detail" id="hw-detail" style="margin-top:12px;padding:12px 16px;background:#fff;">
           Klik salah satu papan mikrokontroler di atas untuk melihat spesifikasi teknis dan use-case terbaiknya.
