@@ -706,24 +706,33 @@
 
   <div class="notes" id="notes"></div>
 
-  <div class="overlay" id="overview">
+  <div class="overlay" id="overview" onclick="if(event.target===this) closeOverlays()">
     <div class="panel">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
         <h2>Peta Seluruh Slide · Klik untuk berpindah</h2>
-        <a href="../index.html" class="nav-btn primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;">🏠 Kembali ke Beranda Hub</a>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <a href="../index.html" class="nav-btn primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;">🏠 Kembali ke Beranda Hub</a>
+          <button class="nav-btn" onclick="closeOverlays()" style="padding:4px 12px;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">✖ Tutup</button>
+        </div>
       </div>
       <div class="overview-grid" id="thumbs"></div>
     </div>
   </div>
-  <div class="overlay" id="cites">
+  <div class="overlay" id="cites" onclick="if(event.target===this) closeOverlays()">
     <div class="panel">
-      <h2>Daftar Referensi &amp; Sitasi Akademik</h2>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;border-bottom:2px solid var(--ink);padding-bottom:8px;">
+        <h2>Daftar Referensi &amp; Sitasi Akademik</h2>
+        <button class="nav-btn" onclick="closeOverlays()" style="padding:4px 14px;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;background:#FFF;font-weight:700;">✖ Tutup</button>
+      </div>
       <div id="cite-panel"></div>
     </div>
   </div>
-  <div class="overlay" id="help">
+  <div class="overlay" id="help" onclick="if(event.target===this) closeOverlays()">
     <div class="panel">
-      <h2>Pintasan Navigasi Keyboard</h2>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;border-bottom:2px solid var(--ink);padding-bottom:8px;">
+        <h2>Pintasan Navigasi Keyboard</h2>
+        <button class="nav-btn" onclick="closeOverlays()" style="padding:4px 14px;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;background:#FFF;font-weight:700;">✖ Tutup</button>
+      </div>
       <div class="help-grid" style="margin-top:12px;">
         <div><kbd>→</kbd> <kbd>Space</kbd> <kbd>Klik</kbd> : Maju ke slide / fragmen berikutnya</div>
         <div><kbd>←</kbd> <kbd>Backspace</kbd> : Kembali ke slide sebelumnya</div>
