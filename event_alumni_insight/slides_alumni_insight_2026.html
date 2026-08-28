@@ -591,13 +591,13 @@
     <!-- 9 HARDWARE & STARTER KIT -->
     <section class="slide" id="slide-9" data-notes="Tunjukkan board murah < Rp 100rb. Ingatkan opsi 100% gratis di browser pakai Wokwi + Edge Impulse. Tunjukkan tombol Live Telemetry.">
       <div class="grow">
-        <p class="kicker">07 / Starter Kit Anak Kos · Modal Kurang dari Rp 100.000</p>
+        <p class="kicker">07 / Starter Kit Mahasiswa · Modal Terjangkau Mahasiswa</p>
         <h2>Pilihan Perangkat Keras Edge AI 2026 (&lt; Rp 100.000)</h2>
         <div class="grid-4" style="margin-top:12px;">
-          <button class="card wobble blob-card" onclick="pickBoard('s3')" style="text-align:left;">ESP32-S3 DevKit<br><span class="kicker">± Rp 80.000–110.000</span></button>
-          <button class="card wobble blob-alt" onclick="pickBoard('pico')" style="text-align:left;background:var(--note-blue);">Raspberry Pi Pico 2<br><span class="kicker">± Rp 80.000–95.000</span></button>
-          <button class="card wobble blob-card" onclick="pickBoard('k210')" style="text-align:left;background:var(--note);">Kendryte K210<br><span class="kicker">± Rp 150.000 (Vision)</span></button>
-          <button class="card wobble blob-alt" onclick="pickBoard('stm')" style="text-align:left;background:var(--note-mint);">STM32 BlackPill<br><span class="kicker">± Rp 55.000–75.000</span></button>
+          <button class="card wobble blob-card" onclick="pickBoard('s3')" style="text-align:left;">ESP32-S3 DevKit<br><span class="kicker">± Rp 75.000–120.000</span></button>
+          <button class="card wobble blob-alt" onclick="pickBoard('pico')" style="text-align:left;background:var(--note-blue);">Raspberry Pi Pico<br><span class="kicker">± Rp 50.000–85.000</span></button>
+          <button class="card wobble blob-card" onclick="pickBoard('cam')" style="text-align:left;background:var(--note);">ESP32-CAM (Vision)<br><span class="kicker">± Rp 50.000–85.000</span></button>
+          <button class="card wobble blob-alt" onclick="pickBoard('stm')" style="text-align:left;background:var(--note-mint);">STM32 BlackPill<br><span class="kicker">± Rp 50.000–80.000</span></button>
         </div>
         <div class="wobble blob-card hw-detail" id="hw-detail" style="margin-top:12px;padding:12px 16px;background:#fff;">
           Klik salah satu papan mikrokontroler di atas untuk melihat spesifikasi teknis dan use-case terbaiknya.
@@ -763,8 +763,8 @@
       3: { t: "Warden, P. (2020). tinyML Talks: working definition ≈ ML on embedded devices averaging < 1 mW power.", u: "https://www.tinyml.org", n: "Definisi konsumsi daya standar komunitas internasional TinyML." },
       4: { t: "David, R. et al. (2021). TensorFlow Lite Micro. MLSys. arXiv:2010.08678. Benchmark SparkFun Edge Apollo3: Keyword Spotting ≈ 0,38 ms; Visual Wake Words ≈ 51 ms.", u: "https://arxiv.org/abs/2010.08678", n: "Tolok ukur eksekusi latensi on-device pada arsitektur ARM Cortex-M." },
       5: { t: "Espressif Systems. ESP32-S3 Series Datasheet: dual-core Xtensa LX7 @ 240 MHz, 512 KB SRAM, Wi-Fi + Bluetooth LE, PIE vector/AI instructions.", u: "https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf", n: "Spesifikasi resmi arsitektur chip mikrokontroler ESP32-S3." },
-      6: { t: "Raspberry Pi Ltd. Pico 2 / RP2350: dual Cortex-M33 or Hazard3 RISC-V @ 150 MHz, 520 KB SRAM.", u: "https://www.raspberrypi.com/products/raspberry-pi-pico-2/", n: "Spesifikasi resmi mikrokontroler arsitektur ganda RP2350." },
-      7: { t: "Canaan Inc. Kendryte K210: dual-core 64-bit RISC-V, neural processor (KPU) rated 0.8 TOPS.", u: "https://canaan.io", n: "Spesifikasi chip pemroses citra berbasis NPU terintegrasi." },
+      6: { t: "Raspberry Pi Ltd. Raspberry Pi Pico (RP2040) & Pico 2 (RP2350) Datasheets: Dual ARM Cortex / RISC-V @ 133–150 MHz.", u: "https://www.raspberrypi.com/products/raspberry-pi-pico/", n: "Spesifikasi resmi keluarga mikrokontroler hemat daya Raspberry Pi RP2040/RP2350." },
+      7: { t: "Espressif Systems. ESP32-CAM Development Board with OV2640 Camera Module & 4MB PSRAM.", u: "https://docs.espressif.com", n: "Papan pengembangan vision berbiaya sangat terjangkau untuk klasifikasi citra dan pengenalan wajah on-device." },
       8: { t: "STMicroelectronics. X-CUBE-AI / ST Edge AI — generate optimized NN code for STM32.", u: "https://www.st.com/en/embedded-software/x-cube-ai.html", n: "Ekosistem generator kode neural network untuk mikrokontroler STM32 standar industri." },
       9: { t: "Harvard CS249r: Tiny Machine Learning. TinyML latency & power profiling on embedded systems.", u: "https://tinyml.seas.harvard.edu/courses/cs249r/", n: "Materi kurikulum TinyML Harvard University tentang profilisasi energi & latensi." },
       10: { t: "Edge Impulse Inc. (2024). Embedded ML Development Platform & EON Compiler Benchmark.", u: "https://www.edgeimpulse.com", n: "Platform pipeline machine learning otomatis untuk embedded systems." },
@@ -775,9 +775,9 @@
 
     const BOARDS = {
       s3: "ESP32-S3 DevKit: Dual-core Xtensa LX7 @ 240 MHz, 512 KB SRAM, 8MB Flash, instruksi vektor AI (PIE). Sangat ideal untuk klasifikasi sinyal audio, vibrasi, dan TinyML multimodal. (Sitasi [5]).",
-      pico: "Raspberry Pi Pico 2 (RP2350): Dual Cortex-M33 / RISC-V @ 150 MHz, 520 KB SRAM. Konsumsi daya ultra-rendah untuk pengolahan sensorik cerdas baterai. (Sitasi [6]).",
-      k210: "Kendryte K210: Dual-core 64-bit RISC-V dengan NPU 0.8 TOPS terintegrasi. Spesialis akselerasi Computer Vision ringan (Face/Object Detection) on-device. (Sitasi [7]).",
-      stm: "STM32 BlackPill (F401/F411): ARM Cortex-M4 @ 84–100 MHz dengan DSP & FPU. Standar industri untuk otomasi pabrik didukung framework X-CUBE-AI. (Sitasi [8])."
+      pico: "Raspberry Pi Pico (RP2040/RP2350): Dual ARM Cortex-M0+/M33 @ 133–150 MHz, 264–520 KB SRAM. Konsumsi daya ultra-rendah untuk pengolahan sensorik cerdas baterai. (Sitasi [6]).",
+      cam: "ESP32-CAM (OV2640): Dual-core 240 MHz + 4MB PSRAM + Sensor Kamera 2MP. Solusi paling ekonomis (< Rp 85.000) untuk klasifikasi gambar, face recognition, dan deteksi objek on-device. (Sitasi [7]).",
+      stm: "STM32 BlackPill (F401/F411): ARM Cortex-M4 @ 84–100 MHz dengan DSP & FPU hardware. Standar industri untuk otomasi pabrik didukung framework ST Edge AI / X-CUBE-AI. (Sitasi [8])."
     };
 
     const LEVELS = {

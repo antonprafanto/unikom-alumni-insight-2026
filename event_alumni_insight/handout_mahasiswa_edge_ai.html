@@ -273,17 +273,19 @@
         <div class="grid-2">
           <div class="wobble blob-card" style="padding:12px 14px;">
             <h3>Papan Mikrokontroler</h3>
-            <label class="check"><input type="checkbox" data-item="s3"> ESP32-S3 DevKit — Dual-core Xtensa LX7 @ 240 MHz, 512 KB SRAM, Wi-Fi + BLE, instruksi vektor PIE. Estimasi: ± Rp 80.000–120.000. <button type="button" class="cite" onclick="openCite(5)">5</button></label>
-            <label class="check"><input type="checkbox" data-item="pico"> Pico 2 (RP2350) — Dual Cortex-M33 / Hazard3 RISC-V @ 150 MHz, 520 KB SRAM, ultra low-power. Estimasi: ± Rp 80.000–95.000. <button type="button" class="cite" onclick="openCite(6)">6</button></label>
-            <label class="check"><input type="checkbox" data-item="stm"> STM32F401 / F411 (“BlackPill”) — Cortex-M4 dengan FPU hardware + toolchain ST Edge AI / X-CUBE-AI. Estimasi: ± Rp 55.000–75.000. <button type="button" class="cite" onclick="openCite(8)">8</button></label>
+            <label class="check"><input type="checkbox" data-item="s3"> ESP32-S3 DevKit — Dual-core Xtensa LX7 @ 240 MHz, 512 KB SRAM, Wi-Fi + BLE, instruksi vektor PIE. Estimasi: ± Rp 75.000–120.000. <button type="button" class="cite" onclick="openCite(5)">5</button></label>
+            <label class="check"><input type="checkbox" data-item="pico"> Raspberry Pi Pico / Pico 2 (RP2040/RP2350) — Dual Cortex-M0+/M33, 264–520 KB SRAM, ultra low-power. Estimasi: ± Rp 50.000–85.000 (RP2040) / ± Rp 120.000 (RP2350). <button type="button" class="cite" onclick="openCite(6)">6</button></label>
+            <label class="check"><input type="checkbox" data-item="cam_board"> ESP32-CAM + OV2640 — Dual-core 240 MHz, 4MB PSRAM, kamera 2MP on-board untuk Vision AI &amp; face recognition. Estimasi: ± Rp 50.000–85.000. <button type="button" class="cite" onclick="openCite(7)">7</button></label>
+            <label class="check"><input type="checkbox" data-item="stm"> STM32F401 / F411 (“BlackPill”) — Cortex-M4 dengan FPU hardware + toolchain ST Edge AI / X-CUBE-AI. Estimasi: ± Rp 50.000–80.000. <button type="button" class="cite" onclick="openCite(8)">8</button></label>
           </div>
           <div class="wobble blob-alt" style="padding:12px 14px;">
             <h3>Sensor &amp; Komunikasi</h3>
-            <label class="check"><input type="checkbox" data-item="imu"> Sensor IMU 6-Axis (MPU-6050 / LSM6DS3) ~Rp 25.000 — Deteksi getaran mesin &amp; gestur (skala ±2 g = 16384 LSB/g). <button type="button" class="cite" onclick="openCite(16)">16</button></label>
-            <label class="check"><input type="checkbox" data-item="mic"> Mikrofon I2S INMP441 ~Rp 18.000 — Keyword spotting &amp; deteksi anomali audio ternak/mesin.</label>
-            <label class="check"><input type="checkbox" data-item="cam"> Kamera OV2640 ~Rp 35.000 — Klasifikasi objek &amp; vision sederhana pada ESP32-CAM.</label>
-            <label class="check"><input type="checkbox" data-item="env"> BME280 / DHT22 ~Rp 30.000–50.000 — Pemantauan presisi suhu dan kelembaban.</label>
-            <label class="check"><input type="checkbox" data-item="lora"> Modul LoRa SX1276 / RFM95 ~Rp 85.000 — Telemetri jarak jauh hemat energi.</label>
+            <label class="check"><input type="checkbox" data-item="imu"> Sensor IMU 6-Axis (MPU-6050) ~Rp 18.000–25.000 — Deteksi getaran mesin &amp; gestur (skala ±2 g = 16384 LSB/g). <button type="button" class="cite" onclick="openCite(16)">16</button></label>
+            <label class="check"><input type="checkbox" data-item="mic"> Mikrofon I2S INMP441 ~Rp 14.000–20.000 — Keyword spotting &amp; deteksi anomali audio ternak/mesin.</label>
+            <label class="check"><input type="checkbox" data-item="cam"> Kamera Tambahan OV2640 ~Rp 25.000–35.000 — Modul kamera cadangan/eksternal.</label>
+            <label class="check"><input type="checkbox" data-item="env"> BME280 / DHT22 ~Rp 25.000–45.000 — Pemantauan presisi suhu, kelembaban, &amp; tekanan.</label>
+            <label class="check"><input type="checkbox" data-item="lora"> Modul LoRa Ra-02 (SX1278 433MHz) ~Rp 45.000–65.000 — Telemetri jarak jauh hemat energi.</label>
+            <label class="check"><input type="checkbox" data-item="oled"> Layar OLED 0.96" I2C SSD1306 ~Rp 20.000–28.000 — Tampilan status &amp; visualisasi inferensi on-device.</label>
           </div>
         </div>
         <p class="kicker" id="kit-count">0 item dicentang. Status penyimpanan tersimpan otomatis di browser ini.</p>
@@ -505,8 +507,8 @@ void loop() {
       3: { t: "Warden, P. (2020). tinyML Talks: working definition ≈ ML on embedded devices averaging < 1 mW power.", u: "https://www.tinyml.org", n: "Definisi konsumsi daya standar komunitas internasional TinyML." },
       4: { t: "David, R. et al. (2021). TensorFlow Lite Micro: Embedded Machine Learning on TinyML Systems. MLSys. arXiv:2010.08678.", u: "https://arxiv.org/abs/2010.08678", n: "Publikasi arsitektur runtime eksekusi model AI pada mikrokontroler." },
       5: { t: "Espressif Systems. ESP32-S3 Series Datasheet: dual-core Xtensa LX7 @ 240 MHz, 512 KB SRAM, Wi-Fi + Bluetooth LE, PIE vector/AI instructions.", u: "https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf", n: "Spesifikasi resmi arsitektur chip mikrokontroler ESP32-S3." },
-      6: { t: "Raspberry Pi Ltd. Pico 2 / RP2350: dual Cortex-M33 or Hazard3 RISC-V @ 150 MHz, 520 KB SRAM.", u: "https://www.raspberrypi.com/products/raspberry-pi-pico-2/", n: "Spesifikasi resmi mikrokontroler arsitektur ganda RP2350." },
-      7: { t: "Canaan Inc. Kendryte K210: dual-core 64-bit RISC-V, neural processor (KPU) rated 0.8 TOPS.", u: "https://canaan.io", n: "Spesifikasi chip pemroses citra berbasis NPU terintegrasi." },
+      6: { t: "Raspberry Pi Ltd. Raspberry Pi Pico (RP2040) & Pico 2 (RP2350) Datasheets: Dual ARM Cortex / RISC-V @ 133–150 MHz.", u: "https://www.raspberrypi.com/products/raspberry-pi-pico/", n: "Spesifikasi resmi keluarga mikrokontroler hemat daya Raspberry Pi RP2040/RP2350." },
+      7: { t: "Espressif Systems. ESP32-CAM Development Board with OV2640 Camera Module & 4MB PSRAM.", u: "https://docs.espressif.com", n: "Papan pengembangan vision berbiaya sangat terjangkau untuk klasifikasi citra dan pengenalan wajah on-device." },
       8: { t: "STMicroelectronics. X-CUBE-AI / ST Edge AI — generate optimized NN code for STM32.", u: "https://www.st.com/en/embedded-software/x-cube-ai.html", n: "Ekosistem generator kode neural network untuk mikrokontroler STM32 standar industri." },
       9: { t: "Lai, L., Suda, N., Chandra, V. (2018). CMSIS-NN: Efficient Neural Network Kernels for Arm Cortex-M CPUs. arXiv:1801.06601.", u: "https://arxiv.org/abs/1801.06601", n: "Optimasi kernel neural network pada arsitektur ARM Cortex-M." },
       10: { t: "Edge Impulse Documentation (Data collection, DSP, INT8 deployment to Arduino/C++).", u: "https://docs.edgeimpulse.com", n: "Panduan praktis pengembangan model TinyML untuk pemula." },

@@ -75,15 +75,17 @@ Bagi adik-adik mahasiswa Sistem Komputer UNIKOM yang ingin **mempraktikkan langs
 
 ---
 
-## 🛠️ Pilihan Hardware Starter Kit Mahasiswa (< Rp 200.000)
+## 🛠️ Pilihan Hardware Starter Kit Mahasiswa (< Rp 120.000)
 
-| Komponen | Spesifikasi Inti | Estimasi Harga |
+| Komponen | Spesifikasi Inti | Estimasi Harga Marketplace (IDR) |
 | :--- | :--- | :--- |
-| **ESP32-S3 DevKit** | Dual-core 240 MHz, 512 KB SRAM, Wi-Fi/BLE, Vector AI Instruction (PIE) | ± Rp 80.000–120.000 |
-| **Raspberry Pi Pico 2** | Dual Cortex-M33 / Hazard3 RISC-V @ 150 MHz, 520 KB SRAM | ± Rp 80.000–95.000 |
-| **STM32F401/F411 (BlackPill)**| ARM Cortex-M4 dengan FPU, ST Edge AI / X-CUBE-AI toolchain | ± Rp 55.000–75.000 |
-| **Sensor IMU (MPU-6050)** | Accelerometer + Gyroscope 6-Axis (Deteksi Getaran Mesin) | ± Rp 25.000 |
-| **Mikrofon I2S (INMP441)** | Omnidirectional digital mic (Keyword Spotting & Audio Anomali) | ± Rp 18.000 |
+| **ESP32-S3 DevKit** | Dual-core Xtensa LX7 @ 240 MHz, 512 KB SRAM, Wi-Fi/BLE, Vector AI (PIE) | ± Rp 75.000–120.000 |
+| **Raspberry Pi Pico (RP2040)** | Dual ARM Cortex-M0+ @ 133 MHz, 264 KB SRAM, Ultra Low-Power | ± Rp 50.000–85.000 |
+| **ESP32-CAM + OV2640** | Dual-core 240 MHz, 4MB PSRAM, Kamera 2MP (Vision AI & Object Detection) | ± Rp 50.000–85.000 |
+| **STM32F401/F411 (BlackPill)**| ARM Cortex-M4 @ 84–100 MHz + FPU Hardware, ST Edge AI / X-CUBE-AI | ± Rp 50.000–80.000 |
+| **Sensor IMU (MPU-6050)** | Accelerometer + Gyroscope 6-Axis (Deteksi Getaran & Gestur Mesin) | ± Rp 18.000–25.000 |
+| **Mikrofon I2S (INMP441)** | Digital Omnidirectional Mic (Keyword Spotting & Akustik Anomali) | ± Rp 14.000–20.000 |
+| **Layar OLED 0.96" I2C** | SSD1306 128x64 Pixel Display (Visualisasi Inferensi On-Device) | ± Rp 20.000–28.000 |
 
 ---
 
