@@ -883,6 +883,182 @@
     }
     function openCite(n) { renderCitePanel(n); document.getElementById("cites").classList.add("open"); }
 
+    // === INTERACTIVE SLIDE SIMULATIONS ===
+    let handVotes = 142;
+    function raiseHands() {
+      handVotes++;
+      const el = document.getElementById("hands-count");
+      if (el) {
+        el.hidden = false;
+        el.textContent = `✋ ${handVotes} mahasiswa angkat tangan! (Solidaritas lab Sistem Komputer)`;
+      }
+    }
+
+    function runRace() {
+      const c = document.getElementById("pkt-cloud");
+      const e = document.getElementById("pkt-edge");
+      const r = document.getElementById("race-result");
+      if (!c || !e) return;
+      c.classList.remove("run-cloud");
+      e.classList.remove("run-edge");
+      void c.offsetWidth; // trigger reflow
+      c.classList.add("run-cloud");
+      e.classList.add("run-edge");
+      r.innerHTML = "⏳ <b>Balapan respons dimulai!</b> Mengirim paket data...";
+      setTimeout(() => {
+        r.innerHTML = "⚡ <b>Edge AI SELESAI (&lt;10 ms)!</b> Sinyal aktuasi relay langsung aktif di mikrokontroler lokal.";
+      }, 350);
+      setTimeout(() => {
+        r.innerHTML = "🏁 <b>Hasil Akhir:</b> Edge AI selesai dalam <b>8 ms</b>. Cloud AI baru tiba setelah <b>480 ms</b> (60× lebih lambat akibat RTT &amp; jitter internet).";
+      }, 2500);
+    }
+
+    function pickDomain(btn) {
+      const d = btn.getAttribute("data-domain");
+      document.querySelectorAll("[data-domain]").forEach(b => b.style.outline = "none");
+      btn.style.outline = "3.5px solid var(--ink)";
+      const copy = document.getElementById("domain-copy");
+      if (copy) {
+        if (d === "hw") copy.textContent = "Pilar Hardware & Embedded: Penguasaan bahasa C/C++, struktur register memori, GPIO, timer interupsi, dan DMA on-chip.";
+        else if (d === "net") copy.textContent = "Pilar Jaringan & IoT: Komunikasi data sensor via LoRaWAN, BLE Mesh, MQTT, dan optimasi paket payload nirkabel.";
+        else if (d === "ai") copy.textContent = "Pilar Edge AI: TinyML, kuantisasi model INT8, Fast Fourier Transform (FFT), dan runtime TFLite Micro.";
+      }
+    }
+
+    let currentQuantStep = 1;
+    const QUANT_STEPS = {
+      1: {
+        label: "1. Konsep Bulat: Nilai pecahan Float32 (misal 0.8504938) dipetakan ke integer 8-bit [-128 s/d 127] dengan skala S dan zero-point Z.",
+        formula: "<div class='q-plain'><b>Prinsip:</b> $q = \\text{round}(r / S) + Z$</div>Float32 (32-bit): <code>0.8504938...</code> &nbsp;→&nbsp; INT8 (8-bit): <code>108</code> (Hemat 4× ruang)",
+        bitsCap: "Setiap kotak = 1 bit. 32 kotak = format Float32 (1 tanda + 8 eksponen + 23 mantissa).",
+        mem: "32 bit", memW: "100%",
+        cpu: "100%", cpuW: "100%"
+      },
+      2: {
+        label: "2. Hemat Memori: 24 bit eksponen dan mantissa dieliminasi. Model menyusut dari 20 MB menjadi hanya 45 KB (hemat ~75-80% SRAM).",
+        formula: "<div class='q-plain'><b>Dampak RAM:</b> 4 Byte per bobot menyusut menjadi 1 Byte saja.</div>Model 20 MB (Float32) ➔ <b>45 KB (INT8)</b>",
+        bitsCap: "INT8 (8-bit): Cukup 8 bit integer. 24 bit lainnya dibuang dari memori SRAM!",
+        mem: "8 bit (25%)", memW: "25%",
+        cpu: "100%", cpuW: "100%"
+      },
+      3: {
+        label: "3. Kencang CPU: Operasi perkalian matriks integer (INT8) dieksekusi 3×–4× lebih cepat dibanding floating point pada mikrokontroler.",
+        formula: "<div class='q-plain'><b>Instruksi SIMD:</b> Mikrokontroler menghitung 4 perkalian INT8 dalam 1 siklus clock.</div>Kecepatan komputasi: <b>3.2× Lebih Cepat</b>",
+        bitsCap: "INT8 dieksekusi paralel oleh akselerator hardware ALU mikrokontroler.",
+        mem: "8 bit (25%)", memW: "25%",
+        cpu: "30%", cpuW: "30%"
+      },
+      4: {
+        label: "4. Tolok Ukur Riil: Pada Cortex-M4 96 MHz, inferensi klasifikasi suara (KWS) hanya butuh 0.38 ms dengan degradasi akurasi < 1%.",
+        formula: "<div class='q-plain'><b>Benchmark Industri:</b> Hasil uji nyata Google Speech Commands di ARM Cortex-M.</div>Akurasi Float32: 91.2% | Akurasi INT8: <b>90.6%</b> (Hanya turun 0.6%!)",
+        bitsCap: "INT8 siap dideploy ke produksi industri tanpa butuh koneksi server cloud.",
+        mem: "8 bit (25%)", memW: "25%",
+        cpu: "30%", cpuW: "30%"
+      }
+    };
+
+    function renderBits(step) {
+      const c = document.getElementById("bits");
+      if (!c) return;
+      const isINT8 = (step > 1);
+      let html = "";
+      for (let i = 0; i < 32; i++) {
+        let cls = "bit";
+        if (i === 0) cls += " sign";
+        else if (i < 9) cls += " exp";
+        else cls += " mant";
+        if (isINT8) {
+          if (i < 8) cls = "bit int8";
+          else cls += " gone";
+        }
+        html += `<span class="${cls}"></span>`;
+      }
+      c.innerHTML = html;
+    }
+
+    function applyQuantStep(step) {
+      currentQuantStep = step;
+      const d = QUANT_STEPS[step];
+      if (!d) return;
+      const qsim = document.getElementById("qsim");
+      if (qsim) qsim.className = "qsim p" + step;
+      document.querySelectorAll(".q-steps button").forEach((b, idx) => {
+        b.style.fontWeight = (idx + 1 === step) ? "700" : "400";
+        b.style.background = (idx + 1 === step) ? "var(--ink)" : "#fff";
+        b.style.color = (idx + 1 === step) ? "#fff" : "var(--ink)";
+      });
+      const lbl = document.getElementById("q-label"); if (lbl) lbl.textContent = d.label;
+      const f = document.getElementById("q-formula"); if (f) f.innerHTML = d.formula;
+      const bc = document.getElementById("q-bits-cap"); if (bc) bc.textContent = d.bitsCap;
+      const mn = document.getElementById("q-mem-n"); if (mn) mn.textContent = d.mem;
+      const mw = document.querySelector(".q-mem > span"); if (mw) mw.style.width = d.memW;
+      const cn = document.getElementById("q-cpu-n"); if (cn) cn.textContent = d.cpu;
+      const cw = document.querySelector(".q-cpu > span"); if (cw) cw.style.width = d.cpuW;
+      const btnNext = document.getElementById("q-next"); if (btnNext) btnNext.textContent = (step < 4) ? `Tahap ${step + 1} →` : "Selesai ✓";
+      renderBits(step);
+    }
+
+    function quantizeStep(dir) {
+      let next = currentQuantStep + dir;
+      if (next < 1) next = 1;
+      if (next > 4) next = 4;
+      applyQuantStep(next);
+    }
+
+    function resetQuantSim() {
+      applyQuantStep(1);
+    }
+
+    function pipeStep(step) {
+      const buttons = document.querySelectorAll("#pipeline button");
+      buttons.forEach((b, idx) => {
+        b.style.outline = (idx === step) ? "3px solid var(--ink)" : "none";
+      });
+      const copy = document.getElementById("pipe-copy");
+      if (copy && PIPE[step]) copy.innerHTML = PIPE[step];
+    }
+
+    function flipCase(el) {
+      const front = el.querySelector(".front");
+      const back = el.querySelector(".back");
+      if (front && back) {
+        const isFrontHidden = front.hidden;
+        front.hidden = !isFrontHidden;
+        back.hidden = isFrontHidden;
+      }
+    }
+
+    function pickBoard(id) {
+      const detail = document.getElementById("hw-detail");
+      if (detail && BOARDS[id]) detail.innerHTML = BOARDS[id];
+    }
+
+    function pickLevel(n) {
+      const copy = document.getElementById("level-copy");
+      if (copy && LEVELS[n]) copy.innerHTML = LEVELS[n];
+    }
+
+    function renderThesis() {
+      const body = document.getElementById("thesis-body");
+      const thCol = document.getElementById("th-col");
+      if (!body) return;
+      if (thCol) thCol.textContent = thesisNew ? "Standar Judul Beyond 2026 (Edge AI & Publikasi)" : "Standar Judul Konvensional (Usang)";
+      const list = thesisNew ? THESIS.neu : THESIS.old;
+      body.innerHTML = list.map(t => `
+        <tr>
+          <td style="font-weight:700;width:28%;">${t[0]}</td>
+          <td style="${thesisNew ? 'color:#1B4D3E;background:#F2FAF7;font-weight:600;' : 'color:var(--red);'}">
+            ${thesisNew ? '✨ ' + t[1] : '⚠️ ' + t[1]}
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function toggleThesis() {
+      thesisNew = !thesisNew;
+      renderThesis();
+    }
+
     let slidePort = null;
     let slideReader = null;
     let slideKeepReading = false;
