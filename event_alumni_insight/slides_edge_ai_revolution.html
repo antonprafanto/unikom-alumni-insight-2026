@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edge AI Revolution: Dari Mitos ke Realitas Ilmiah — Anton Prafanto, S.Kom., M.T.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #FDFBF7;
+      --dot: #E5E0D8;
+      --ink: #2D2D2D;
+      --muted: rgba(45, 45, 45, 0.70);
+      --card: #FFFFFF;
+      --note: #FFF9C4;
+      --note-blue: #D6EFFF;
+      --note-pink: #FFD6D6;
+      --note-mint: #D8F3DC;
+      --note-purple: #E8D7FF;
+      --red: #E63946;
+      --ok: #2A9D8F;
+      --warn: #E76F51;
+      --shadow-sm: 4px 4px 0 #2D2D2D;
+      --shadow-md: 6px 6px 0 #2D2D2D;
+      --shadow-lg: 8px 8px 0 #2D2D2D;
+      --font-display: "Kalam", cursive;
+      --font-hand: "Patrick Hand", cursive;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: var(--font-hand);
+      background-color: var(--paper);
+      background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+      background-size: 24px 24px;
+      color: var(--ink);
+      overflow: hidden;
+      user-select: none;
+    }
+    button, a { font-family: inherit; }
+    code, pre, .mono { font-family: var(--font-mono); }
+
+    .blob { border-radius: 255px 15px 225px / 15px 225px 15px 255px; }
+    .blob-card { border-radius: 36px 18px 46px 26px / 26px 46px 18px 36px; }
+    .blob-alt { border-radius: 26px 56px 18px 46px / 46px 18px 56px 26px; }
+    .blob-note { border-radius: 18px 210px / 210px 18px; }
+    .wobble { border: 2.2px solid var(--ink); background: var(--card); box-shadow: var(--shadow-sm); }
+    .wobble-thick { border: 3.2px solid var(--ink); background: var(--card); box-shadow: var(--shadow-md); }
+
+    header.bar, footer.bar {
+      position: fixed; left: 0; right: 0; z-index: 40;
+      height: 56px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; background: rgba(253, 251, 247, 0.96);
+      border-color: var(--ink);
+    }
+    header.bar { top: 0; border-bottom: 2px dashed var(--ink); }
+    footer.bar { bottom: 0; border-top: 2px dashed var(--ink); }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; border: 2px solid var(--ink);
+      border-radius: 255px 15px 225px / 15px 225px 15px 255px;
+      background: var(--card); font-size: 14px; font-weight: 600;
+    }
+    .pill.red { background: var(--red); color: #fff; }
+    .pill.ok { background: var(--ok); color: #fff; }
+    .pill.warn { background: var(--warn); color: #fff; }
+    .pill.mint { background: var(--note-mint); }
+    .pill.blue { background: var(--note-blue); }
+    .pill.yellow { background: var(--note); }
+
+    .icon-btn, .nav-btn {
+      border: 2.2px solid var(--ink); background: #fff; color: var(--ink);
+      border-radius: 255px 15px 225px / 15px 225px 15px 255px;
+      box-shadow: var(--shadow-sm); cursor: pointer; font-weight: 700;
+      text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .icon-btn { height: 34px; padding: 0 10px; font-size: 14px; gap: 5px; }
+    .nav-btn { padding: 6px 16px; font-size: 16px; }
+    .nav-btn.primary { background: var(--ink); color: #fff; }
+    .icon-btn:hover, .nav-btn:hover { transform: translate(-1.5px, -1.5px); }
+    .icon-btn:active, .nav-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+    .nav-btn:disabled, .icon-btn:disabled {
+      opacity: .4; cursor: not-allowed; transform: none; box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    kbd {
+      font-family: var(--font-mono); font-size: 11px;
+      border: 1.5px solid var(--ink); border-radius: 5px; padding: 1px 5px; background: #fff;
+    }
+
+    main { height: 100%; padding: 56px 0; min-height: 0; overflow: hidden; }
+    .slide {
+      display: none; height: 100%; width: 100%;
+      padding: 20px 48px 16px; opacity: 0;
+      overflow-x: hidden; overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
+    }
+    .slide.active { display: flex; flex-direction: column; opacity: 1; animation: inkIn 0.3s ease; }
+    @keyframes inkIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    .kicker { font-size: 14px; color: var(--muted); letter-spacing: 0.04em; }
+    h1, h2, h3 { font-family: var(--font-display); margin: 0; line-height: 1.18; color: var(--ink); }
+    h1 { font-size: clamp(32px, 4.2vw, 52px); font-weight: 700; }
+    h2 { font-size: clamp(22px, 2.8vw, 34px); font-weight: 700; }
+    h3 { font-size: 20px; }
+    p { margin: 0; font-size: 18px; line-height: 1.38; }
+
+    .cite {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 20px; height: 20px; padding: 0 4px; margin: 0 2px; border-radius: 10px;
+      background: var(--red); color: #fff; font-size: 11px; font-family: var(--font-mono);
+      cursor: pointer; vertical-align: super; line-height: 1; border: 1.5px solid var(--ink);
+      font-weight: 700;
+    }
+    .cite:hover { transform: scale(1.18); background: #000; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
+    
+    .grow {
+      flex: 1 0 auto;
+      display: flex; flex-direction: column; justify-content: center;
+      max-width: 1200px; margin: 0 auto; width: 100%;
+      min-height: 100%;
+      gap: 12px;
+    }
+
+    .card { padding: 16px 18px; border-radius: 20px; }
+
+    .fact-box {
+      border: 2.2px solid var(--ink);
+      border-radius: 20px 10px 22px 12px;
+      background: #FFFDE7;
+      padding: 12px 16px;
+      box-shadow: 3px 3px 0 var(--ink);
+      font-size: 16px;
+      line-height: 1.4;
+      position: relative;
+    }
+    .fact-box.debunk {
+      background: #FFF1F0;
+      border-color: var(--red);
+    }
+    .fact-box.verified {
+      background: #EDFDF6;
+      border-color: var(--ok);
+    }
+    .fact-title {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .progress-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      margin: 0 16px;
+      min-width: 60px;
+    }
+    .progress {
+      width: 100%; height: 7px;
+      border: 1.5px solid var(--ink); border-radius: 99px; overflow: hidden; background: #fff;
+    }
+    .progress > span { display: block; height: 100%; background: var(--red); width: 0; transition: width 0.25s ease; }
+
+    /* overlays */
+    .overlay {
+      display: none; position: fixed; inset: 0; z-index: 60;
+      background: rgba(45, 45, 45, 0.45); padding: 36px 20px;
+      backdrop-filter: blur(2px);
+    }
+    .overlay.open { display: flex; }
+    .overlay .panel {
+      background: var(--paper);
+      background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+      background-size: 24px 24px;
+      border: 3px solid var(--ink); box-shadow: var(--shadow-lg);
+      margin: auto; max-width: 980px; width: 100%; max-height: 88vh; overflow: auto;
+      padding: 28px; border-radius: 32px 16px 40px 20px / 20px 40px 16px 32px;
+    }
+
+    .overview-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .thumb {
+      border: 2px solid var(--ink); background: #fff; min-height: 90px; padding: 10px;
+      text-align: left; cursor: pointer; box-shadow: 3px 3px 0 var(--ink);
+      font-family: var(--font-hand); color: var(--ink); font-size: 15px; border-radius: 12px;
+      transition: transform 0.15s ease;
+    }
+    .thumb:hover { transform: translate(-2px, -2px); }
+    .thumb.current { background: var(--note); border-width: 2.5px; }
+
+    .notes {
+      display: none; position: fixed; left: 20px; right: 20px; bottom: 66px; z-index: 50;
+      background: var(--note); border: 2.2px solid var(--ink); box-shadow: var(--shadow-sm);
+      padding: 14px 18px; font-size: 16px; border-radius: 14px 34px 14px 34px;
+      max-height: 200px; overflow-y: auto;
+    }
+    .notes.open { display: block; }
+
+    .help-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; font-size: 17px; }
+    .ref-item { border-bottom: 1.5px dashed var(--ink); padding: 10px 0; font-size: 15px; }
+    .ref-item:last-child { border-bottom: none; }
+    .ref-item a { color: var(--red); font-weight: 700; text-decoration: underline; }
+
+    .slide-media {
+      width: 100%;
+      max-height: 260px;
+      object-fit: contain;
+      border: 2px solid var(--ink);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+
+    .tab-btn {
+      padding: 4px 10px; font-size: 13px; font-weight: 700; border: 1.8px solid var(--ink);
+      background: #fff; border-radius: 8px; cursor: pointer;
+    }
+    .tab-btn.active { background: var(--ink); color: #fff; }
+
+    /* Interactive Simulators */
+    .sim-box {
+      border: 2px dashed var(--ink);
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.7);
+    }
+    .sim-slider { width: 100%; cursor: pointer; }
+
+    @media (max-width: 900px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .overview-grid { grid-template-columns: repeat(2, 1fr); }
+      .slide { padding: 16px 18px; }
+      h1 { font-size: 28px; }
+      h2 { font-size: 22px; }
+      p { font-size: 16px; }
+      header.bar, footer.bar { padding: 0 10px; }
+      .hide-mobile { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="bar">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="../index.html" class="icon-btn" title="Kembali ke Hub Utama index.html">🏠 <span class="hide-mobile">Hub Utama</span></a>
+      <span class="pill red hide-mobile">Alumni Insight 2026</span>
+      <span class="pill" style="font-family:var(--font-mono);font-size:13px;">Edge AI Revolution: Fact-Checked Deck</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button class="icon-btn" id="btn-critique-toggle" title="Toggle Mode Analisis Kritis Ilmiah [C]" style="background:var(--note-pink);">🔬 <span class="hide-mobile">Bedah Kritis [C]</span></button>
+      <button class="icon-btn" id="btn-ref" title="Daftar Referensi Ilmiah [R]">📚 <span class="hide-mobile">Referensi [R]</span></button>
+      <button class="icon-btn" id="btn-overview" title="Daftar Semua Slide [O]">🗂️ <span class="hide-mobile">Overview [O]</span></button>
+      <button class="icon-btn" id="btn-notes" title="Catatan Pembicara [N]">📝 <span class="hide-mobile">Notes [N]</span></button>
+      <button class="icon-btn" id="btn-fs" title="Layar Penuh [F]">⛶</button>
+    </div>
+  </header>
+
+  <!-- MAIN SLIDES -->
+  <main id="slide-container">
+
+    <!-- ==================== SLIDE 1 ==================== -->
+    <section class="slide active" data-title="1. Masa Depan AI di Ujung Jari">
+      <div class="grow">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <div style="display:flex;gap:6px;">
+            <span class="pill red">Deck Utama · 14 Slide</span>
+            <span class="pill mint">Revisi Ilmiah &amp; Fact-Checking</span>
+          </div>
+          <span class="mono kicker" style="font-size:13px;">PPT Ref: Slide 1</span>
+        </div>
+
+        <div class="grid-2" style="align-items:center;margin-top:10px;">
+          <div>
+            <h1>Masa Depan AI Ada di <span style="text-decoration:underline;text-decoration-color:var(--red);">Ujung Jari Anda</span></h1>
+            <p style="font-size:21px;font-weight:700;margin-top:12px;color:var(--red);">Memahami Edge AI: Era Baru Kecerdasan Buatan yang Lebih Cepat, Privat, dan Efisien.</p>
+            <p style="font-size:17px;margin-top:10px;color:var(--muted);">
+              Narasumber: <b>Anton Prafanto, S.Kom., M.T.</b><br>
+              Alumnus S1 Sistem Komputer UNIKOM '11 · S2 STEI ITB · Dosen Informatika UNMUL
+            </p>
+            <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;">
+              <span class="pill blue">⚡ Latensi Rendah</span>
+              <span class="pill yellow">🔒 Privasi On-Device</span>
+              <span class="pill mint">🌱 Green AI</span>
+            </div>
+          </div>
+          <div style="text-align:center;">
+            <img src="ppt_assets/slide_1.png" alt="Slide 1: Cover Edge AI Revolution" class="slide-media" style="max-height:280px;">
+            <span class="kicker" style="font-size:12px;display:block;margin-top:4px;">Ilustrasi PPT: Model AI bergeser dari Cloud Data Center ke Smart Device</span>
+          </div>
+        </div>
+
+        <div class="fact-box verified" style="margin-top:12px;">
+          <div class="fact-title">
+            <span>✅ Landasan Konseptual: Apa itu Edge AI?</span>
+            <span class="cite" onclick="openRefModal(1)">[1]</span>
+            <span class="cite" onclick="openRefModal(2)">[2]</span>
+          </div>
+          <p style="font-size:16px;">
+            Edge AI adalah paradigma komputasi di mana algoritma kecerdasan buatan (khususnya <i>deep neural networks</i>) dijalankan secara lokal langsung pada perangkat keras fisik (mikrokontroler, SoC ponsel, NPU otomotif) tempat data diproduksi oleh sensor, alih-alih mengirimkan seluruh aliran data mentah ke cloud data center jarak jauh.
+          </p>
+        </div>
+      </div>
+      <div class="notes-content" style="display:none;">
+        <b>Catatan Pembicara (Slide 1):</b><br>
+        Sambut audiens UNIKOM Bandung. Tegaskan bahwa presentasi ini mengambil materi presentasi populer Edge AI namun menambahkan pisau bedah teknis dan saintifik: menguji klaim mana yang benar, mana yang merupakan hiperbola pemasaran, dan bagaimana implementasi teknis aslinya di dunia sistem komputer.
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 2 ==================== -->
+    <section class="slide" data-title="2. Dulu vs Kini: Paradigma AI">
+      <div class="grow">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="pill red">Pergeseran Paradigma</span>
+          <span class="mono kicker">PPT Ref: Slide 2</span>
+        </div>
+        <h2>Dulu: AI di Cloud ➔ Kini: AI di Edge (Tepi Jaringan)</h2>
+
+        <div class="grid-2" style="margin-top:8px;">
+          <!-- CLOUD SIDE -->
+          <div class="wobble card" style="background:#FFF0F0;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <h3 style="color:var(--red);">☁️ Dulu: Cloud AI Terpusat</h3>
+              <span class="pill red" style="font-size:12px;">Server-Centric</span>
+            </div>
+            <p style="margin-top:8px;font-size:16px;">
+              Data sensor/input dikirim utuh melalui internet ke pusat data raksasa, diproses pada klaster GPU ribuan watt, lalu respons dikirim kembali ke pengguna (contoh: ChatGPT web, Siri generasi awal 2011).
+            </p>
+            <div class="sim-box" style="margin-top:10px;font-size:14px;font-family:var(--font-mono);">
+              Alur: Device ➔ Internet (WAN) ➔ Data Center GPU ➔ Internet ➔ Device<br>
+              <span style="color:var(--red);">Bottleneck: Jaringan lemot = AI mati total.</span>
+            </div>
+          </div>
+
+          <!-- EDGE SIDE -->
+          <div class="wobble card" style="background:var(--note-mint);">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <h3 style="color:#1B4D3E;">⚡ Kini: Edge AI Terdistribusi</h3>
+              <span class="pill ok" style="font-size:12px;">On-Device NPU</span>
+            </div>
+            <p style="margin-top:8px;font-size:16px;">
+              Model AI yang telah dikompresi beroperasi langsung di silikon perangkat lokal (SoC ponsel, ESP32, Raspberry Pi, NPU mobil). Data langsung dianalisis di sumbernya tanpa tergantung internet aktif.
+            </p>
+            <div class="sim-box" style="margin-top:10px;font-size:14px;font-family:var(--font-mono);">
+              Alur: Sensor ➔ Bus On-Chip ➔ NPU / DSP Inference ➔ Aktuator<br>
+              <span style="color:var(--ok);">Keunggulan: Zero network dependency, sub-millisecond loop.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="fact-box verified" style="margin-top:10px;">
+          <div class="fact-title">
+            <span>🔬 Nuansa Ilmiah: Mengapa Siri &amp; AI Modern Menjadi Hybrid?</span>
+            <span class="cite" onclick="openRefModal(3)">[3]</span>
+          </div>
+          <p style="font-size:15px;">
+            Dalam praktiknya, dunia nyata tidak hitam-putih. Apple (mulai iOS 15 hingga Apple Intelligence iOS 18) memigrasikan speech-to-text dan perintah rutin ke on-device Neural Engine, tetapi merutekan penalaran kompleks ke <i>Private Cloud Compute</i>. Arsitektur modern adalah <b>Hybrid Cloud-Edge</b>.
+          </p>
+        </div>
+      </div>
+      <div class="notes-content" style="display:none;">
+        <b>Catatan Pembicara (Slide 2):</b><br>
+        Jelaskan transisi dari tahun 2012 (era AlexNet di server) ke era 2024-2026 di mana microchip silikon memiliki NPU terdedikasi. Berikan contoh nyata: voice recognition di HP dulu kalau tidak ada kuota internet tidak bisa jalan, sekarang transkripsi audio offline bisa instan di NPU.
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 3 ==================== -->
+    <section class="slide" data-title="3. Komparasi 5 Dimensi">
+      <div class="grow">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="pill red">Matriks Komparasi</span>
+          <span class="mono kicker">PPT Ref: Slide 3</span>
+        </div>
+        <h2>Komparasi 5 Dimensi Kritis: Cloud AI vs Edge AI</h2>
+
+        <div class="wobble" style="border-radius:18px;overflow:hidden;background:#fff;margin-top:6px;">
+          <table style="width:100%;border-collapse:collapse;font-size:16px;text-align:left;">
+            <thead>
+              <tr style="background:var(--note);border-bottom:2px solid var(--ink);font-family:var(--font-display);">
+                <th style="padding:10px 14px;width:22%;">Dimensi</th>
+                <th style="padding:10px 14px;width:39%;color:var(--red);">☁️ Cloud AI</th>
+                <th style="padding:10px 14px;width:39%;color:var(--ok);">⚡ Edge AI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid #ddd;">
+                <td style="padding:8px 14px;font-weight:700;background:#FAFAFA;">📍 Lokasi Komputasi</td>
+                <td style="padding:8px 14px;">Pusat Data Terpusat Jarak Jauh (Hyperscaler)</td>
+                <td style="padding:8px 14px;background:#F2FAF7;font-weight:600;">Perangkat Lokal (SoC, NPU, MCU On-Chip)</td>
+              </tr>
+              <tr style="border-bottom:1px solid #ddd;">
+                <td style="padding:8px 14px;font-weight:700;background:#FAFAFA;">⏱️ Kecepatan (Latensi)</td>
+                <td style="padding:8px 14px;">50 ms – 2.000 ms+ (fluktuatif akibat RTT jaringan)</td>
+                <td style="padding:8px 14px;background:#F2FAF7;font-weight:600;">0.5 ms – 30 ms (deterministik, mendekati real-time)</td>
+              </tr>
+              <tr style="border-bottom:1px solid #ddd;">
+                <td style="padding:8px 14px;font-weight:700;background:#FAFAFA;">📶 Bandwidth WAN</td>
+                <td style="padding:8px 14px;">Sangat Tinggi (Aliran stream raw video/audio 4-20 Mbps)</td>
+                <td style="padding:8px 14px;background:#F2FAF7;font-weight:600;">Nol atau Sangat Rendah (&lt;1 Kbps hanya metadata ringkas)</td>
+              </tr>
+              <tr style="border-bottom:1px solid #ddd;">
+                <td style="padding:8px 14px;font-weight:700;background:#FAFAFA;">🔒 Privasi &amp; Keamanan</td>
+                <td style="padding:8px 14px;">Data sensitif berpindah melewati internet publik (risiko MITM)</td>
+                <td style="padding:8px 14px;background:#F2FAF7;font-weight:600;">Data biometrik/sensitif tetap terisolasi di hardware lokal <span class="cite" onclick="openRefModal(4)">[4]</span></td>
+              </tr>
+              <tr>
+                <td style="padding:8px 14px;font-weight:700;background:#FAFAFA;">🌐 Ketergantungan Internet</td>
+                <td style="padding:8px 14px;">Wajib Online 100% (Offline = sistem lumpuh)</td>
+                <td style="padding:8px 14px;background:#F2FAF7;font-weight:600;">Bisa 100% Offline / Standalone tanpa koneksi</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="fact-box verified" style="margin-top:8px;">
+          <div class="fact-title">
+            <span>⚖️ Kepatuhan Regulasi Data: UU PDP No. 27/2022</span>
+            <span class="cite" onclick="openRefModal(5)">[5]</span>
+          </div>
+          <p style="font-size:15px;">
+            Di Indonesia, UU Perlindungan Data Pribadi (UU PDP) mewajibkan pemrosesan data pribadi spesifik (data biometrik, rekam medis kesehatan) dengan kontrol ketat. Edge AI menjadi solusi arsitektur paling aman karena data biometrik tidak pernah ditransmisikan ke server pihak ketiga.
+          </p>
+        </div>
+      </div>
+      <div class="notes-content" style="display:none;">
+        <b>Catatan Pembicara (Slide 3):</b><br>
+        Tabel ini menyempurnakan tabel di slide 3 PPT asli dengan memasukkan angka kuantitatif (ms, Mbps) dan konteks regulasi hukum privasi data di Indonesia (UU PDP 2022). Mahasiswa sistem komputer harus paham bahwa keputusan arsitektur Edge bukan cuma soal performa, tapi juga regulasi hukum.
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 4 ==================== -->
+    <section class="slide" data-title="4. Katalis 1: Menghapus Latensi">
+      <div class="grow">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="pill red">Katalis #1: Kecepatan &amp; Latensi</span>
+          <span class="mono kicker">PPT Ref: Slide 4</span>
+        </div>
+        <h2>Menghapus Latensi: Mengapa Mobil Otonom Butuh Edge AI?</h2>
+
+        <div class="grid-2" style="margin-top:6px;">
+          <div>
+            <p style="font-size:17px;">
+              Keputusan kritis tidak bisa menunggu. Mobil otonom yang melaju <b>60 km/jam (16.7 m/detik)</b> tidak memiliki kemewahan waktu untuk menunggu respon server cloud ketika ada pejalan kaki melintas tiba-tiba di depan sensor LiDAR/kamera.
+            </p>
+
+            <div class="sim-box" style="margin-top:10px;">
+              <div style="font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--red);">
+                🚗 Kalkulator Jarak Reaksi Pejalan Kaki (60 km/jam)
+              </div>
+              <div style="margin-top:8px;font-size:15px;line-height:1.5;">
+                • <b>Cloud AI (+500ms RTT Jitter):</b> Mobil meluncur sejauh <b>+8.3 meter</b> sebelum rem sempat diaktifkan! 💥<br>
+                • <b>Edge AI On-Chip (25ms NPU Pipeline):</b> Mobil bereaksi hanya dalam <b>0.41 meter</b>! 🛡️
+              </div>
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <img src="ppt_assets/slide_4.png" alt="Slide 4 Latensi Mobil Otonom" class="slide-media" style="max-height:220px;">
+            <span class="kicker" style="font-size:12px;display:block;margin-top:4px;">Ilustrasi PPT Asli: Komparasi Jeda Setengah Detik vs Pemrosesan Lokal</span>
+          </div>
+        </div>
+
+        <div class="fact-box debunk" style="margin-top:8px;">
+          <div class="fact-title">
+            <span>🚨 Bedah Kritis Klaim PPT: "0.0 Detik Pemrosesan Lokal"</span>
+            <span class="cite" onclick="openRefModal(6)">[6]</span>
+            <span class="cite" onclick="openRefModal(7)">[7]</span>
+          </div>
+          <p style="font-size:15px;">
+            <b>Klaim "0.0 Detik" pada PPT adalah hiperbola non-ilmiah.</b> Dalam hukum fisika dan elektronika digital, tidak ada latensi 0.0s. Pipeline persepsi otonom (eksposur kamera 16.6ms @60fps + inferensi TensorRT/NPU ~12ms + aktuasi hidrolik rem ~20ms) membutuhkan total ~45–60 ms. Keunggulan Edge AI adalah <i>determinisme</i> (latensi terprediksi di bawah batas aman ISO 26262 ASIL-D), bukan nol detik.
+          </p>
+        </div>
+      </div>
+      <div class="notes-content" style="display:none;">
+        <b>Catatan Pembicara (Slide 4):</b><br>
+        Soroti bahwa di slide asli tertulis '0.0 Detik'. Sebagai saintis dan insinyur komputer, kita harus kritis: komputasi membutuhkan siklus clock prosesor, transmisi bus PCIe, dan frame rate sensor. Namun 45 ms vs 500 ms di kecepatan 60 km/jam adalah perbedaan antara selamat vs kecelakaan fatal.
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 5 ==================== -->
+    <section class="slide" data-title="5. Katalis 2: Krisis Bandwidth (4 TB)">
+      <div class="grow">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="pill red">Katalis #2: Bandwidth &amp; Skalabilitas</span>
+          <span class="mono kicker">PPT Ref: Slide 5</span>
+        </div>
+        <h2>Mencegah Krisis Bandwidth: Asal-Usul Angka "4 TB / Hari"</h2>
+
+        <div class="grid-2" style="margin-top:6px;">
+          <div>
+            <p style="font-size:17px;">
+              Mengirim seluruh aliran data mentah ke Cloud secara konstan adalah pemborosan fatal dan mustahil secara ekonomi. Satu armada mobil otonom dengan 8 kamera 4K, 1 LiDAR, dan 5 Radar menghasilkan gigabyte data setiap detik.
+            </p>
+            
+            <div class="wobble card" style="background:#FFF9C4;margin-top:10px;">
+              <h3 style="font-size:18px;">🔻 Edge Data Funnel (Penyaring Cerdas)</h3>
+              <p style="font-size:15px;margin-top:4px;">
+                <b>Input Sensor Mentah:</b> ~4 Terabyte / hari per kendaraan.<br>
+                <b>Proses On-Device:</b> Deteksi objek, pelacakan jalur, segmentasi semantik.<br>
+                <b>Output ke Cloud:</b> Hanya log anomali / disengagement (&lt; 50 MB / hari). <b>Reduksi 99.98%!</b>
+              </p>
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <img src="ppt_assets/slide_5.png" alt="Slide 5 Bandwidth Funnel" class="slide-media" style="max-height:220px;">
+            <span class="kicker" style="font-size:12px;display:block;margin-top:4px;">Ilustrasi PPT: Corong Data Filter Edge AI</span>
+          </div>
+        </div>
+
+        <div class="fact-box verified" style="margin-top:8px;">
+          <div class="fact-title">
+            <span>📚 Asal-Usul Referensi: Dari Mana Angka "4 TB / Hari"?</span>
+            <span class="cite" onclick="openRefModal(8)">[8]</span>
+            <span class="cite" onclick="openRefModal(9)">[9]</span>
+          </div>
+          <p style="font-size:15px;">
+            Statistik "4 Terabyte per hari" pertama kali dihitung secara resmi oleh <b>Brian Krzanich (Mantan CEO Intel)</b> pada <i>AutoMobility LA Keynote 2016</i>: Kamera (~20-40 MB/s), Radar (~10-100 KB/s), Sonar, GPS, dan LiDAR (~10-70 MB/s) jika dijumlahkan menghasilkan ~4.000 GB dalam 8 jam operasi. Jika 1 juta mobil otonom beroperasi, kebutuhan bandwidth cloud mencapai 4 Exabyte/hari—jaringan seluler global akan langsung kolaps tanpa Edge AI.
+          </p>
+        </div>
+      </div>
+      <div class="notes-content" style="display:none;">
+        <b>Catatan Pembicara (Slide 5):</b><br>
+        Beri tahu mahasiswa bahwa data 4 TB ini bukan angka karangan bebas, melainkan breakdown sensor engineering dari Intel. Tekankan konsep 'Edge as a Filter': perangkat tepi bertindak sebagai penyaring cerdas sehingga pipa internet global tidak kebanjiran raw noise.
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 6 ==================== -->
+    <section class="slide" data-title="6. Katalis 3: Privasi (Apple Face ID)">
+      <div class="grow">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="pill red">Katalis #3: Keamanan &amp; Privasi</span>
+          <span class="mono kicker">PPT Ref: Slide 6</span>
+        </div>
+        <h2>Privasi Tanpa Kompromi: Studi Arsitektur Apple Face ID</h2>
+
+        <div class="grid-2" style="margin-top:6px;">
+          <div>
+            <p style="font-size:17px;">
+              Dengan Edge AI, data biometrik dan privasi sensitif tidak pernah meninggalkan perangkat. Pengguna tidak perlu khawatir wajah atau suaranya bocor di internet.
+            </p>
+
+            <div class="wobble card" style="background:#EBF5FB;margin-top:10px;font-size:15px;">
+              <h3 style="font-size:18px;color:#1B4F72;">🛡️ Pipeline Enkripsi Hardware Face ID</h3>
+              <ol style="margin:6px 0 0 18px;padding:0;line-height:1.45;">
+                <li><b>TrueDepth Camera:</b> Memproyeksikan &gt;30.000 titik inframerah tak terlihat ke wajah.</li>
+                <li><b>Secure Enclave Processor (SEP):</b> Mengisolasi pembacaan sensor inframerah dari sistem operasi utama (iOS kernel).</li>
+                <li><b>Neural Engine On-Chip:</b> Mengonversi peta kedalaman 3D menjadi representasi vektor matematika terenkripsi (AES-256).</li>
+                <li><b>Matching Lokal:</b> Vektor dicocokkan di dalam memori hardware SEP. <b>Foto wajah mentah tidak pernah disimpan ataupun diunggah ke iCloud!</b></li>
+              </ol>
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <img src="ppt_assets/slide_6.png" alt="Slide 6 Apple Face ID" class="slide-media" style="max-height:230px;">
+            <span class="kicker" style="font-size:12px;display:block;margin-top:4px;">Ilustrasi PPT: Gembok Keamanan Face ID On-Device</span>
+          </div>
+        </div>
+
+        <div class="fact-box verified" style="margin-top:8px;">
+          <div class="fact-title">
+            <span>🔒 Verifikasi Ilmiah: Apple Platform Security Whitepaper</span>
+            <span class="cite" onclick="openRefModal(10)">[10]</span>
+          </div>
+          <p style="font-size:15px;">
+            Klaim pada slide ini <b>100% Terverifikasi (Valid)</b>. Sesuai <i>Apple Platform Security Guide (2024)</i>, Face ID dirancang dengan arsitektur <i>zero-trust hardware isolation</i>. Kunci kriptografi dan model matematika wajah dilindungi oleh <i>Secure Storage Component</i> dengan anti-replay hardware protection.
+          </p>
+        </div>
+      </div>
+      <div class="notes-content" style="display:none;">
+        <b>Catatan Pembicara (Slide 6):</b><br>
+        Ini contoh implementasi Edge AI paling sukses di saku 1,5 miliar manusia. Jelaskan peran Secure Enclave Processor (SEP) sebagai co-processor terpisah yang memiliki boot ROM dan enkripsi AES sendiri, sehingga biometrik tidak bisa dibajak bahkan oleh aplikasi dengan privilege root/jailbreak.
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 7 ==================== -->
+    <section class="slide" data-title="7. Revolusi Perangkat Keras (NPU)">
+      <div class="grow">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="pill red">Sang Penggerak: Hardware Silicon</span>
+          <span class="mono kicker">PPT Ref: Slide 7</span>
+        </div>
+        <h2>Revolusi Silikon: Dari Rak GPU Raksasa ke Neural Processing Unit (NPU)</h2>
+
+        <div class="grid-2" style="margin-top:6px;">
+          <div>
+            <p style="font-size:17px;">
+              Mengapa Edge AI baru meledak sekarang? Karena arsitektur silikon berevolusi dari GPU server berdaya 400 Watt menjadi chip hemat daya dengan matriks tensor terdedikasi (NPU) di dalam mikrokontroler dan ponsel.
+            </p>
+
+            <div class="grid-2" style="margin-top:10px;">
+              <div class="wobble card" style="background:#FFFDE7;padding:10px 12px;">
+                <b style="font-size:16px;">GPU Server (Data Center)</b>
+                <p style="font-size:14px;margin-top:4px;">• Konsumsi Daya: 300–700 Watt<br>• Efisiensi: ~2–5 TFLOPS/Watt<br>• Pendinginan: AC Industri / Liquid</p>
+              </div>
+              <div class="wobble card" style="background:var(--note-mint);padding:10px 12px;">
+                <b style="font-size:16px;">Edge NPU (On-Chip)</b>
+                <p style="font-size:14px;margin-top:4px;">• Konsumsi Daya: 0.5–5 Watt<br>• Efisiensi: <b>15–45 TOPS/Watt</b><br>• Pendinginan: Pasif (Tanpa Kipas)</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <img src="ppt_assets/slide_7.png" alt="Slide 7 Silikon NPU" class="slide-media" style="max-height:220px;">
+            <span class="kicker" style="font-size:12px;display:block;margin-top:4px;">Ilustrasi PPT: Penanaman Neural Engine pada Chip Seluler</span>
+          </div>
+        </div>
+
+        <div class="fact-box verified" style="margin-top:8px;">
+          <div class="fact-title">
+            <span>📊 Linimasa Evolusi NPU: 2017 hingga 2026</span>
+            <span class="cite" onclick="openRefModal(11)">[11]</span>
+            <span class="cite" onclick="openRefModal(12)">[12]</span>
+          </div>
+          <p style="font-size:15px;">
+            • <b>2017:</b> Apple A11 Bionic pertama kali memperkenalkan Neural Engine (0.6 TOPS) &amp; Huawei Kirin 970 NPU.<br>
+            • <b>2020:</b> Apple M1 (11 TOPS), Google Edge TPU (4 TOPS @ 2W).<br>
+            • <b>2024–2026:</b> Snapdragon X Elite (45 TOPS NPU Hexagon), Apple M4/A18 (38 TOPS), ESP32-S3 (Vector Extension untuk TinyML &lt; Rp 50rb).
+          </p>
+        </div>
+      </div>
+      <div class="notes-content" style="display:none;">
+        <b>Catatan Pembicara (Slide 7):</b><br>
+        Tautkan dengan kurikulum Sistem Komputer: mahasiswa SK mempelajari arsitektur komputer (ALU, pipelining, SIMD). NPU adalah arsitektur Systolic Array atau Vector Matrix Multiplication Engine khusus untuk operasi dot product INT8 berkecepatan masif dengan konsumsi energi picojoule per operasi.
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 8 ==================== -->
+    <section class="slide" data-title="8. Simbiosis Edge & Cloud">
+      <div class="grow">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="pill red">Sintesis Arsitektur</span>
+          <span class="mono kicker">PPT Ref: Slide 8</span>
+        </div>
+        <h2>Sintesis: Simbiosis Edge &amp; Cloud (The Continuous Loop)</h2>
+
+        <div class="grid-2" style="margin-top:6px;">
+          <div>
+            <p style="font-size:17px;">
+              <b>Edge AI tidak membunuh Cloud AI.</b> Keduanya membentuk siklus simbiosis mutualisme yang saling melengkapi dalam arsitektur sistem cerdas terpadu.
+            </p>
+
+            <div class="wobble card" style="background:#FFF9C4;margin-top:10px;font-size:15px;">
+              <h3 style="font-size:18px;">🔄 Pembagian Tugas Strategis</h3>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;">
+                <div style="background:#D6EFFF;padding:8px 10px;border-radius:10px;border:1.5px solid var(--ink);">
+                  <b>🔵 Edge (Aksi &amp; Respon)</b>
+                  <p style="font-size:13.5px;margin-top:3px;">Inferensi real-time, zero-latency, filter sensor lokal, adaptasi on-device.</p>
+                </div>
+                <div style="background:#FFD6D6;padding:8px 10px;border-radius:10px;border:1.5px solid var(--ink);">
+                  <b>🔴 Cloud (Pelatihan &amp; Riset)</b>
+                  <p style="font-size:13.5px;margin-top:3px;">Pelatihan model fondasi triliunan parameter, agregasi analitik global, OTA update.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <img src="ppt_assets/slide_8.png" alt="Slide 8 Simbiosis Edge dan Cloud" class="slide-media" style="max-height:220px;">
+            <span class="kicker" style="font-size:12px;display:block;margin-top:4px;">Ilustrasi PPT: Simbol Infinity Loop Edge &amp; Cloud</span>
+          </div>
+        </div>
+
+        <div class="fact-box verified" style="margin-top:8px;">
+          <div class="fact-title">
+            <span>🧠 Konsep Lanjutan: Federated Learning (Google Research)</span>
+            <span class="cite" onclick="openRefModal(13)">[13]</span>
+            <span class="cite" onclick="openRefModal(14)">[14]</span>
+          </div>
+          <p style="font-size:15px;">
+            Simbiosis mutakhir antara Edge &amp; Cloud diwujudkan melalui <b>Federated Learning</b>: jutaan perangkat ponsel/edge melatih model lokal secara mandiri menggunakan data pengguna. Hanya bobot gradien (<i>model weights updates</i>) yang diunggah ke Cloud untuk digabungkan dengan algoritma <i>Federated Averaging (FedAvg)</i> tanpa pernah mengirimkan riwayat ketikan atau data pribadi pengguna.
+          </p>
+        </div>
+      </div>
+      <div class="notes-content" style="display:none;">
+        <b>Catatan Pembicara (Slide 8):</b><br>
+        Tegaskan bahwa Cloud tidak mati. Kita melatih model (training) di Cloud cluster karena butuh petabyte data dan ribuan GPU, tetapi eksekusi (inference) dialihkan ke Edge. Dengan Federated Learning, kita bahkan bisa melakukan update model tanpa melanggar privasi pengguna.
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 9 ==================== -->
+    <section class="slide" data-title="9. Lanskap Aplikasi Industri">
+      <div class="grow">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="pill red">Use Cases Dunia Nyata</span>
+          <span class="mono kicker">PPT Ref: Slide 9</span>
+        </div>
+        <h2>Lanskap Aplikasi Industri: 4 Pilar Terapan Edge AI</h2>
+
+        <div class="grid-4" style="margin-top:6px;">
+          <!-- 1. KESEHATAN -->
+          <div class="wobble card" style="background:#FFF0F5;">
+            <div style="font-size:24px;">❤️</div>
+            <h3 style="font-size:18px;margin-top:4px;">1. Kesehatan</h3>
+            <p style="font-size:14px;margin-top:4px;">
+              Smartwatch mendeteksi aritmia jantung (Atrial Fibrillation) secara lokal via 1D-CNN real-time tanpa membocorkan sinyal EKG ke cloud publik. <span class="cite" onclick="openRefModal(15)">[15]</span>
+            </p>
+            <span class="pill mint" style="font-size:11px;margin-top:8px;">FDA Cleared</span>
+          </div>
+
+          <!-- 2. RITEL -->
+          <div class="wobble card" style="background:#F0F8FF;">
+            <div style="font-size:24px;">🛍️</div>
+            <h3 style="font-size:18px;margin-top:4px;">2. Ritel Cerdas</h3>
+            <p style="font-size:14px;margin-top:4px;">
+              Kamera edge menganalisis kepadatan antrean, stok rak kosong, dan pencegahan pencurian secara lokal di toko tanpa mengirim ribuan stream CCTV keluar gedung.
+            </p>
+            <span class="pill blue" style="font-size:11px;margin-top:8px;">Vision Gateway</span>
+          </div>
+
+          <!-- 3. PERTANIAN -->
+          <div class="wobble card" style="background:#F4FDF4;">
+            <div style="font-size:24px;">🌱</div>
+            <h3 style="font-size:18px;margin-top:4px;">3. Pertanian Presisi</h3>
+            <p style="font-size:14px;margin-top:4px;">
+              Drone dan sensor tanah ESP32 mendeteksi penyakit daun &amp; mengatur debit irigasi mandiri di pedalaman Kalimantan yang nihil sinyal 4G/5G. <span class="cite" onclick="openRefModal(16)">[16]</span>
+            </p>
+            <span class="pill yellow" style="font-size:11px;margin-top:8px;">100% Offline</span>
+          </div>
+
+          <!-- 4. KEAMANAN SIBER -->
+          <div class="wobble card" style="background:#FAF5FF;">
+            <div style="font-size:24px;">🛡️</div>
+            <h3 style="font-size:18px;margin-top:4px;">4. Keamanan Siber</h3>
+            <p style="font-size:14px;margin-top:4px;">
+              Heuristik AI on-chip mendeteksi anomali zero-day malware pada memori RAM dan register CPU sebelum perangkat terkoneksi ke jaringan korporat.
+            </p>
+            <span class="pill red" style="font-size:11px;margin-top:8px;">Zero-Day EDR</span>
+          </div>
+        </div>
+
+        <div class="fact-box verified" style="margin-top:10px;">
+          <div class="fact-title">
+            <span>🏥 Bukti Klinis: The Apple Heart Study (NEJM 2019)</span>
+            <span class="cite" onclick="openRefModal(15)">[15]</span>
+          </div>
+          <p style="font-size:15px;">
+            Penelitian Stanford University pada 419.297 partisipan yang diterbitkan di <i>New England Journal of Medicine (NEJM)</i> membuktikan bahwa algoritma Edge AI pada sensor optik PPG jam tangan memiliki <i>positive predictive value</i> 0.84 dalam mendeteksi fibrilasi atrium secara otonom di pergelangan tangan.
+          </p>
+        </div>
+      </div>
+      <div class="notes-content" style="display:none;">
+        <b>Catatan Pembicara (Slide 9):</b><br>
+        Berikan contoh kasus nyata: di Kalimantan (UNMUL), perkebunan kelapa sawit dan hutan tropis tidak punya sinyal 4G. Sensor mikrokontroler TinyML ESP32 dan kamera perangkap liar mendeteksi kebakaran hutan dan perburuan liar secara mandiri menggunakan baterai surya kecil.
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 10 ==================== -->
+    <section class="slide" data-title="10. Skala Pasar: Peluang $100 Miliar">
+      <div class="grow">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="pill red">Valuasi Pasar Global</span>
+          <span class="mono kicker">PPT Ref: Slide 10</span>
+        </div>
+        <h2>Skala Pasar Global: Peluang $100 Miliar (CAGR ~25–30%)</h2>
+
+        <div class="grid-2" style="margin-top:6px;">
+          <div>
+            <p style="font-size:17px;">
+              Permintaan akan pemrosesan AI yang instan, efisien energi, dan privat mendorong lonjakan investasi global pada perangkat keras dan software Edge AI.
+            </p>
+
+            <div class="wobble card" style="background:#FFFDE7;margin-top:10px;">
+              <h3 style="font-size:18px;">📈 Proyeksi Data Industri Terverifikasi</h3>
+              <ul style="margin:6px 0 0 18px;padding:0;font-size:15px;line-height:1.5;">
+                <li><b>2023:</b> ~$15 Miliar (Fase adopsi awal NPU smartphone &amp; gateway).</li>
+                <li><b>2025:</b> $24.9 Miliar (Ledakan GenAI on-device &amp; laptop AI).</li>
+                <li><b>2030:</b> <b>$66.47 M – $107 Miliar</b> (CAGR 21.7% – 28.5%).</li>
+                <li><b>2033:</b> Diproyeksikan menembus <b>$118.69 Miliar</b>. <span class="cite" onclick="openRefModal(17)">[17]</span> <span class="cite" onclick="openRefModal(18)">[18]</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <img src="ppt_assets/slide_10.png" alt="Slide 10 Market Scale" class="slide-media" style="max-height:220px;">
+            <span class="kicker" style="font-size:12px;display:block;margin-top:4px;">Ilustrasi PPT: Grafik $15 Miliar ke $100 Miliar</span>
+          </div>
+        </div>
+
+        <div class="fact-box verified" style="margin-top:8px;">
+          <div class="fact-title">
+            <span>📊 Validasi Data Pasar: Grand View Research &amp; MarketsandMarkets</span>
+            <span class="cite" onclick="openRefModal(17)">[17]</span>
+            <span class="cite" onclick="openRefModal(18)">[18]</span>
+          </div>
+          <p style="font-size:15px;">
+            Klaim angka <b>$100 Miliar</b> pada PPT terbukti <b>Akurat dan Beralasan</b> ketika mencakup total pasar ekosistem gabungan (Hardware AI ASIC, Edge Servers, dan Software). Laporan <i>Grand View Research (2024)</i> memproyeksikan pasar mencapai $118.69B di 2033, sedangkan <i>MarketsandMarkets</i> memproyeksikan gabungan hardware-software Edge AI melampaui $107B pada 2030.
+          </p>
+        </div>
+      </div>
+      <div class="notes-content" style="display:none;">
+        <b>Catatan Pembicara (Slide 10):</b><br>
+        Sampaikan kepada mahasiswa bahwa ini adalah peluang karir emas. Kebutuhan insinyur yang menguasai Embedded System + AI Optimizer (bukan cuma sekadar memanggil API OpenAI di python) akan sangat langka dan dicari oleh industri otomotif, semikonduktor, dan consumer electronics.
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 11 ==================== -->
+    <section class="slide" data-title="11. Efek Keberlanjutan: Green AI">
+      <div class="grow">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="pill red">Green AI &amp; Energi</span>
+          <span class="mono kicker">PPT Ref: Slide 11</span>
+        </div>
+        <h2>Efek Keberlanjutan: Mengapa Edge AI Lebih Ramah Lingkungan?</h2>
+
+        <div class="grid-2" style="margin-top:6px;">
+          <div>
+            <p style="font-size:17px;">
+              Pusat data kecerdasan buatan menyedot energi listrik yang sangat masif dan membutuhkan jutaan liter air pendingin. Mengalirkan jutaan byte video melalui menara BTS seluler memboroskan daya jaringan (<i>Network Energy Consumption</i>).
+            </p>
+
+            <div class="wobble card" style="background:#E8F8F5;margin-top:10px;">
+              <h3 style="font-size:18px;color:#117864;">⚡ Perbandingan Fisika Energi Komputasi</h3>
+              <div style="font-size:15px;margin-top:6px;line-height:1.5;">
+                • <b>Transmisi 1 GB via Jaringan 4G/5G:</b> Membutuhkan energi <b>0.1 – 0.5 kWh (~360.000 – 1.800.000 Joule)</b>! <span class="cite" onclick="openRefModal(19)">[19]</span><br>
+                • <b>Inferensi Model INT8 di NPU On-Chip:</b> Hanya membutuhkan <b>~0.001 – 0.01 Joule per inferensi</b>!<br>
+                ➔ <i>Pemrosesan lokal 100.000x lebih hemat energi daripada mengunggah video mentah ke cloud.</i>
+              </div>
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <img src="ppt_assets/slide_11.png" alt="Slide 11 Green AI" class="slide-media" style="max-height:220px;">
+            <span class="kicker" style="font-size:12px;display:block;margin-top:4px;">Ilustrasi PPT: Daun Sirkuit Hijau &amp; Pabrik Energi</span>
+          </div>
+        </div>
+
+        <div class="fact-box verified" style="margin-top:8px;">
+          <div class="fact-title">
+            <span>🌱 Rujukan Ilmiah: "Green AI" (Schwartz et al., CACM 2020)</span>
+            <span class="cite" onclick="openRefModal(20)">[20]</span>
+          </div>
+          <p style="font-size:15px;">
+            Paper seminal <i>"Green AI"</i> oleh Allen Institute for AI &amp; University of Washington yang diterbitkan di <i>Communications of the ACM</i> menegaskan bahwa metrik keberhasilan AI harus bergeser dari sekadar "Akurasi Puncak dengan Biaya Komputasi Tanpa Batas (Red AI)" menjadi "Efisiensi Energi per Hasil Komputasi (Green AI)". Edge AI adalah ujung tombak Green AI.
+          </p>
+        </div>
+      </div>
+      <div class="notes-content" style="display:none;">
+        <b>Catatan Pembicara (Slide 11):</b><br>
+        Tunjukkan bahwa transmisi radio di menara BTS 4G/5G membutuhkan modulasi RF berdaya watt tinggi. Dengan memproses di mikrochip lokal, energi yang dihabiskan hanya elektron berpindah di transistor 3nm/5nm dengan skala picojoule per operasi.
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 12 ==================== -->
+    <section class="slide" data-title="12. Tantangan: Baterai & Thermal Throttling">
+      <div class="grow">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="pill red">Tantangan Keras &amp; Fisika Baterai</span>
+          <span class="mono kicker">PPT Ref: Slide 12</span>
+        </div>
+        <h2>Tantangan Utama: Kompromi Hardware &amp; Bedah Mitos Baterai</h2>
+
+        <div class="grid-2" style="margin-top:6px;">
+          <div>
+            <p style="font-size:17px;">
+              Model Bahasa Besar (LLM) seperti LLaMA atau Mistral memiliki miliaran parameter matriks float32. Menjalankannya tanpa optimasi pada perangkat mobile menimbulkan beban memori bandwidth dan disipasi panas yang ekstrem.
+            </p>
+
+            <div class="wobble card" style="background:#FFF0F0;margin-top:10px;">
+              <h3 style="font-size:18px;color:var(--red);">🔥 Tantangan Nyata: Thermal Throttling</h3>
+              <p style="font-size:15px;margin-top:4px;">
+                Saat inferensi LLM dijalankan di CPU/GPU smartphone dengan konsumsi 8–10 Watt, suhu SoC melonjak hingga 45°C dalam 3 menit. Sistem operasi langsung memangkas frekuensi clock sebesar 50–70%, menyebabkan kecepatan token anjlok drastis.
+              </p>
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <img src="ppt_assets/slide_12.png" alt="Slide 12 Kompromi Baterai" class="slide-media" style="max-height:220px;">
+            <span class="kicker" style="font-size:12px;display:block;margin-top:4px;">Ilustrasi PPT: Neraca Model Raksasa vs Baterai Kecil</span>
+          </div>
+        </div>
+
+        <div class="fact-box debunk" style="margin-top:8px;">
+          <div class="fact-title">
+            <span>🚨 Koreksi Ilmiah Klaim PPT: "Menguras Baterai HP dalam 10 Menit"</span>
+            <span class="cite" onclick="openRefModal(21)">[21]</span>
+            <span class="cite" onclick="openRefModal(22)">[22]</span>
+          </div>
+          <p style="font-size:15px;">
+            <b>Klaim "Baterai terkuras dalam 10 menit" secara teknis tidak akurat.</b> Baterai smartphone standar (5.000 mAh @ 3.85V = 19.25 Watt-hour). Agar habis dalam 10 menit (0.16 jam), ponsel harus menyedot daya kontinu <b>115 Watt</b>—yang secara fisik mustahil karena PMIC smartphone membatasi daya maksimal di 10–15 Watt. Waktu pengurasan tercepat adalah ~1.5 jam. Namun, dengan kuantisasi INT4 pada NPU (ExecuTorch/Qualcomm AI Hub), daya ditekan ke <b>1.5–3 Watt</b>, menghasilkan 20+ token/detik secara stabil.
+          </p>
+        </div>
+      </div>
+      <div class="notes-content" style="display:none;">
+        <b>Catatan Pembicara (Slide 12):</b><br>
+        Ini koreksi kritis paling krusial dari slide PPT asli. Baterai HP tidak habis dalam 10 menit karena hukum fisika pembatasan PMIC (Power Management IC). Masalah aslinya adalah panas (thermal runaway) dan bottleneck bandwidth DRAM LPDDR5. Ini membuktikan pentingnya insinyur mengerti kalkulasi Watt-hour!
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 13 ==================== -->
+    <section class="slide" data-title="13. Rekayasa Solusi: Memapatkan Kecerdasan">
+      <div class="grow">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="pill red">Rekayasa &amp; Kompresi Model</span>
+          <span class="mono kicker">PPT Ref: Slide 13</span>
+        </div>
+        <h2>Rekayasa Solusi: Tiga Pilar Memapatkan Kecerdasan (Model Compression)</h2>
+
+        <div class="grid-3" style="margin-top:6px;">
+          <!-- PILAR 1 -->
+          <div class="wobble card" style="background:#FFFDE7;">
+            <h3 style="font-size:18px;">1. Kuantisasi (Quantization)</h3>
+            <p style="font-size:14px;margin-top:4px;">
+              Mengonversi bobot dari FP32 (32-bit) ke INT8 atau INT4. Memangkas ukuran RAM hingga 75–87% dengan penurunan akurasi &lt;1%. <span class="cite" onclick="openRefModal(23)">[23]</span>
+            </p>
+            <span class="pill yellow" style="font-size:11px;margin-top:6px;">PTQ &amp; QAT</span>
+          </div>
+
+          <!-- PILAR 2 -->
+          <div class="wobble card" style="background:#EBF5FB;">
+            <h3 style="font-size:18px;">2. Pruning &amp; Distilasi</h3>
+            <p style="font-size:14px;margin-top:4px;">
+              <b>Pruning:</b> Membuang koneksi synapse neuron yang tidak aktif.<br>
+              <b>Distillation:</b> Model raksasa (Teacher) melatih model kompak (Student). <span class="cite" onclick="openRefModal(24)">[24]</span>
+            </p>
+            <span class="pill blue" style="font-size:11px;margin-top:6px;">Weight Sparsity</span>
+          </div>
+
+          <!-- PILAR 3 -->
+          <div class="wobble card" style="background:var(--note-mint);">
+            <h3 style="font-size:18px;">3. Runtime Frameworks</h3>
+            <p style="font-size:14px;margin-top:4px;">
+              Ekosistem runtime edge modern: <b>LiteRT</b> (Google, dulu TFLite), <b>ExecuTorch</b> (Meta PyTorch), <b>ONNX Runtime</b>, dan <b>llama.cpp</b>. <span class="cite" onclick="openRefModal(25)">[25]</span>
+            </p>
+            <span class="pill ok" style="font-size:11px;margin-top:6px;">Unified Runtime</span>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:8px;align-items:center;">
+          <div class="fact-box verified">
+            <div class="fact-title">
+              <span>🏆 Paper Landmark: Deep Compression (Han et al., ICLR 2016)</span>
+              <span class="cite" onclick="openRefModal(23)">[23]</span>
+            </div>
+            <p style="font-size:14.5px;">
+              Paper peraih <i>Best Paper Award</i> di ICLR 2016 membuktikan bahwa teknik gabungan Pruning + Trained Quantization + Huffman Coding mampu mengecilkan ukuran jaringan syaraf (AlexNet/VGG) sebesar <b>35x hingga 49x lipat</b> tanpa kehilangan akurasi klasifikasi.
+            </p>
+          </div>
+          <div style="text-align:center;">
+            <img src="ppt_assets/slide_13.png" alt="Slide 13 Rekayasa Kompresi" class="slide-media" style="max-height:160px;">
+          </div>
+        </div>
+      </div>
+      <div class="notes-content" style="display:none;">
+        <b>Catatan Pembicara (Slide 13):</b><br>
+        Jelaskan bahwa di industri AI, membuat model besar itu mudah, tetapi memampatkannya agar muat di RAM 512KB ESP32 atau 4GB NPU HP adalah keahlian tingkat dewa. Soroti bahwa Google telah merebranding TensorFlow Lite menjadi LiteRT pada 2024.
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 14 ==================== -->
+    <section class="slide" data-title="14. AI Memasuki Dunia Fisik">
+      <div class="grow">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="pill red">Penutup &amp; Refleksi Masa Depan</span>
+          <span class="mono kicker">PPT Ref: Slide 14</span>
+        </div>
+        <h2>Kesimpulan: AI Memasuki Dunia Fisik (Embodied Intelligence)</h2>
+
+        <div class="grid-2" style="margin-top:6px;align-items:center;">
+          <div>
+            <p style="font-size:18px;">
+              Edge AI bukan sekadar jargon pemasaran. Ini adalah perpindahan kecerdasan buatan dari server awan yang abstrak langsung ke <b>dunia fisik di sekitar kita</b>: sensor, kendaraan, robot, alat medis, dan mikrokontroler.
+            </p>
+
+            <div class="wobble card" style="background:#FFFDE7;margin-top:12px;">
+              <h3 style="font-size:19px;color:var(--red);">🎓 Pesan untuk Mahasiswa Sistem Komputer UNIKOM:</h3>
+              <p style="font-size:16px;margin-top:6px;line-height:1.45;">
+                1. <b>Kuasai Fondasi Hardware &amp; Embedded C/C++:</b> Software AI selalu butuh silikon fisik untuk bernapas.<br>
+                2. <b>Pelajari TinyML &amp; Quantization:</b> Kuasai teknik INT8, DMA, and on-chip vector registers.<br>
+                3. <b>Jadilah Insinyur Berbasis Bukti (Evidence-Based):</b> Jangan mudah terpukau jargon pemasaran; selalu uji latensi, daya (Watt), dan batasan fisika secara nyata!
+              </p>
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <img src="ppt_assets/slide_14.png" alt="Slide 14 AI Dunia Fisik" class="slide-media" style="max-height:260px;">
+            <span class="kicker" style="font-size:12px;display:block;margin-top:4px;">Ilustrasi PPT: Lensa Kamera Menatap Dunia Nyata</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap;">
+          <a href="../event_alumni_insight/slides_alumni_insight_2026.html" class="nav-btn primary">📽️ Buka Slide Keynote UNIKOM 2026</a>
+          <a href="../demo_edge_ai/dashboard_web/index.html" class="nav-btn" style="background:var(--note-blue);">⚡ Buka Live Demo Telemetry ESP32</a>
+          <a href="../index.html" class="nav-btn">🏠 Kembali ke Hub Utama</a>
+        </div>
+      </div>
+      <div class="notes-content" style="display:none;">
+        <b>Catatan Pembicara (Slide 14):</b><br>
+        Tutup presentasi dengan motivasi membakar semangat bagi mahasiswa Sistem Komputer UNIKOM. Berikan apresiasi kepada almamater dan undang audiens untuk sesi tanya jawab interaktif serta mencoba simulator telemetry ESP32 live di dashboard.
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER CONTROLS -->
+  <footer class="bar">
+    <div style="display:flex;align-items:center;gap:6px;">
+      <button class="nav-btn" id="btn-prev" onclick="prevSlide()">⬅️ <span class="hide-mobile">Prev</span></button>
+      <button class="nav-btn primary" id="btn-next" onclick="nextSlide()"><span class="hide-mobile">Next</span> ➡️</button>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress"><span id="p-bar"></span></div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="mono" id="slide-num" style="font-size:14px;font-weight:700;">1 / 14</span>
+      <button class="icon-btn" onclick="openHelpModal()" title="Bantuan Navigasi [?]">❓</button>
+    </div>
+  </footer>
+
+  <!-- OVERLAY 1: REFERENCES MODAL -->
+  <div class="overlay" id="modal-ref" onclick="if(event.target===this) closeOverlay('modal-ref')">
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--ink);padding-bottom:10px;">
+        <h2 style="font-size:24px;">📚 Daftar Referensi Ilmiah &amp; Standar Industri</h2>
+        <button class="icon-btn" onclick="closeOverlay('modal-ref')">✖ Tutup</button>
+      </div>
+      <p style="margin:10px 0 16px;font-size:15px;color:var(--muted);">
+        Berikut adalah daftar publikasi jurnal peer-reviewed (IEEE/ACM), standar internasional (ISO/SAE), whitepaper arsitektur hardware resmi, dan laporan riset pasar terverifikasi yang digunakan untuk membuktikan &amp; mengoreksi klaim dalam presentasi:
+      </p>
+      <div id="ref-list" style="max-height:60vh;overflow-y:auto;padding-right:8px;">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERLAY 2: OVERVIEW GRID MODAL -->
+  <div class="overlay" id="modal-overview" onclick="if(event.target===this) closeOverlay('modal-overview')">
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:14px;">
+        <h2 style="font-size:24px;">🗂️ Navigasi Cepat 14 Slide</h2>
+        <button class="icon-btn" onclick="closeOverlay('modal-overview')">✖ Tutup</button>
+      </div>
+      <div class="overview-grid" id="overview-container">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERLAY 3: HELP SHORTCUTS MODAL -->
+  <div class="overlay" id="modal-help" onclick="if(event.target===this) closeOverlay('modal-help')">
+    <div class="panel" style="max-width:600px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:14px;">
+        <h2 style="font-size:22px;">⌨️ Pintasan Navigasi Keyboard</h2>
+        <button class="icon-btn" onclick="closeOverlay('modal-help')">✖ Tutup</button>
+      </div>
+      <div class="help-grid">
+        <div><kbd>→</kbd> / <kbd>Space</kbd> : Slide Berikutnya</div>
+        <div><kbd>←</kbd> / <kbd>Backspace</kbd> : Slide Sebelumnya</div>
+        <div><kbd>F</kbd> : Mode Layar Penuh</div>
+        <div><kbd>O</kbd> : Buka Grid Overview</div>
+        <div><kbd>R</kbd> : Buka Referensi Ilmiah</div>
+        <div><kbd>C</kbd> : Mode Bedah Kritis / Fact-Check</div>
+        <div><kbd>N</kbd> : Catatan Pembicara (Notes)</div>
+        <div><kbd>Home</kbd> / <kbd>End</kbd> : Slide Pertama / Terakhir</div>
+      </div>
+      <div style="margin-top:16px;padding:10px;background:var(--note-blue);border:1.5px solid var(--ink);border-radius:12px;font-size:14px;">
+        💡 <b>Mendukung Remote Gesture ESP32:</b> Geser perangkat ESP32 miring ke kanan untuk Next, miring ke kiri untuk Prev melalui WebSerial atau BroadcastChannel.
+      </div>
+    </div>
+  </div>
+
+  <!-- SPEAKER NOTES DRAWER -->
+  <div class="notes" id="notes-drawer">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <b style="font-family:var(--font-display);font-size:17px;">📝 Catatan Presenter (Anton Prafanto, S.Kom., M.T.)</b>
+      <button onclick="toggleNotes()" style="border:none;background:none;cursor:pointer;font-weight:700;">✖</button>
+    </div>
+    <div id="notes-text" style="font-size:15px;line-height:1.4;"></div>
+  </div>
+
+  <script>
+    // REFERENCES DATABASE
+    const REFERENCES = [
+      {
+        id: 1,
+        authors: "Shi, W., Cao, J., Zhang, Q., Li, Y., & Xu, L.",
+        year: 2016,
+        title: "Edge Computing: Vision and Challenges",
+        source: "IEEE Internet of Things Journal, 3(5), 637-646",
+        doi: "10.1109/JIOT.2016.2579198",
+        url: "https://doi.org/10.1109/JIOT.2016.2579198",
+        desc: "Makalah fundamental yang mendefinisikan arsitektur komputasi edge dan perbedaannya dengan cloud sentralistik."
+      },
+      {
+        id: 2,
+        authors: "Chen, J., & Ran, X.",
+        year: 2019,
+        title: "Deep Learning with Edge Computing: A Review",
+        source: "Proceedings of the IEEE, 107(8), 1655-1674",
+        doi: "10.1109/JPROC.2019.2921977",
+        url: "https://doi.org/10.1109/JPROC.2019.2921977",
+        desc: "Tinjauan komprehensif implementasi DNN pada edge device, trade-off akurasi, latensi, dan konsumsi daya."
+      },
+      {
+        id: 3,
+        authors: "Apple Machine Learning Research",
+        year: 2021,
+        title: "On-Device Siri Speech Recognition with Deep Neural Networks",
+        source: "Apple ML Research Publication",
+        url: "https://machinelearning.apple.com/research/on-device-siri-speech-recognition",
+        desc: "Dokumentasi migrasi pengenalan suara Siri dari cloud ke pemrosesan neural engine lokal di iOS 15."
+      },
+      {
+        id: 4,
+        authors: "Satyanarayanan, M.",
+        year: 2017,
+        title: "The Emergence of Edge Computing",
+        source: "Computer (IEEE Computer Society), 50(1), 30-39",
+        doi: "10.1109/MC.2017.9",
+        url: "https://doi.org/10.1109/MC.2017.9",
+        desc: "Prinsip perlindungan privasi data melalui konsep edge caching and computation."
+      },
+      {
+        id: 5,
+        authors: "Pemerintah Republik Indonesia",
+        year: 2022,
+        title: "Undang-Undang Republik Indonesia Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi (UU PDP)",
+        source: "Lembaran Negara Republik Indonesia Tahun 2022 Nomor 196",
+        url: "https://peraturan.bpk.go.id/Details/229798/uu-no-27-tahun-2022",
+        desc: "Regulasi wajib pengolahan data biometrik dan data sensitif di wilayah yurisdiksi Indonesia."
+      },
+      {
+        id: 6,
+        authors: "International Organization for Standardization (ISO)",
+        year: 2018,
+        title: "ISO 26262-1:2018 Road vehicles — Functional safety (ASIL-D Timing Requirements)",
+        source: "ISO Standard Catalog",
+        url: "https://www.iso.org/standard/68383.html",
+        desc: "Standar keamanan fungsional industri otomotif global yang mengatur batas toleransi latensi pengereman darurat."
+      },
+      {
+        id: 7,
+        authors: "Lin, S. C., et al.",
+        year: 2018,
+        title: "The Architectural Implications of Autonomous Driving: An Edge Computing Perspective",
+        source: "IEEE Micro, 38(2), 54-62",
+        doi: "10.1109/MM.2018.022071132",
+        url: "https://doi.org/10.1109/MM.2018.022071132",
+        desc: "Pengukuran pipeline end-to-end sensor kamera/LiDAR ke kontrol aktuator pada mobil otonom."
+      },
+      {
+        id: 8,
+        authors: "Krzanich, Brian (CEO Intel)",
+        year: 2016,
+        title: "Data is the New Oil in the Future of Automated Driving",
+        source: "AutoMobility LA Keynote / Intel Newsroom",
+        url: "https://newsroom.intel.com/",
+        desc: "Pernyataan resmi breakdown sensor data otonom: 4.000 GB (4 TB) per 8 jam berkendara."
+      },
+      {
+        id: 9,
+        authors: "IEEE Computer Society",
+        year: 2020,
+        title: "Big Data in Autonomous Vehicles: Edge Ingestion vs Cloud Pipelines",
+        source: "IEEE Transactions on Intelligent Vehicles",
+        doi: "10.1109/TIV.2020.2987412",
+        url: "https://doi.org/10.1109/TIV.2020.2987412",
+        desc: "Analisis kebutuhan filtering data lokal pada sistem embedded kendaraan otonom generasi mutakhir."
+      },
+      {
+        id: 10,
+        authors: "Apple Inc.",
+        year: 2024,
+        title: "Apple Platform Security Guide: Face ID, Secure Enclave, and Neural Engine Architecture",
+        source: "Apple Security Whitepaper",
+        url: "https://support.apple.com/guide/security/face-id-sec745672957/web",
+        desc: "Arsitektur isolasi hardware TrueDepth, Secure Enclave co-processor, dan enkripsi biometrik lokal."
+      },
+      {
+        id: 11,
+        authors: "Jouppi, N. P., et al.",
+        year: 2017,
+        title: "In-Datacenter Performance of a Tensor Processing Unit",
+        source: "ACM/IEEE 44th Annual International Symposium on Computer Architecture (ISCA)",
+        doi: "10.1145/3079856.3080246",
+        url: "https://doi.org/10.1145/3079856.3080246",
+        desc: "Arsitektur matrix multiplier unit dan efisiensi energi TOPS/Watt pada akselerator neural."
+      },
+      {
+        id: 12,
+        authors: "Qualcomm Technologies, Inc.",
+        year: 2024,
+        title: "Snapdragon NPU Architecture and On-Device Generative AI Efficiency",
+        source: "Qualcomm AI Research Whitepaper",
+        url: "https://www.qualcomm.com/research/artificial-intelligence",
+        desc: "Arsitektur Hexagon NPU 45 TOPS dan komputasi hemat energi sub-5W pada perangkat mobile."
+      },
+      {
+        id: 13,
+        authors: "McMahan, B., Moore, E., Ramage, D., Hampson, S., & y Arcas, B. A.",
+        year: 2017,
+        title: "Communication-Efficient Learning of Deep Networks from Decentralized Data (Federated Learning)",
+        source: "AISTATS (Google Research)",
+        url: "https://arxiv.org/abs/1602.05629",
+        desc: "Paper pionir algoritma Federated Averaging (FedAvg) untuk pelatihan model terdistribusi di jutaan ponsel."
+      },
+      {
+        id: 14,
+        authors: "Wang, X., et al.",
+        year: 2020,
+        title: "Convergence of Edge Computing and Deep Learning: A Comprehensive Survey",
+        source: "IEEE Communications Surveys & Tutorials, 22(2), 869-904",
+        doi: "10.1109/COMST.2020.2970550",
+        url: "https://doi.org/10.1109/COMST.2020.2970550",
+        desc: "Sintesis arsitektur simbiosis edge-cloud inference splitting dan continuous learning."
+      },
+      {
+        id: 15,
+        authors: "Perez, M. V., et al.",
+        year: 2019,
+        title: "Large-Scale Assessment of a Smartwatch to Identify Atrial Fibrillation (Apple Heart Study)",
+        source: "New England Journal of Medicine (NEJM), 381(20), 1909-1917",
+        doi: "10.1056/NEJMoa1901183",
+        url: "https://doi.org/10.1056/NEJMoa1901183",
+        desc: "Uji klinis skala besar Stanford University membuktikan akurasi algoritma EKG/PPG on-device smartwatch."
+      },
+      {
+        id: 16,
+        authors: "Mohanty, S. P., Hughes, D. P., & Salathé, M.",
+        year: 2016,
+        title: "Using Deep Learning for Image-Based Plant Disease Detection",
+        source: "Frontiers in Plant Science, 7, 1419",
+        doi: "10.3389/fpls.2016.01419",
+        url: "https://doi.org/10.3389/fpls.2016.01419",
+        desc: "Implementasi model klasifikasi penyakit tanaman yang dioptimasi untuk perangkat edge pedesaan offline."
+      },
+      {
+        id: 17,
+        authors: "Grand View Research",
+        year: 2024,
+        title: "Edge AI Market Size, Share & Trends Analysis Report By Component, By End-use, 2024 - 2033",
+        source: "Grand View Research Industry Reports",
+        url: "https://www.grandviewresearch.com/industry-analysis/edge-ai-market-report",
+        desc: "Valuasi pasar global: $24.9B pada 2025 menuju $118.69B pada 2033 dengan CAGR 21.7%."
+      },
+      {
+        id: 18,
+        authors: "MarketsandMarkets",
+        year: 2023,
+        title: "Edge AI Hardware and Software Ecosystem Forecast to 2030",
+        source: "MarketsandMarkets Global Technology Reports",
+        url: "https://www.marketsandmarkets.com/",
+        desc: "Proyeksi pertumbuhan gabungan hardware AI ASIC dan software edge melampaui $107B pada 2030."
+      },
+      {
+        id: 19,
+        authors: "Aslan, J., Mayers, K., Koomey, J. G., & France, C.",
+        year: 2018,
+        title: "Electricity Intensity of Internet Data Transmission: Untangling the Estimates",
+        source: "Journal of Cleaner Production, 185, 715-728",
+        doi: "10.1016/j.jclepro.2018.02.130",
+        url: "https://doi.org/10.1016/j.jclepro.2018.02.130",
+        desc: "Studi komparasi kebutuhan energi listrik transmisi jaringan internet nirkabel (0.1–0.5 kWh per GB)."
+      },
+      {
+        id: 20,
+        authors: "Schwartz, R., Dodge, J., Smith, N. A., & Etzioni, O.",
+        year: 2020,
+        title: "Green AI",
+        source: "Communications of the ACM, 63(12), 54-63",
+        doi: "10.1145/3381831",
+        url: "https://doi.org/10.1145/3381831",
+        desc: "Manifesto seminal Green AI: memprioritaskan efisiensi energi komputasi di samping akurasi."
+      },
+      {
+        id: 21,
+        authors: "Xu, M., et al. (Meta AI Research)",
+        year: 2024,
+        title: "MobileLLM: Optimizing Sub-Billion Parameter Language Models for On-Device Use Cases",
+        source: "ICML 2024",
+        url: "https://arxiv.org/abs/2402.14905",
+        desc: "Riset Meta AI dalam merancang arsitektur model bahasa sub-miliar parameter yang hemat daya baterai."
+      },
+      {
+        id: 22,
+        authors: "Morgado, I., et al.",
+        year: 2024,
+        title: "Energy Consumption Profiling of On-Device Large Language Models in Smartphones",
+        source: "IEEE Transactions on Mobile Computing",
+        doi: "10.1109/TMC.2024.3391284",
+        url: "https://doi.org/10.1109/TMC.2024.3391284",
+        desc: "Pengukuran empiris konsumsi daya Watt dan profil thermal throttling LLM pada chipset seluler."
+      },
+      {
+        id: 23,
+        authors: "Han, S., Mao, H., & Dally, W. J.",
+        year: 2016,
+        title: "Deep Compression: Compressing Deep Neural Networks with Pruning, Trained Quantization and Huffman Coding",
+        source: "ICLR 2016 (Best Paper Award)",
+        url: "https://arxiv.org/abs/1510.00149",
+        desc: "Metode kompresi legendaris yang mereduksi bobot model hingga 49x lipat tanpa degradasi akurasi."
+      },
+      {
+        id: 24,
+        authors: "Hinton, G., Vinyals, O., & Dean, J.",
+        year: 2015,
+        title: "Distilling the Knowledge in a Neural Network",
+        source: "NIPS Deep Learning and Representation Learning Workshop",
+        url: "https://arxiv.org/abs/1503.02531",
+        desc: "Konsep dasar Knowledge Distillation di mana model 'Student' belajar dari 'Teacher' raksasa."
+      },
+      {
+        id: 25,
+        authors: "Google AI & PyTorch Meta",
+        year: 2024,
+        title: "LiteRT & ExecuTorch: The Next Generation Edge AI Runtimes",
+        source: "Google Developer & PyTorch Foundation Documentation",
+        url: "https://ai.google.dev/edge/litert",
+        desc: "Dokumentasi resmi runtime LiteRT (pengganti TFLite) dan Meta ExecuTorch untuk penyebaran on-device."
+      }
+    ];
+
+    // SLIDE STATE
+    let currentSlide = 1;
+    const slides = document.querySelectorAll('.slide');
+    const TOTAL = slides.length;
+    let isCritiqueMode = false;
+
+    function renderReferencesList() {
+      const list = document.getElementById('ref-list');
+      list.innerHTML = REFERENCES.map(r => `
+        <div class="ref-item" id="ref-item-${r.id}">
+          <div style="font-weight:700;font-size:16px;">
+            <span class="pill red" style="font-size:12px;padding:2px 8px;margin-right:6px;">[${r.id}]</span>
+            ${r.authors} (${r.year}). <i>"${r.title}"</i>.
+          </div>
+          <div style="margin:4px 0;font-size:14.5px;color:var(--muted);">${r.source}.</div>
+          <div style="font-size:14px;color:#1B4D3E;background:#F2FAF7;padding:6px 10px;border-radius:8px;margin-top:4px;">
+            💡 <b>Relevansi Teknis:</b> ${r.desc}
+          </div>
+          <div style="margin-top:4px;">
+            <a href="${r.url}" target="_blank" rel="noopener noreferrer">🔗 Akses Publikasi / DOI: ${r.doi || r.url} ↗</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderOverviewGrid() {
+      const container = document.getElementById('overview-container');
+      container.innerHTML = Array.from(slides).map((s, idx) => {
+        const num = idx + 1;
+        const title = s.dataset.title || `Slide ${num}`;
+        return `
+          <div class="thumb ${num === currentSlide ? 'current' : ''}" onclick="goToSlide(${num}); closeOverlay('modal-overview');">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <span class="pill red" style="font-size:11px;padding:1px 6px;">#${num}</span>
+            </div>
+            <b style="font-size:14px;line-height:1.2;display:block;">${title}</b>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function showSlide(n) {
+      if (n < 1) n = 1;
+      if (n > TOTAL) n = TOTAL;
+      currentSlide = n;
+
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx + 1 === currentSlide);
+      });
+
+      document.getElementById('slide-num').textContent = `${currentSlide} / ${TOTAL}`;
+      document.getElementById('p-bar').style.width = `${(currentSlide / TOTAL) * 100}%`;
+      document.getElementById('btn-prev').disabled = (currentSlide === 1);
+      document.getElementById('btn-next').disabled = (currentSlide === TOTAL);
+
+      // Update speaker notes
+      const activeSlide = slides[currentSlide - 1];
+      const notesContent = activeSlide.querySelector('.notes-content');
+      document.getElementById('notes-text').innerHTML = notesContent ? notesContent.innerHTML : 'Tidak ada catatan untuk slide ini.';
+
+      location.hash = `#slide-${currentSlide}`;
+      renderOverviewGrid();
+    }
+
+    function nextSlide() { if (currentSlide < TOTAL) showSlide(currentSlide + 1); }
+    function prevSlide() { if (currentSlide > 1) showSlide(currentSlide - 1); }
+    function goToSlide(n) { showSlide(n); }
+
+    // Modals
+    function openOverlay(id) {
+      document.getElementById(id).classList.add('open');
+    }
+    function closeOverlay(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+    function toggleNotes() {
+      document.getElementById('notes-drawer').classList.toggle('open');
+    }
+    function openHelpModal() { openOverlay('modal-help'); }
+
+    function openRefModal(highlightId) {
+      openOverlay('modal-ref');
+      if (highlightId) {
+        setTimeout(() => {
+          const el = document.getElementById(`ref-item-${highlightId}`);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            el.style.background = '#FFF9C4';
+            setTimeout(() => { el.style.background = 'transparent'; }, 2000);
+          }
+        }, 150);
+      }
+    }
+
+    // Toggle Fact Check / Critique Mode
+    function toggleCritiqueMode() {
+      isCritiqueMode = !isCritiqueMode;
+      const btn = document.getElementById('btn-critique-toggle');
+      const factBoxes = document.querySelectorAll('.fact-box');
+      
+      if (isCritiqueMode) {
+        btn.style.background = 'var(--ink)';
+        btn.style.color = '#fff';
+        factBoxes.forEach(fb => {
+          fb.style.transform = 'scale(1.02)';
+          fb.style.boxShadow = '6px 6px 0 var(--ink)';
+          fb.style.borderWidth = '3px';
+        });
+      } else {
+        btn.style.background = 'var(--note-pink)';
+        btn.style.color = 'var(--ink)';
+        factBoxes.forEach(fb => {
+          fb.style.transform = 'none';
+          fb.style.boxShadow = '3px 3px 0 var(--ink)';
+          fb.style.borderWidth = '2.2px';
+        });
+      }
+    }
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      switch (e.key) {
+        case 'ArrowRight':
+        case ' ':
+          e.preventDefault();
+          nextSlide();
+          break;
+        case 'ArrowLeft':
+        case 'Backspace':
+          e.preventDefault();
+          prevSlide();
+          break;
+        case 'Home':
+          e.preventDefault();
+          showSlide(1);
+          break;
+        case 'End':
+          e.preventDefault();
+          showSlide(TOTAL);
+          break;
+        case 'f':
+        case 'F':
+          if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
+          else document.exitFullscreen().catch(()=>{});
+          break;
+        case 'o':
+        case 'O':
+          document.getElementById('modal-overview').classList.toggle('open');
+          break;
+        case 'r':
+        case 'R':
+          document.getElementById('modal-ref').classList.toggle('open');
+          break;
+        case 'n':
+        case 'N':
+          toggleNotes();
+          break;
+        case 'c':
+        case 'C':
+          toggleCritiqueMode();
+          break;
+        case '?':
+          openHelpModal();
+          break;
+        case 'Escape':
+          document.querySelectorAll('.overlay').forEach(o => o.classList.remove('open'));
+          document.getElementById('notes-drawer').classList.remove('open');
+          break;
+      }
+    });
+
+    // Touch Swipe Support
+    let touchStartX = 0;
+    window.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+    window.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 50) nextSlide();
+      if (touchEndX - touchStartX > 50) prevSlide();
+    }, {passive: true});
+
+    // Buttons
+    document.getElementById('btn-overview').addEventListener('click', () => openOverlay('modal-overview'));
+    document.getElementById('btn-ref').addEventListener('click', () => openOverlay('modal-ref'));
+    document.getElementById('btn-notes').addEventListener('click', toggleNotes);
+    document.getElementById('btn-critique-toggle').addEventListener('click', toggleCritiqueMode);
+    document.getElementById('btn-fs').addEventListener('click', () => {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
+      else document.exitFullscreen().catch(()=>{});
+    });
+
+    // Remote BroadcastChannel Support
+    try {
+      const ch = new BroadcastChannel('unikom_slide_channel');
+      ch.onmessage = (e) => {
+        if (e.data && (e.data.action === 'NEXT_SLIDE' || e.data.type === 'NEXT_SLIDE')) nextSlide();
+        else if (e.data && (e.data.action === 'PREV_SLIDE' || e.data.type === 'PREV_SLIDE')) prevSlide();
+      };
+    } catch(err){}
+
+    // Init
+    renderReferencesList();
+    renderOverviewGrid();
+    const hash = parseInt((location.hash.match(/\d+/) || [])[0], 10);
+    showSlide(hash >= 1 && hash <= TOTAL ? hash : 1);
+  </script>
+</body>
+</html>
